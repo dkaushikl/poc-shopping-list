@@ -5,29 +5,45 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 import { ShoppingListsPage } from '../pages/shopping-lists/shopping-lists';
-//import {} from '';
+import { ConfigurationPage } from '../pages/configuration/configuration';
+import { ProfilePage } from '../pages/profile/profile';
+import { AboutPage } from '../pages/about/about';
+
+import { AuthServiceProvider } from './../providers/auth-service/auth-service';
 
 @Component({
   templateUrl: 'app.component.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-
+  userLogged: boolean = false;
   rootPage: any = LoginPage;
+  pages: Array<{ title: string, component: any, icon: string, logged: boolean }>;
 
-  pages: Array<{title: string, component: any}>;
-
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(
+      private authSrv: AuthServiceProvider, 
+      public platform: Platform, 
+      public statusBar: StatusBar, 
+      public splashScreen: SplashScreen
+  ) {
+    this.authSrv.subscribeToUserAuthState().subscribe(
+      (u) => {
+        this.userLogged = (u) ? true : false;
+        console.log('constructor: ' + ((u) ? 'usuario logado!' : 'usuario NO logado'), u);
+      },
+      (e) => console.log('constructor error: ', e) 
+    );
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'Shopping lists', component: ShoppingListsPage }
+      { title: 'Home', component: HomePage, icon: 'home', logged: false },
+      { title: 'Shopping lists', component: ShoppingListsPage, icon: 'list-box', logged: false },
+      { title: 'Configuration', component: ConfigurationPage, icon: 'build', logged: false },
+      { title: 'Profile', component: ProfilePage, icon: 'contact', logged: false },
+      { title: 'About', component: AboutPage, icon: 'information-circle', logged: false }
     ];
-
   }
 
   initializeApp() {

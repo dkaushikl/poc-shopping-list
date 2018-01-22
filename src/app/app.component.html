@@ -8,9 +8,16 @@
 
     <ion-content>
       <ion-list>
+        <!-- Login -->
+        <button menuClose ion-item (click)="login()"><ion-icon name="log-in"></ion-icon> Login</button>
+
+        <!-- Menu entries -->
         <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-          {{ p.title }}
+            <ion-icon name="{{ p.icon }}"></ion-icon> {{ p.title }}
         </button>
+
+        <!-- Logout -->
+        <button menuClose ion-item (click)="logout"><ion-icon name="log-out"></ion-icon> Logout</button>
       </ion-list>
     </ion-content>
   </ion-menu>
