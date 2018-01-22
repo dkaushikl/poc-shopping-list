@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 
-/**
- * Generated class for the ShoppingListsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 @IonicPage()
 @Component({
@@ -15,11 +11,23 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ShoppingListsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  constructor(
+    private db: AngularFirestore,
+    public navCtrl: NavController, 
+    public navParams: NavParams
+  ) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ShoppingListsPage');
+  }
+
+  addShoppingList() {
+    /*this.userCollectionRef.add({
+      name: this.shoppingName,
+      timestamp: new Date()
+    })
+    .then(l => console.log('OK adding list: ', l))
+    .catch(e => console.log('Error adding shopping list'));*/
   }
 
 }
