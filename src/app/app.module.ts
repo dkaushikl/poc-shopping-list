@@ -16,6 +16,11 @@ import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { ShoppingListsPage } from '../pages/shopping-lists/shopping-lists';
+import { ConfigurationPage } from '../pages/configuration/configuration';
+import { ProfilePage } from '../pages/profile/profile';
+import { AboutPage } from '../pages/about/about';
+
+// Providers
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
 
 @NgModule({
@@ -23,7 +28,10 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     MyApp,
     LoginPage,
     HomePage,
-    ShoppingListsPage
+    ShoppingListsPage,
+    ConfigurationPage,
+    ProfilePage,
+    AboutPage
   ],
   imports: [
     BrowserModule,
@@ -38,7 +46,10 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     MyApp,
     LoginPage,
     HomePage,
-    ShoppingListsPage
+    ShoppingListsPage,
+    ConfigurationPage,
+    ProfilePage,
+    AboutPage
   ],
   providers: [
     StatusBar,
