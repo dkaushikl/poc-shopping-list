@@ -10,7 +10,10 @@
 <ion-content padding class="page-login">
   <ion-grid fixed>
     <ion-row justify-content-center align-items-center class="img-title-sep">
-      Logo
+      <button ion-button (click)="loginOK()">Login OK</button>
+      <button ion-button (click)="loginGoogle()">Login Google</button>
+      <button ion-button (click)="loginKO()">Login KO</button>
+      <button ion-button (click)="logout()">Logout</button>
     </ion-row>
 
     <ion-row justify-content-center align-items-center class="img-title-sep">
@@ -21,6 +24,6 @@
 
 <ion-footer class="stick-footer">
   <ion-toolbar>
-    <button ion-button full (click)="login()" style="color:#aaa">LOGIN</button>
+    <button ion-button full (click)="login()">LOGIN</button>
   </ion-toolbar>
 </ion-footer>
