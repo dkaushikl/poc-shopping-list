@@ -6,7 +6,7 @@ import { AngularFirestoreModule, AngularFirestore } from 'angularfire2/firestore
 
 @NgModule({
   declarations: [
-    ShoppingListsPage,
+    ShoppingListsPage
   ],
   imports: [
     IonicPageModule.forChild(ShoppingListsPage),
