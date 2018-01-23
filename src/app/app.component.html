@@ -9,15 +9,19 @@
     <ion-content>
       <ion-list>
         <!-- Login -->
-        <button menuClose ion-item (click)="login()"><ion-icon name="log-in"></ion-icon> Login</button>
+        <ion-item class="link-pointer" menuClose tappable (click)="login()">
+          <ion-icon name="log-in" item-start></ion-icon> Login
+        </ion-item>
 
         <!-- Menu entries -->
-        <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-            <ion-icon name="{{ p.icon }}"></ion-icon> {{ p.title }}
-        </button>
+        <ion-item class="link-pointer" menuClose tappable *ngFor="let p of pages" (click)="openPage(p)">
+          <ion-icon name="{{ p.icon }}" item-start></ion-icon> {{ p.title }}
+        </ion-item>
 
         <!-- Logout -->
-        <button menuClose ion-item (click)="logout"><ion-icon name="log-out"></ion-icon> Logout</button>
+        <ion-item class="link-pointer" menuClose tappable (click)="logout()">
+          <ion-icon name="log-out" item-start></ion-icon> Login
+        </ion-item>
       </ion-list>
     </ion-content>
   </ion-menu>
