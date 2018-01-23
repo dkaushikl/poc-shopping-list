@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
+import { AddNewListPage } from './add-new-list/add-new-list';
+
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 @IonicPage()
@@ -13,8 +15,7 @@ export class ShoppingListsPage {
 
   constructor(
     private db: AngularFirestore,
-    public navCtrl: NavController, 
-    public navParams: NavParams
+    public navCtrl: NavController
   ) { }
 
   ionViewDidLoad() {
@@ -22,6 +23,12 @@ export class ShoppingListsPage {
   }
 
   addShoppingList() {
+    console.log('Navigating...');
+    this.navCtrl.push(AddNewListPage, {
+      animate: true,
+      direction: 'forward'
+    });
+
     /*this.userCollectionRef.add({
       name: this.shoppingName,
       timestamp: new Date()
