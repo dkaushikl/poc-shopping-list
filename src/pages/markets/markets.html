@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Markets</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-row>
+    <ion-col>
+      <h1>List of current markets</h1>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+      <ion-list>
+        <button class="market-color" ion-item *ngFor="let market of markets" (click)="itemSelected(item)">
+          {{ market.name }}
+        </button> 
+      </ion-list>
+    </ion-col>
+  </ion-row>
+
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="addMarket()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>

@@ -18,6 +18,7 @@ import { AddNewListPageModule } from '../pages/shopping-lists/add-new-list/add-n
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
+import { MarketsPage } from '../pages/markets/markets';
 import { ShoppingListsPage } from '../pages/shopping-lists/shopping-lists';
 import { ConfigurationPage } from '../pages/configuration/configuration';
 import { ProfilePage } from '../pages/profile/profile';
@@ -25,12 +26,15 @@ import { AboutPage } from '../pages/about/about';
 
 // Providers
 import { AuthServiceProvider } from '../providers/auth-service/auth-service';
+import { MarketsProvider } from '../providers/markets/markets';
+import { ShoppingListProvider } from '../providers/shopping-lists/shopping-list';
 
 @NgModule({
   declarations: [
     MyApp,
     LoginPage,
     HomePage,
+    MarketsPage,
     ShoppingListsPage,
     ConfigurationPage,
     ProfilePage,
@@ -50,6 +54,7 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     MyApp,
     LoginPage,
     HomePage,
+    MarketsPage,
     ShoppingListsPage,
     ConfigurationPage,
     ProfilePage,
@@ -59,7 +64,9 @@ import { AuthServiceProvider } from '../providers/auth-service/auth-service';
     StatusBar,
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    AuthServiceProvider
+    AuthServiceProvider,
+    MarketsProvider,
+    ShoppingListProvider
   ]
 })
 export class AppModule {}
