@@ -8,4 +8,20 @@ export class MarketsProvider {
     console.log('Hello MarketsProvider Provider');
   }
 
+  getMarkets() {
+
+  }
+
+  addMarket() {
+
+  }
+
+  editMarket() {
+
+  }
+
+  deleteMarket() {
+    
+  }
+
 }
