@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -25,7 +26,7 @@ import { ProfilePage } from '../pages/profile/profile';
 import { AboutPage } from '../pages/about/about';
 
 // Providers
-import { AuthServiceProvider } from '../providers/auth-service/auth-service';
+import { AuthenticationProvider } from '../providers/authentication/authentication';
 import { MarketsProvider } from '../providers/markets/markets';
 import { ShoppingListProvider } from '../providers/shopping-lists/shopping-list';
 
@@ -42,6 +43,7 @@ import { ShoppingListProvider } from '../providers/shopping-lists/shopping-list'
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AddNewListPageModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
@@ -63,10 +65,10 @@ import { ShoppingListProvider } from '../providers/shopping-lists/shopping-list'
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: ErrorHandler, useClass: IonicErrorHandler },
-    AuthServiceProvider,
+    AuthenticationProvider,
     MarketsProvider,
-    ShoppingListProvider
+    ShoppingListProvider,
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })
 export class AppModule {}
