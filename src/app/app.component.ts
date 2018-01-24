@@ -11,7 +11,9 @@ import { ConfigurationPage } from '../pages/configuration/configuration';
 import { ProfilePage } from '../pages/profile/profile';
 import { AboutPage } from '../pages/about/about';
 
-import { AuthServiceProvider } from './../providers/auth-service/auth-service';
+import { AuthenticationProvider } from './../providers/authentication/authentication';
+
+import { Page } from './../models';
 
 @Component({
   templateUrl: 'app.component.html'
@@ -20,10 +22,10 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   userLogged: boolean = false;
   rootPage: any = LoginPage;
-  pages: Array<{ title: string, component: any, icon: string, logged: boolean }>;
+  pages: Array<Page>;
 
   constructor(
-      private authSrv: AuthServiceProvider, 
+      private authSrv: AuthenticationProvider, 
       public platform: Platform, 
       public statusBar: StatusBar, 
       public splashScreen: SplashScreen
