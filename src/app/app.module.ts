@@ -12,9 +12,6 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule, AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 
-// Modules
-import { AddNewListPageModule } from '../pages/shopping-lists/add-new-list/add-new-list.module';
-
 // Pages
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
@@ -24,6 +21,9 @@ import { ShoppingListsPage } from '../pages/shopping-lists/shopping-lists';
 import { ConfigurationPage } from '../pages/configuration/configuration';
 import { ProfilePage } from '../pages/profile/profile';
 import { AboutPage } from '../pages/about/about';
+
+// Modals
+import { ALL_MODAL_MODULES } from './../pages/modals';
 
 // Providers
 import { AuthenticationProvider } from '../providers/authentication/authentication';
@@ -44,7 +44,7 @@ import { ShoppingListProvider } from '../providers/shopping-lists/shopping-list'
   imports: [
     BrowserModule,
     HttpClientModule,
-    AddNewListPageModule,
+    ...ALL_MODAL_MODULES,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
