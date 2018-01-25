@@ -5,6 +5,26 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h1>List of current shopping lists</h1>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-card *ngFor="let market of markets">
+    <ion-card-header>
+      {{ market.name }}
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ market.description }}</p>
+      <ion-range [(ngModel)]="brightness"></ion-range>
+      <p>Shared with: 3</p>
+      <ion-row>XXXX</ion-row>
+    </ion-card-content>
+  </ion-card>
+    
   <!--<ul>
     <li *ngFor="let item of items$ | async">
       >> {{ item }}
