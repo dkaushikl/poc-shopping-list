@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+
+import { AddMarketPage } from './../modals';
 
 import { MarketsProvider } from './../../providers';
 
@@ -12,7 +14,11 @@ export class MarketsPage {
 
   markets: any[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private marketSrv: MarketsProvider) {}
+  constructor(
+    private marketSrv: MarketsProvider,
+    private modalCtrl: ModalController,
+    public navCtrl: NavController, 
+    public navParams: NavParams) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MarketsPage');
@@ -25,7 +31,7 @@ export class MarketsPage {
   }
 
   addMarket() {
-    this.marketSrv.addMarket();
+    this.modalCtrl.create(AddMarketPage).present();
   }
 
   editMarket() {
