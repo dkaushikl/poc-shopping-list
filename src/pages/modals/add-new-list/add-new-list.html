@@ -5,11 +5,98 @@
 </ion-header>
 
 <ion-content padding>
-  Add New List
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        Fill the following fields:
+      </ion-col>
+    </ion-row>
+    
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label floating>Shopping List's name</ion-label>
+          <ion-input type="text" [(ngModel)]="shoppingListName" autofocus></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Is this list shared?</ion-label>
+          <ion-checkbox color="dark" checked="false" [(ngModel)]="sharedList"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="sharedList" style="margin-top: 12px">
+      <ion-col>
+        <button ion-button full icon-left color="primary">
+          <ion-icon name="add"></ion-icon>
+          Add new user to share with...
+        </button>
+        <!--Add new targets to share with...
+        <ion-item>
+          <button ion-button item-end icon-only>
+            <ion-icon name="add" style="padding: 9px"></ion-icon>
+          </button>
+        </ion-item>-->
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="sharedList">
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            <ion-avatar item-start>
+              <img src="img/avatar-cher.png">
+            </ion-avatar>
+            <ion-input type="text" placeholder="Share with..." [(ngModel)]="shoppingListName"></ion-input>
+            <button ion-button item-end icon-only>
+                <ion-icon name="trash" style="padding: 9px"></ion-icon>
+            </button>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+      <!--<ion-col>
+        <ion-list>
+          <ion-item>
+            Fulanito
+            <button ion-button item-end icon-only color="danger">
+              <ion-icon name="trash" style="padding: 9px"></ion-icon>
+            </button>
+          </ion-item>
+          <ion-item>
+              Menganito
+              <button ion-button item-end icon-only color="danger">
+                <ion-icon name="trash" style="padding: 9px"></ion-icon>
+              </button>
+            </ion-item>
+            <ion-item>
+                <ion-input type="text" placeholder="Share with..." [(ngModel)]="shoppingListName"></ion-input>
+                <button ion-button item-end icon-only color="danger">
+                  <ion-icon name="trash" style="padding: 9px"></ion-icon>
+                </button>
+              </ion-item>
+              <ion-item>
+                  <ion-thumbnail item-start>
+                    <img src="img/thumbnail-totoro.png">
+                  </ion-thumbnail>
+                  <h2>My Neighbor Totoro</h2>
+                  <button ion-button item-end icon-only color="danger">
+                      <ion-icon name="trash" style="padding: 9px"></ion-icon>
+                    </button>
+                </ion-item>
+        </ion-list>
+      </ion-col>-->
+    </ion-row>
+  </ion-grid>
 </ion-content>
 
 <ion-footer class="stick-footer">
   <ion-toolbar>
-    <button ion-button full (click)="cancel()">Cancel</button>
+    <button ion-button full color="primary" (click)="createNewShoppingList()">Create</button>
+    <button ion-button full color="danger" (click)="cancel()">Cancel</button>
   </ion-toolbar>
 </ion-footer>
