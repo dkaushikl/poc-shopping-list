@@ -3,10 +3,34 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
+    <ion-title>Your current lists</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h2>These are your lists...</h2>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
+  <ion-card *ngFor="let list of shoppingLists">
+    <ion-card-header>
+      {{ list.name }}
+    </ion-card-header>
+    <ion-card-content>
+      <p>Current state: {{ list.checked }}/{{ list.total }}</p>
+      <ion-range [(ngModel)]="brightness"></ion-range>
+      <p>Shared with ({{list.shared}}): fulanito, menganito, zutanito</p>
+      <ion-row>Markets: Lidl, Dia</ion-row>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="addShoppingList()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>
