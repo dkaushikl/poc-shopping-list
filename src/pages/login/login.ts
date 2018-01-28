@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
+
+import { AuthenticationProvider, ShoppingListProvider } from './../../providers';
 
 @IonicPage()
 @Component({
@@ -8,11 +10,19 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class LoginPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private authSrv: AuthenticationProvider, public navCtrl: NavController) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
+  }
+
+  loginGoogle() {
+    this.authSrv.loginWithGoogle();
+  }
+
+  logout() {
+    this.authSrv.logout();
   }
 
 }
