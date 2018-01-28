@@ -9,7 +9,7 @@
     <ion-content>
       <ion-list>
         <!-- Login -->
-        <ion-item class="link-pointer" menuClose tappable (click)="login()">
+        <ion-item class="link-pointer" menuClose tappable *ngIf="!userLogged" (click)="login()">
           <ion-icon name="log-in" item-start></ion-icon> Login
         </ion-item>
 
@@ -19,7 +19,7 @@
         </ion-item>
 
         <!-- Logout -->
-        <ion-item class="link-pointer" menuClose tappable (click)="logout()">
+        <ion-item class="link-pointer" menuClose tappable *ngIf="userLogged" (click)="logout()">
           <ion-icon name="log-out" item-start></ion-icon> Logout
         </ion-item>
       </ion-list>
