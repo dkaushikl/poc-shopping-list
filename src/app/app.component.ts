@@ -34,6 +34,7 @@ export class MyApp {
       (u) => {
         this.userLogged = (u) ? true : false;
         console.log('constructor: ' + ((u) ? 'usuario logado!' : 'usuario NO logado'), u);
+        this.nav.setRoot(HomePage);
       },
       (e) => console.log('constructor error: ', e) 
     );
