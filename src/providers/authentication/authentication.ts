@@ -53,9 +53,7 @@ export class AuthenticationProvider {
   }
 
   logout() {
-    this.firebaseAuthSrv
-      .auth
-      .signOut();
+    return this.firebaseAuthSrv.auth.signOut();
   }
 
 }

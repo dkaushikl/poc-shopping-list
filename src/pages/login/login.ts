@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
+import { HomePage } from './../home/home';
+
 import { AuthenticationProvider, ShoppingListProvider } from './../../providers';
 
 @IonicPage()
@@ -18,7 +20,9 @@ export class LoginPage {
   }
 
   loginGoogle() {
-    this.authSrv.loginWithGoogle();
+    this.authSrv.loginWithGoogle()
+      .then(() => this.navCtrl.setRoot(HomePage))
+      .catch(error => console.log('Google OAuth error: ', error))
   }
 
   logout() {
