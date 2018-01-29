@@ -31,10 +31,9 @@ export class MyApp {
       public splashScreen: SplashScreen
   ) {
     this.authSrv.subscribeToUserAuthState().subscribe(
-      (u) => {
-        this.userLogged = (u) ? true : false;
-        console.log('constructor: ' + ((u) ? 'usuario logado!' : 'usuario NO logado'), u);
-        this.nav.setRoot(HomePage);
+      (userLogged) => {
+        this.userLogged = (userLogged) ? true : false;
+        this.nav.setRoot((userLogged) ? HomePage : LoginPage);
       },
       (e) => console.log('constructor error: ', e) 
     );
@@ -42,12 +41,11 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage, icon: 'home', logged: false },
-      { title: 'Markets', component: MarketsPage, icon: 'map', logged: false },
-      { title: 'Shopping lists', component: ShoppingListsPage, icon: 'basket', logged: false },
-      { title: 'Configuration', component: ConfigurationPage, icon: 'build', logged: false },
-      { title: 'Profile', component: ProfilePage, icon: 'contact', logged: false },
-      { title: 'About', component: AboutPage, icon: 'information-circle', logged: false }
+      { title: 'Home', component: HomePage, icon: 'home' },
+      { title: 'Markets', component: MarketsPage, icon: 'map' },
+      { title: 'Shopping lists', component: ShoppingListsPage, icon: 'basket' },
+      { title: 'Configuration', component: ConfigurationPage, icon: 'build' },
+      { title: 'Profile', component: ProfilePage, icon: 'contact' }
     ];
   }
 
@@ -64,5 +62,17 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  openAboutPage() {
+    this.nav.setRoot(AboutPage);
+  }
+
+  login() {
+    this.nav.setRoot(LoginPage);
+  }
+
+  logout() {
+    this.authSrv.logout();
   }
 }
