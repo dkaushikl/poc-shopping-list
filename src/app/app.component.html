@@ -14,8 +14,15 @@
         </ion-item>
 
         <!-- Menu entries -->
-        <ion-item class="link-pointer" menuClose tappable *ngFor="let p of pages" (click)="openPage(p)">
-          <ion-icon name="{{ p.icon }}" item-start></ion-icon> {{ p.title }}
+        <div *ngFor="let p of pages">
+          <ion-item class="link-pointer" menuClose tappable *ngIf="userLogged" (click)="openPage(p)">
+            <ion-icon name="{{ p.icon }}" item-start></ion-icon> {{ p.title }}
+          </ion-item>
+        </div>
+
+        <!-- About section -->
+        <ion-item class="link-pointer" menuClose tappable (click)="openAboutPage()">
+          <ion-icon name="information-circle" item-start></ion-icon> About
         </ion-item>
 
         <!-- Logout -->
