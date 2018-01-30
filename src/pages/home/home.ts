@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { IonicPage, ItemSliding, ModalController, NavController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 
+import { ShoppingAlimentListPage } from './../shopping-aliment-list/shopping-aliment-list';
 import { AddNewListPage } from './../modals';
-
+import { ShoppingList } from './../../models';
 import { ShoppingListProvider } from './../../providers';
 
 @IonicPage()
@@ -16,28 +18,23 @@ import { ShoppingListProvider } from './../../providers';
 })
 export class HomePage {
 
-  shoppingLists: any[];
+  shoppingLists: Observable<ShoppingList[]>;
 
   constructor(
-      //private afAuth: AngularFireAuth, 
-      //private afs: AngularFirestore, 
       private shoppingListSrv: ShoppingListProvider,
       private modalCtrl: ModalController,
       public navCtrl: NavController) { 
-    this.shoppingListSrv.getAllLists().subscribe(
-      (l) => {
-        this.shoppingLists = l;
-        console.log('Lists: ', l);
-      }
-    );
+    this.shoppingLists = this.shoppingListSrv.getAllLists();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
-    /*this.shoppingLists = [
-      { name: 'Compra semanal', checked: 3, total: 7, shared: false },
-      { name: 'Barbacoa Villa Lázaro', checked: 2, total: 9, shared: false }
-    ];*/
+    this.shoppingLists.subscribe(a => console.log('>> home lists: ', a));
+  }
+
+  openShoppingList(listId: string) {
+    console.log('Opening id: ', listId);
+    this.navCtrl.push(ShoppingAlimentListPage, { listId });
   }
 
   tap(itemTapped: ItemSliding) {

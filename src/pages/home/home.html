@@ -16,15 +16,32 @@
     </ion-row>
   </ion-grid>
 
-  <ion-card *ngFor="let list of shoppingLists">
+  <ion-card *ngFor="let list of shoppingLists | async">
     <ion-card-header>
       <h2><strong>{{ list.name }}</strong></h2>
     </ion-card-header>
     <ion-card-content>
-      <p>Current state: {{ list.checked }}/{{ list.aliments.length }}</p>
-      <ion-range [(ngModel)]="brightness"></ion-range>
-      <p>Shared with ({{list.shared}}): fulanito, menganito, zutanito</p>
-      <ion-row>Markets: Lidl, Dia</ion-row>
+      <!-- Aliments counter -->
+      <ion-row>
+        <ng-container *ngIf="list.aliments.length; then showCounter; else showEmptyList"></ng-container>
+        <ng-template #showCounter>
+          <p>Current state: {{ list.checked }}/{{ list.aliments.length }}</p>
+          <!--<ion-range [(ngModel)]="brightness"></ion-range>-->
+        </ng-template>
+        <ng-template #showEmptyList>
+          <p>Current state: Empty list</p>
+        </ng-template>
+      </ion-row>
+
+      <!-- Card footer -->
+      <ion-row>
+        <ion-col text-end>
+          <button ion-button icon-left clear (click)="openShoppingList(list.id)">
+            <ion-icon name="open"></ion-icon>
+            <div>Open list</div>
+          </button>
+        </ion-col>
+      </ion-row>
     </ion-card-content>
   </ion-card>
 
