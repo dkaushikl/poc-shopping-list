@@ -11,17 +11,17 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <h2>These are your lists...</h2>
+        <h1>These are your lists...</h1>
       </ion-col>
     </ion-row>
   </ion-grid>
 
   <ion-card *ngFor="let list of shoppingLists">
     <ion-card-header>
-      {{ list.name }}
+      <h2><strong>{{ list.name }}</strong></h2>
     </ion-card-header>
     <ion-card-content>
-      <p>Current state: {{ list.checked }}/{{ list.total }}</p>
+      <p>Current state: {{ list.checked }}/{{ list.aliments.length }}</p>
       <ion-range [(ngModel)]="brightness"></ion-range>
       <p>Shared with ({{list.shared}}): fulanito, menganito, zutanito</p>
       <ion-row>Markets: Lidl, Dia</ion-row>
