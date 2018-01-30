@@ -30,7 +30,7 @@ export class MyApp {
       public statusBar: StatusBar, 
       public splashScreen: SplashScreen
   ) {
-    this.authSrv.subscribeToUserAuthState().subscribe(
+    this.authSrv.getUserObservable().subscribe(
       (userLogged) => {
         this.userLogged = (userLogged) ? true : false;
         this.nav.setRoot((userLogged) ? HomePage : LoginPage);
