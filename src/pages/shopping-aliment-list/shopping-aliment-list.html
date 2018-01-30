@@ -32,11 +32,12 @@
 
   <ion-list>
       <ion-item-sliding *ngFor="let aliment of shoppingList?.aliments">
-        <ion-item>
-          <ion-avatar item-start>
-            <img src="img/slimer.png">
-          </ion-avatar>
-          <h2>{{ aliment?.name }}</h2>
+        <ion-item class="aliment-border-item" [style.border-left-color]="aliment.color">
+          <ion-label>
+            <h2>{{ aliment?.name }}</h2>
+            <p>Quantity: XX</p>
+          </ion-label>
+          <ion-checkbox color="dark" checked="true"></ion-checkbox>
         </ion-item>
         
         <!-- Left buttons -->
@@ -60,4 +61,10 @@
         </ion-item-options>
       </ion-item-sliding>
     </ion-list>
+
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="openModalToAddAliment()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>
