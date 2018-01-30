@@ -52,8 +52,8 @@
             <ion-avatar item-start>
               <img src="img/avatar-cher.png">
             </ion-avatar>
-            <ion-input type="text" placeholder="Share with..." [(ngModel)]="shoppingListName"></ion-input>
-            <button ion-button item-end icon-only>
+            <ion-input type="text" placeholder="Share with..." [(ngModel)]="shareWithUser"></ion-input>
+            <button ion-button item-end icon-only (click)="shareShoppingListWithUser()">
                 <ion-icon name="trash" style="padding: 9px"></ion-icon>
             </button>
           </ion-item>

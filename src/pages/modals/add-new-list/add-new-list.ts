@@ -21,10 +21,12 @@ export class AddNewListPage {
     this.sharedList = false;
   }
 
+  shareShoppingListWithUser() {
+    
+  }
+
   createNewShoppingList() {
-    this.shoppingListSrv.createNewList(this.shoppingListName, this.sharedList)
-      .then()
-      .catch();
+    this.shoppingListSrv.createNewList(this.shoppingListName, this.sharedList);
   }
 
   cancel() {
