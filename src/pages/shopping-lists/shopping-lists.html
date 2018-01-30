@@ -18,7 +18,7 @@
     <ion-row>
       <ion-col>
         <ion-list>
-          <ion-item-sliding #item *ngFor="let list of shoppingLists | async">
+          <ion-item-sliding #item *ngFor="let list of shoppingListsObs | async">
             <!-- -->
             <ion-item tappable (tap)="itemTapped(item)" (press)="itemPressed(item)">
               <h2>{{ list.name }}</h2>
