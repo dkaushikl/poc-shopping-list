@@ -5,11 +5,85 @@
 </ion-header>
 
 <ion-content padding>
-  Add Market
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        Fill the following fields:
+      </ion-col>
+    </ion-row>
+    
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label floating>Market's name</ion-label>
+          <ion-input type="text" [(ngModel)]="marketName" autofocus required></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Select one colour</ion-label>
+          <ion-select #colorPicker [(ngModel)]="marketColor">
+            <ion-option value="#000000" style="color: #000000">Black</ion-option>
+            <ion-option value="#000080" style="color: #000080">Navy</ion-option>
+            <ion-option value="#00008b" style="color: #00008b">Dark Blue</ion-option>
+            <ion-option value="#008000" style="color: #008000">Green</ion-option>
+            <ion-option value="#191970" style="color: #191970">Midnight Blue</ion-option>
+            <ion-option value="#228b22" style="color: #228b22">Forest Green</ion-option>
+            <ion-option value="#40e0d0" style="color: #40e0d0">Turquoise</ion-option>
+            <ion-option value="#4b0082" style="color: #4b0082">Indigo</ion-option>
+            <ion-option value="#6b8e23" style="color: #6b8e23">Olive Drab</ion-option>
+            <ion-option value="#87ceeb" style="color: #87ceeb">Sky Blue</ion-option>
+            <ion-option value="#8b0000" style="color: #8b0000">Dark Red</ion-option>
+            <ion-option value="#a52a2a" style="color: #a52a2a">Brown</ion-option>
+            <ion-option value="#add8e6" style="color: #add8e6">Light Blue</ion-option>
+            <ion-option value="#c0c0c0" style="color: #c0c0c0">Silver</ion-option>
+            <ion-option value="#d2691e" style="color: #d2691e">Chocolate</ion-option>
+            <ion-option value="#da70d6" style="color: #da70d6">Orchid</ion-option>
+            <ion-option value="#f5f5dc" style="color: #f5f5dc">Beige</ion-option>
+            <ion-option value="#ff4500" style="color: #ff4500">Orange Red</ion-option>
+            <ion-option value="#ff7f50" style="color: #ff7f50">Coral</ion-option>
+            <ion-option value="#ffa500" style="color: #ffa500">Orange</ion-option>
+            <ion-option value="#ffc0cb" style="color: #ffc0cb">Pink</ion-option>
+            <ion-option value="#ffd700" style="color: #ffd700">Gold</ion-option>
+            <ion-option value="#ffffff" style="color: #ffffff">White</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-6>
+        <ion-item>
+          <ion-label>Color selected:</ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col col-6 class="col-selected-color" (click)="colorPicker.open()" [style.background]="marketColor"></ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Do you want to add location?</ion-label>
+          <ion-checkbox color="dark" checked="false" [(ngModel)]="addLocation"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="addLocation">
+      <ion-col>
+        <ion-item>
+          <ion-input type="text" placeholder="Write the location" [(ngModel)]="marketLocation" autofocus required>
+          </ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
 
 <ion-footer class="stick-footer">
   <ion-toolbar>
-    <button ion-button full (click)="cancel()">Cancel</button>
+    <button ion-button full color="primary" (click)="addNewMarket()">Create</button>
+    <button ion-button full color="danger" (click)="cancel()">Cancel</button>
   </ion-toolbar>
 </ion-footer>
