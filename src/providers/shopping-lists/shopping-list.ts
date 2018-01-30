@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { AngularFirestore } from 'angularfire2/firestore';
 
+import { ShoppingList } from './../../models';
 import { AuthenticationProvider } from './../authentication/authentication';
 
 @Injectable()
@@ -14,12 +15,12 @@ export class ShoppingListProvider {
 
   getAllLists() {
     return this.afs
-      .collection<any>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists`)
+      .collection<ShoppingList>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists`)
       .snapshotChanges()
       .map(actions => {
         return actions.map(action => {
           const id = action.payload.doc.id;
-          const data = action.payload.doc.data() as any;
+          const data = action.payload.doc.data() as ShoppingList;
           return { id, ...data };
         });
       });
