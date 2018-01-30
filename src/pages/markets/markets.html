@@ -1,20 +1,26 @@
 <ion-header>
   <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>Markets</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-row>
-    <ion-col>
-      <h1>List of current markets</h1>
-    </ion-col>
-  </ion-row>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h1>List of current markets ({{ markets?.length }})</h1>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <ion-row>
     <ion-col>
       <ion-list>
-        <button class="market-color" ion-item *ngFor="let market of markets" (click)="itemSelected(item)">
+        <div style="width:10px; background: red"></div>
+        <button class="market-color" ion-item *ngFor="let market of markets" [style.border-left-color]="market.color">
           {{ market.name }}
         </button> 
       </ion-list>

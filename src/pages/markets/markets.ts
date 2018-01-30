@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 
+import { Market } from './../../models';
 import { AddMarketPage } from './../modals';
 
 import { MarketsProvider } from './../../providers';
@@ -12,7 +13,7 @@ import { MarketsProvider } from './../../providers';
 })
 export class MarketsPage {
 
-  markets: any[];
+  markets: Array<Market>;
 
   constructor(
     private marketSrv: MarketsProvider,
@@ -22,12 +23,12 @@ export class MarketsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MarketsPage');
-    this.marketSrv.getMarkets();
-    this.markets = [
-      { name: 'Mercadona', color: '#00FF00' },
-      { name: 'Lidl', color: '#0000FF' },
-      { name: 'Dia', color: '#FF0000' }
-    ];
+    this.marketSrv.getMarkets().subscribe(
+      (markets) => {
+        this.markets = markets;
+        console.log('Markets: ', this.markets);
+      }
+    );
   }
 
   addMarket() {
