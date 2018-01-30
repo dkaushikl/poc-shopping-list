@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 
 import { Market } from './../../models';
 import { AddMarketPage } from './../modals';
-
 import { MarketsProvider } from './../../providers';
 
 @IonicPage()
@@ -13,7 +13,7 @@ import { MarketsProvider } from './../../providers';
 })
 export class MarketsPage {
 
-  markets: Array<Market>;
+  marketsObs: Observable<Array<Market>>;
 
   constructor(
     private marketSrv: MarketsProvider,
@@ -23,12 +23,7 @@ export class MarketsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MarketsPage');
-    this.marketSrv.getMarkets().subscribe(
-      (markets) => {
-        this.markets = markets;
-        console.log('Markets: ', this.markets);
-      }
-    );
+    this.marketsObs = this.marketSrv.getMarkets();
   }
 
   addMarket() {

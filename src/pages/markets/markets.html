@@ -20,8 +20,9 @@
     <ion-col>
       <ion-list>
         <div style="width:10px; background: red"></div>
-        <button class="market-color" ion-item *ngFor="let market of markets" [style.border-left-color]="market.color">
-          {{ market.name }}
+        <button ion-item class="market-color"
+          *ngFor="let market of marketsObs | async" [style.border-left-color]="market.color">
+            {{ market.name }}
         </button> 
       </ion-list>
     </ion-col>
