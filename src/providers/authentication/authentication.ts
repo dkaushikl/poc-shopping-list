@@ -6,19 +6,18 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class AuthenticationProvider {
-  private user: Observable<firebase.User>;
+  //user: Observable<firebase.User>;
+  authState: firebase.User;
 
-  constructor(private firebaseAuthSrv: AngularFireAuth) {
-    this.user = firebaseAuthSrv.authState;
-  }
-
-  subscribeToUserAuthState() {
-    console.log('AuthService: subscribing to authState!');
-    return this.user;
+  constructor(private afAuth: AngularFireAuth) {
+    //this.user = afAuth.authState;
+    this.afAuth.authState.subscribe(
+      (auth) => { this.authState = auth; }
+    );
   }
 
   signup(email: string, password: string) {
-    this.firebaseAuthSrv
+    this.afAuth
       .auth
       .createUserWithEmailAndPassword(email, password)
       .then(value => {
@@ -30,12 +29,12 @@ export class AuthenticationProvider {
   }
 
   login(email: string, password: string) {
-    this.firebaseAuthSrv
+    this.afAuth
       .auth
       .signInWithEmailAndPassword(email, password)
       .then(user => {
         //this.user = user;
-        console.log('Nice, it worked! ', this.user);
+        console.log('Nice, it worked! ', user);
       })
       .catch(err => {
         console.log('Something went wrong:', err.message);
@@ -44,16 +43,28 @@ export class AuthenticationProvider {
 
   loginWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
-    return this.firebaseAuthSrv.auth.signInWithPopup(provider)
+    return this.afAuth.auth.signInWithPopup(provider)
       .then((credentials) => {
         console.log('Credentials: ', credentials);
-        this.user = credentials.user;
+        //this.user = credentials.user;
       })
       .catch((error) => console.log('Error: ', error))
   }
 
+  getUserObservable() {
+    return this.afAuth.authState;
+  }
+
+  getCurrentUser() {
+    return (this.authState !== null) ? this.authState : null;
+  }
+
+  getCurrentUserId() {
+    return (this.authState !== null) ? this.authState.uid : '';
+  }
+
   logout() {
-    return this.firebaseAuthSrv.auth.signOut();
+    return this.afAuth.auth.signOut();
   }
 
 }
