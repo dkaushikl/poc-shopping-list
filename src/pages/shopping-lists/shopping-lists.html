@@ -1,38 +1,43 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Shopping lists</ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>My shopping lists</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ion-grid>
     <ion-row>
       <ion-col>
-        <h1>List of current shopping lists</h1>
+        <p>For advanced options, slide the desired item...</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item-sliding #item *ngFor="let list of shoppingLists | async">
+            <!-- -->
+            <ion-item tappable (tap)="itemTapped(item)" (press)="itemPressed(item)">
+              <h2>{{ list.name }}</h2>
+            </ion-item>
+
+            <!-- -->
+            <ion-item-options side="right">
+              <button ion-button color="primary" (click)="editItem(item)">
+                <ion-icon name="create"></ion-icon> Edit
+              </button>
+              <button ion-button color="danger" (click)="deleteItem(item)">
+                <ion-icon name="trash"></ion-icon> Delete
+              </button>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <ion-card *ngFor="let market of markets">
-    <ion-card-header>
-      {{ market.name }}
-    </ion-card-header>
-    <ion-card-content>
-      <p>{{ market.description }}</p>
-      <ion-range [(ngModel)]="brightness"></ion-range>
-      <p>Shared with: 3</p>
-      <ion-row>XXXX</ion-row>
-    </ion-card-content>
-  </ion-card>
-    
-  <!--<ul>
-    <li *ngFor="let item of items$ | async">
-      >> {{ item }}
-    </li>
-  </ul>
-
-  <input [(ngModel)]="shoppingName" />
-  <button ion-button full (click)="addShoppingList()">Create shopping list</button>-->
 
   <ion-fab right bottom>
     <button ion-fab color="primary" (click)="addShoppingList()">
