@@ -29,6 +29,7 @@ import { ALL_MODAL_MODULES } from './../pages/modals';
 import { AuthenticationProvider } from '../providers/authentication/authentication';
 import { MarketsProvider } from '../providers/markets/markets';
 import { ShoppingListProvider } from '../providers/shopping-lists/shopping-list';
+import { UtilProvider } from '../providers/utils/util';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { ShoppingListProvider } from '../providers/shopping-lists/shopping-list'
     MarketsProvider,
     ShoppingListProvider,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    UtilProvider,
   ]
 })
 export class AppModule {}
