@@ -3,7 +3,7 @@ import { IonicPage, ModalController, NavController, NavParams, PopoverController
 
 import { ShoppingList } from './../../models';
 import { AddAlimentPage } from './../modals';
-import { AlimentOptionsPage } from './../popovers';
+import { AlimentOptionsPage, FilteringOptionsPage } from './../popovers';
 import { ShoppingListProvider } from './../../providers';
 
 @IonicPage()
@@ -35,8 +35,12 @@ export class ShoppingAlimentListPage {
     
   }
 
-  applyFilter() {
-
+  applyFilter(popoverEvent) {
+    let popover = this.popCtrl.create(FilteringOptionsPage);
+    popover.onDidDismiss(option => {
+      console.log('option: ', option);
+    });
+    popover.present({ ev: popoverEvent });
   }
 
   showMoreOptions(popoverEvent) {
