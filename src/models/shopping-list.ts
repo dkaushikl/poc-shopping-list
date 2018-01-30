@@ -14,4 +14,5 @@ export class AlimentItem {
 export class Market {
     name: string;
     color: string;
+    location?: string;
 }
