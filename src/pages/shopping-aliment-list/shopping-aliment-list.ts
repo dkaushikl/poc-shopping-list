@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams, PopoverController } from 'ionic-angular';
 
 import { ShoppingList } from './../../models';
-import { ShoppingListProvider } from './../../providers';
 import { AddAlimentPage } from './../modals';
+import { AlimentOptionsPage } from './../popovers';
+import { ShoppingListProvider } from './../../providers';
 
 @IonicPage()
 @Component({
@@ -17,6 +18,7 @@ export class ShoppingAlimentListPage {
     private modalCtrl: ModalController,
     public navCtrl: NavController, 
     public navParams: NavParams, 
+    private popCtrl: PopoverController,
     private shoppingListSrv: ShoppingListProvider
   ) {
     let listId = this.navParams.get('listId');
@@ -27,6 +29,22 @@ export class ShoppingAlimentListPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ShoppingAlimentListPage');
+  }
+
+  shareList() {
+    
+  }
+
+  applyFilter() {
+
+  }
+
+  showMoreOptions(popoverEvent) {
+    let popover = this.popCtrl.create(AlimentOptionsPage);
+    popover.onDidDismiss(option => {
+      console.log('option: ', option);
+    });
+    popover.present({ ev: popoverEvent });
   }
 
   openModalToAddAliment() {
