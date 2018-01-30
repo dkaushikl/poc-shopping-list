@@ -23,8 +23,9 @@ import { ConfigurationPage } from '../pages/configuration/configuration';
 import { ProfilePage } from '../pages/profile/profile';
 import { AboutPage } from '../pages/about/about';
 
-// Modals
+// Modals & Popovers
 import { ALL_MODAL_MODULES } from './../pages/modals';
+import { ALL_POPOVER_MODULES } from './../pages/popovers';
 
 // Providers
 import { AuthenticationProvider } from '../providers/authentication/authentication';
@@ -48,6 +49,7 @@ import { UtilProvider } from '../providers/utils/util';
     BrowserModule,
     HttpClientModule,
     ...ALL_MODAL_MODULES,
+    ...ALL_POPOVER_MODULES,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
