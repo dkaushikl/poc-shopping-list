@@ -18,6 +18,7 @@ import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { MarketsPage } from '../pages/markets/markets';
 import { ShoppingListsPage } from '../pages/shopping-lists/shopping-lists';
+import { ShoppingAlimentListPage } from '../pages/shopping-aliment-list/shopping-aliment-list';
 import { ConfigurationPage } from '../pages/configuration/configuration';
 import { ProfilePage } from '../pages/profile/profile';
 import { AboutPage } from '../pages/about/about';
@@ -38,6 +39,7 @@ import { UtilProvider } from '../providers/utils/util';
     HomePage,
     MarketsPage,
     ShoppingListsPage,
+    ShoppingAlimentListPage,
     ConfigurationPage,
     ProfilePage,
     AboutPage
@@ -59,6 +61,7 @@ import { UtilProvider } from '../providers/utils/util';
     HomePage,
     MarketsPage,
     ShoppingListsPage,
+    ShoppingAlimentListPage,
     ConfigurationPage,
     ProfilePage,
     AboutPage

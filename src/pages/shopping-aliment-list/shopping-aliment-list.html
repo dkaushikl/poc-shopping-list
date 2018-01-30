@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title>{{ shoppingList?.name }}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="shareList()">
+        <ion-icon name="share"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="applyFilter()">
+        <ion-icon name="funnel"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="showMoreOptions()">
+        <!--<ion-icon name="more"></ion-icon>-->
+        <ion-icon name="options"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <!--<ion-grid>
+    <ion-row>
+      <ion-col>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>-->
+
+  <ion-list>
+      <ion-item-sliding *ngFor="let aliment of shoppingList?.aliments">
+        <ion-item>
+          <ion-avatar item-start>
+            <img src="img/slimer.png">
+          </ion-avatar>
+          <h2>{{ aliment?.name }}</h2>
+        </ion-item>
+        
+        <!-- Left buttons -->
+        <ion-item-options side="left">
+          <button ion-button color="primary">
+            <ion-icon name="text"></ion-icon>
+            Text
+          </button>
+          <button ion-button color="secondary">
+            <ion-icon name="call"></ion-icon>
+            Call
+          </button>
+        </ion-item-options>
+
+        <!-- Right buttons -->
+        <ion-item-options side="right">
+          <button ion-button color="primary">
+            <ion-icon name="mail"></ion-icon>
+            Email
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+</ion-content>

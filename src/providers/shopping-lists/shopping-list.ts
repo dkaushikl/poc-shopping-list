@@ -30,6 +30,13 @@ export class ShoppingListProvider {
 
   }
 
+  getShoppingListById(listId: string) {
+    return this.afs
+      .doc<ShoppingList>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists/${listId}`)
+      .ref
+      .get();
+  }
+
   createNewList(listName: string, shared: boolean) {
     this.afs
       .collection(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists`)
