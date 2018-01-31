@@ -14,17 +14,20 @@ export class AlimentsProvider {
   }
 
   addAliment(listId: string, newAliment: AlimentItem) {
-    console.log('listId: ', listId);
-    const docRef = this.afs
+    return new Promise((resolve, reject) => {
+      console.log('listId: ', listId);
+      const docRef = this.afs
         .doc<any>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists/${listId}`)
         .ref
         .get()
         .then(list => {
-          let aliments: Array<any> = list.get('aliments');
-          console.log('aliments: ', aliments);
+          let aliments: Array<any> = list.get('aliments') || [];
           return list.ref.update({ 'aliments': [...aliments, newAliment] })
+            .then(() => resolve(newAliment.name))
+            .catch(e => reject(e));
         })
         .catch(e => console.log('e: ', e));
+    });
   }
 
 }
