@@ -12,6 +12,7 @@ export class AlimentItem {
 }
 
 export class Market {
+    id?: string;
     name: string;
     color: string;
     location?: string;
