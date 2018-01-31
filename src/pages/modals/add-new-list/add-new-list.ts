@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
-import { ShoppingListProvider } from './../../../providers';
+import { ShoppingListProvider, UtilProvider } from './../../../providers';
 
 @IonicPage()
 @Component({
@@ -13,7 +13,11 @@ export class AddNewListPage {
   shoppingListName: string;
   sharedList: boolean;
 
-  constructor(private navCtrl: NavController, private shoppingListSrv: ShoppingListProvider) { }
+  constructor(
+    private navCtrl: NavController, 
+    private shoppingListSrv: ShoppingListProvider,
+    private utilSrv: UtilProvider
+  ) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddNewListPage');
@@ -26,7 +30,12 @@ export class AddNewListPage {
   }
 
   createNewShoppingList() {
-    this.shoppingListSrv.createNewList(this.shoppingListName, this.sharedList);
+    this.shoppingListSrv.createNewList(this.shoppingListName, this.sharedList)
+      .then(docRef => {
+        this.utilSrv.showToast('List created successfully');
+        this.navCtrl.pop();
+      })
+      .catch(error => console.log('error: ', error));
   }
 
   cancel() {
