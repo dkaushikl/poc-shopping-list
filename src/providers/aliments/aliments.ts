@@ -25,8 +25,6 @@ export class AlimentsProvider {
           return list.ref.update({ 'aliments': [...aliments, newAliment] })
         })
         .catch(e => console.log('e: ', e));
-        
-        //.set({ aliments: [aliment] }, { merge: true });
   }
 
 }
