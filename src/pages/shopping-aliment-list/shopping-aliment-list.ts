@@ -4,8 +4,7 @@ import { IonicPage, ModalController, NavController, NavParams, PopoverController
 import { AlimentItem, ShoppingList } from './../../models';
 import { AddAlimentPage } from './../modals';
 import { AlimentOptionsPage, FilteringOptionsPage } from './../popovers';
-import { AlimentsProvider } from './../../providers';
-import { ShoppingListProvider } from './../../providers';
+import { AlimentsProvider, ShoppingListProvider, UtilProvider } from './../../providers';
 
 @IonicPage()
 @Component({
@@ -22,7 +21,8 @@ export class ShoppingAlimentListPage {
     public navCtrl: NavController, 
     public navParams: NavParams, 
     private popCtrl: PopoverController,
-    private shoppingListSrv: ShoppingListProvider
+    private shoppingListSrv: ShoppingListProvider,
+    private utilSrv: UtilProvider
   ) {
     this.listId = this.navParams.get('listId');
     this.shoppingListSrv.getShoppingListById(this.listId).subscribe(
@@ -61,8 +61,8 @@ export class ShoppingAlimentListPage {
     modal.onDidDismiss((data: AlimentItem) => {
       console.log('data returned: ', data);
       this.alimentSrv.addAliment(this.listId, data)
-        //.then(s => console.log('s: ', s))
-        //.catch(e => console.log('error: ', e))
+        .then(alimentAdded => this.utilSrv.showToast(alimentAdded + ' added successfully!'))
+        .catch(e => console.log('error: ', e))
     });
     modal.present();
   }
