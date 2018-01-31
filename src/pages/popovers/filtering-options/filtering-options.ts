@@ -7,15 +7,22 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
   templateUrl: 'filtering-options.html',
 })
 export class FilteringOptionsPage {
+  itemsVisibility: string;
+  sortingCriteria: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FilteringOptionsPage');
+    this.itemsVisibility = 'show';
+    this.sortingCriteria = 'asc';
   }
 
-  close(option: string) {
-    this.viewCtrl.dismiss(option);
+  close() {
+    this.viewCtrl.dismiss({
+      sorting: this.sortingCriteria,
+      visibility: this.itemsVisibility
+    });
   }
 
 }

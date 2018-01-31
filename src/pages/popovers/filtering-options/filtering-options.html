@@ -1,9 +1,41 @@
-<ion-list>
-    <ion-list-header>Filter criteria</ion-list-header>
-    <button ion-item (click)="close('asc')">
+<ion-list radio-group [(ngModel)]="sortingCriteria">
+  <ion-list-header class="no-margin-bottom">Sorting criteria</ion-list-header>
+
+  <ion-item (click)="close()">
+    <ion-label>
       <ion-icon name="arrow-round-up"></ion-icon> A-Z ascending
-    </button>
-    <button ion-item (click)="close('desc')">
+    </ion-label>
+    <ion-radio value="asc"></ion-radio>
+  </ion-item>
+
+  <ion-item (click)="close()">
+    <ion-label>
       <ion-icon name="arrow-round-down"></ion-icon> Z-A descending
-    </button>
-  </ion-list>
+    </ion-label>
+    <ion-radio value="desc"></ion-radio>
+  </ion-item>
+</ion-list>
+
+<ion-list radio-group [(ngModel)]="itemsVisibility">
+  <ion-list-header class="no-margin-bottom">Items visibility</ion-list-header>
+
+  <ion-item (click)="close()">
+    <ion-label>
+      <ion-icon name="eye"></ion-icon> Show checked
+    </ion-label>
+    <ion-radio value="show"></ion-radio>
+  </ion-item>
+    
+  <ion-item (click)="close()">
+    <ion-label>
+      <ion-icon name="eye-off"></ion-icon> Hide checked
+    </ion-label>
+    <ion-radio value="hide"></ion-radio>
+  </ion-item>
+</ion-list>
+
+<ion-list margin>
+  <button ion-button full (click)="close()">
+    <ion-icon name="done-all"></ion-icon> Apply
+  </button>
+</ion-list>
