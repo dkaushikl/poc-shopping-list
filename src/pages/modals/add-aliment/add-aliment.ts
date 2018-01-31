@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, ViewController } from 'ionic-angular';
+import { Subscription } from 'rxjs/Subscription';
 
-import { ShoppingListProvider } from './../../../providers';
+import { Market } from './../../../models';
+import { MarketsProvider, ShoppingListProvider } from './../../../providers';
 
 @IonicPage()
 @Component({
@@ -9,28 +11,46 @@ import { ShoppingListProvider } from './../../../providers';
   templateUrl: 'add-aliment.html',
 })
 export class AddAlimentPage {
-
-  aliment: string;
+  markets$: Subscription;
+  alimentName: string;
+  markets: Array<Market>;
   quantity: string;
+  selectedMarketId: string;
 
   constructor(
+    private marketSrv: MarketsProvider,
     private navCtrl: NavController, 
     private shoppingListSrv: ShoppingListProvider,
     private viewCtrl: ViewController) { }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddAlimentPage');
+    this.markets$ = this.marketSrv.getMarkets().subscribe(
+      markets => this.markets = markets
+    );
   }
 
   addAliment() {
     this.viewCtrl.dismiss({ 
-      aliment: this.aliment, 
-      quantity: this.quantity 
+      name: this.alimentName, 
+      quantity: this.quantity,
+      market: this.getSelectedmarket()
     });
+  }
+
+  getSelectedmarket() {
+    let m = this.markets.find((m) => m.id === this.selectedMarketId);
+    return {
+      name: m.name,
+      color: m.color
+    }
   }
 
   cancel() {
     this.navCtrl.pop();
+  }
+
+  ionViewWillUnload() {
+    this.markets$.unsubscribe();
   }
 
 }
