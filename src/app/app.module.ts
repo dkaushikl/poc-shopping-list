@@ -28,10 +28,9 @@ import { ALL_MODAL_MODULES } from './../pages/modals';
 import { ALL_POPOVER_MODULES } from './../pages/popovers';
 
 // Providers
-import { AuthenticationProvider } from '../providers/authentication/authentication';
-import { MarketsProvider } from '../providers/markets/markets';
-import { ShoppingListProvider } from '../providers/shopping-lists/shopping-list';
-import { UtilProvider } from '../providers/utils/util';
+import { 
+  AlimentsProvider, AuthenticationProvider, MarketsProvider, ShoppingListProvider, UtilProvider 
+} from '../providers';
 
 @NgModule({
   declarations: [
@@ -71,6 +70,7 @@ import { UtilProvider } from '../providers/utils/util';
   providers: [
     StatusBar,
     SplashScreen,
+    AlimentsProvider,
     AuthenticationProvider,
     MarketsProvider,
     ShoppingListProvider,
