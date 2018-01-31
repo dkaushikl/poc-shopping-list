@@ -33,16 +33,13 @@ export class ShoppingListProvider {
   getShoppingListById(listId: string) {
     return this.afs
       .doc<ShoppingList>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists/${listId}`)
-      .ref
-      .get();
+      .snapshotChanges();
   }
 
   createNewList(listName: string, shared: boolean) {
-    this.afs
+    return this.afs
       .collection(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists`)
-      .add({ name: listName, aliments: [], shared, sharedWith: [] })
-      .then(docRef => console.log('success: ', docRef))
-      .catch(error => console.log('error: ', error));
+      .add({ name: listName, aliments: [], shared, sharedWith: [] });
   }
 
   editList() {
