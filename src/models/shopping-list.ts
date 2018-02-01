@@ -9,6 +9,7 @@ export class AlimentItem {
     name: string;
     quantity: string;
     market: string;
+    checked: boolean;
 }
 
 export class Market {
