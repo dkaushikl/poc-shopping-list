@@ -35,7 +35,7 @@
         <ion-item>
           <ion-label>Do you want to specify a market?</ion-label>
           <ion-select [(ngModel)]="selectedMarketId">
-            <ion-option value="{{ m.id }}" *ngFor="let m of markets">{{ m.name }}</ion-option>
+            <ion-option value="{{ m.name }}" *ngFor="let m of markets">{{ m.name }}</ion-option>
           </ion-select>
         </ion-item>
       </ion-col>
