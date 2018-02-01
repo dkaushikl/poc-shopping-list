@@ -16,7 +16,8 @@
     </ion-row>
   </ion-grid>
 
-  <ion-card *ngFor="let list of shoppingLists | async">
+  <ion-card *ngFor="let list of shoppingLists">
+  <!--<ion-card *ngFor="let list of shoppingLists$ | async">-->
     <ion-card-header>
       <h2><strong>{{ list.name }}</strong></h2>
     </ion-card-header>
@@ -25,8 +26,12 @@
       <ion-row>
         <ng-container *ngIf="list.aliments.length; then showCounter; else showEmptyList"></ng-container>
         <ng-template #showCounter>
-          <p>Current state: {{ list.checked }}/{{ list.aliments.length }}</p>
-          <!--<ion-range [(ngModel)]="brightness"></ion-range>-->
+          <p>Current state: {{ list.alimentsChecked }}/{{ list.aliments.length }}</p>
+          <!-- Mejor una barra de progreso??? -->
+          <ion-range [(ngModel)]="list.alimentsChecked" min="0" [max]="list.aliments.length" disabled style="width: 100%">
+            <ion-label range-left>0</ion-label>
+            <ion-label range-right>{{ list.aliments.length }}</ion-label>
+          </ion-range>
         </ng-template>
         <ng-template #showEmptyList>
           <p>Current state: Empty list</p>
