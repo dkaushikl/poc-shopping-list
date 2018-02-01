@@ -18,18 +18,29 @@ import { ShoppingListProvider } from './../../providers';
 })
 export class HomePage {
 
-  shoppingLists: Observable<ShoppingList[]>;
+  shoppingLists$: Observable<ShoppingList[]>;
+  shoppingLists: ShoppingList[];
 
   constructor(
       private shoppingListSrv: ShoppingListProvider,
       private modalCtrl: ModalController,
       public navCtrl: NavController) { 
-    this.shoppingLists = this.shoppingListSrv.getAllLists();
+    this.shoppingLists$ = this.shoppingListSrv.getAllLists();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
-    this.shoppingLists.subscribe(a => console.log('>> home lists: ', a));
+    this.shoppingLists$
+      .subscribe(lists => {
+        this.shoppingLists = lists.map((shoppingList: ShoppingList) => {
+          return { 
+            ...shoppingList, 
+            alimentsChecked: (function() { 
+              return shoppingList.aliments.filter(aliment => aliment.checked).length || 0 
+            })()
+          }
+        });
+      });
   }
 
   openShoppingList(listId: string) {
