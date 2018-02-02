@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams, PopoverController } from 'ionic-angular';
+import { IonicPage, ItemSliding, ModalController, NavController, NavParams, PopoverController } from 'ionic-angular';
 
 import { AlimentItem, Market, ShoppingList } from './../../models';
 import { AddAlimentPage } from './../modals';
@@ -62,7 +62,18 @@ export class ShoppingAlimentListPage {
   showMoreOptions(popoverEvent) {
     let popover = this.popCtrl.create(AlimentOptionsPage);
     popover.onDidDismiss(option => {
-      console.log('option: ', option);
+      switch(option) {
+        case 'check-all':
+          this.alimentSrv.setBulkAlimentState(this.listId, true)
+            .then(() => this.utilSrv.showToast('Done! :-)'))
+            .catch(e => this.utilSrv.showToast('Error: ' + e));
+          break;
+        case 'uncheck-all':
+          this.alimentSrv.setBulkAlimentState(this.listId, false)
+            .then(() => this.utilSrv.showToast('Done! :-)'))
+            .catch(e => this.utilSrv.showToast('Error: ' + e));
+          break;
+      }
     });
     popover.present({ ev: popoverEvent });
   }
@@ -78,7 +89,9 @@ export class ShoppingAlimentListPage {
   }
 
   updateCheckedAlimentList(aliment: AlimentItem) {
-    // WIP
+    this.alimentSrv.setAlimentState(this.listId, aliment)
+      .then(() => {})
+      .catch(e => this.utilSrv.showToast('Error: ' + e));
   }
 
   updateTakenAlimentList(aliment: AlimentItem) {
@@ -95,15 +108,18 @@ export class ShoppingAlimentListPage {
     modal.present();
   }
 
-  deleteAlimentItem(aliment: AlimentItem) {
+  deleteAlimentItem(slidingItem: ItemSliding, aliment: AlimentItem) {
     this.utilSrv.showAlert(
       'Remove aliment', 
       `Are you sure to delete "${aliment.name}"?`,
       [
-        { text: 'Cancel', handler: () => {} },
+        { text: 'Cancel', handler: () => slidingItem.close() },
         { text: 'Remove', handler: () => {
             this.alimentSrv.deleteAlimentFromShoppingList(this.listId, aliment)
-              .then(() => this.utilSrv.showToast(`"${aliment.name}" was removed successfully!`))
+              .then(() => {
+                slidingItem.close();
+                this.utilSrv.showToast(`"${aliment.name}" was removed successfully!`);
+              })
               .catch(e => this.utilSrv.showToast('Error: ', e));
           } 
         }
