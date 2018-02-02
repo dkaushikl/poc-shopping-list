@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
+
 import { ShoppingAlimentListPage } from './shopping-aliment-list';
 
 @NgModule({
@@ -7,7 +8,7 @@ import { ShoppingAlimentListPage } from './shopping-aliment-list';
     ShoppingAlimentListPage,
   ],
   imports: [
-    IonicPageModule.forChild(ShoppingAlimentListPage),
+    IonicPageModule.forChild(ShoppingAlimentListPage)
   ],
 })
 export class ShoppingAlimentListPageModule {}
