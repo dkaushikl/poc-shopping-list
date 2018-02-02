@@ -1,5 +1,11 @@
 <ion-list>
   <ion-list-header class="no-margin-bottom">Additional options</ion-list-header>
-  <button ion-item (click)="close('check-all')">Check all items</button>
-  <button ion-item (click)="close('uncheck-all')">Uncheck all items</button>
+  
+  <button ion-item (click)="close('check-all')">
+      <ion-icon name="checkbox"></ion-icon> Check all items
+  </button>
+  
+  <button ion-item (click)="close('uncheck-all')">
+      <ion-icon name="square"></ion-icon> Uncheck all items
+  </button>
 </ion-list>
