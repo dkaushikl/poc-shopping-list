@@ -29,6 +29,7 @@ export class ShoppingAlimentListPage {
     private utilSrv: UtilProvider
   ) {
     this.listId = this.navParams.get('listId');
+    this.filterCriteria = { sorting: 'none', visibility: 'show' };
     this.takenAliments = new Array<AlimentItem>();
     this.marketSrv.getMarkets().subscribe(
       markets => this.marketsList = markets
@@ -54,10 +55,7 @@ export class ShoppingAlimentListPage {
 
   applyFilter(popoverEvent) {
     let popover = this.popCtrl.create(FilteringOptionsPage);
-    popover.onDidDismiss(filterOptions => {
-      console.log('filter: ', filterOptions);
-      this.filterCriteria = filterOptions;
-    });
+    popover.onDidDismiss(filterOptions => this.filterCriteria = filterOptions);
     popover.present({ ev: popoverEvent });
   }
 
