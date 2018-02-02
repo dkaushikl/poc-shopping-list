@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, ItemSliding, ModalController, NavController, NavParams, PopoverController } from 'ionic-angular';
 
-import { AlimentItem, Market, ShoppingList } from './../../models';
+import { AlimentItem, FilterCriteria, Market, ShoppingList } from './../../models';
 import { AddAlimentPage } from './../modals';
 import { AlimentOptionsPage, FilteringOptionsPage } from './../popovers';
 import { AlimentsProvider, MarketsProvider, ShoppingListProvider, UtilProvider } from './../../providers';
@@ -16,7 +16,7 @@ export class ShoppingAlimentListPage {
   shoppingList: ShoppingList;
   takenAliments: Array<AlimentItem>;
   listId: string;
-  filterCriteria: { sorting: string, visibility: string };
+  filterCriteria: FilterCriteria;
 
   constructor(
     private alimentSrv: AlimentsProvider,
