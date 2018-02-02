@@ -32,7 +32,9 @@
     <ion-row>
       <ion-col>
         <ion-list>
-          <ion-item-sliding *ngFor="let aliment of shoppingList?.aliments">
+          <ion-item-sliding #slidingItem
+              *ngFor="let aliment of shoppingList?.aliments"
+              (ionSwipe)="deleteAlimentItem(slidingItem, aliment)">
             <ion-item class="aliment-border-item" [style.border-left-color]="getMarketColor(aliment?.market)">
               <ion-label>
                 <h2>{{ aliment?.name }}</h2>
@@ -40,6 +42,7 @@
               </ion-label>
               <ion-checkbox color="dark" 
                 [checked]="aliment?.checked" 
+                [(ngModel)]="aliment.checked"
                 (ionChange)="updateCheckedAlimentList(aliment)">
               </ion-checkbox>
             </ion-item>
@@ -50,7 +53,7 @@
                 <ion-icon name="create"></ion-icon>
                   Edit
                 </button>
-                <button ion-button color="secondary" (click)="deleteAlimentItem(aliment)">
+                <button ion-button expandable color="secondary" (click)="deleteAlimentItem(slidingItem, aliment)">
                   <ion-icon name="trash"></ion-icon>
                   Delete
                 </button>
