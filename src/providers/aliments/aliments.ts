@@ -85,6 +85,69 @@ export class AlimentsProvider {
    * @param listId 
    * @param aliment 
    */
+  setAlimentState(listId: string, aliment: AlimentItem) {
+    return new Promise((resolve, reject) => {
+      this.afs
+        .doc<any>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists/${listId}`)
+        .ref
+        .get()
+        .then(list => {
+          let aliments: Array<AlimentItem> = list.get('aliments') || [];
+          let alimentIndex = aliments.findIndex((a) => a.name === aliment.name);
+          if(alimentIndex === -1) {
+            return reject('No aliment found :-(');
+          }
+          aliments[alimentIndex].checked = aliment.checked;
+          return list.ref.update({ 'aliments': [...aliments] })
+            .then(() => resolve())
+            .catch(e => {
+              console.log('Error updating state: ', e);
+              reject(e);
+            });
+        })
+        .catch(e => {
+          console.log('Error updating state: ', e);
+          reject(e);
+        });
+    });
+  }
+
+  /**
+   * 
+   * @param listId 
+   * @param state 
+   */
+  setBulkAlimentState(listId: string, state: boolean) {
+    return new Promise((resolve, reject) => {
+      this.afs
+        .doc<any>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists/${listId}`)
+        .ref
+        .get()
+        .then(list => {
+          let aliments: Array<AlimentItem> = list.get('aliments') || [];
+          let bulkUpload = aliments.map(aliment => {
+            aliment.checked = state;
+            return aliment;
+          });
+          return list.ref.update({ 'aliments': [...bulkUpload] })
+            .then(() => resolve())
+            .catch(e => {
+              console.log('Error bulk updating state: ', e);
+              reject(e);
+            });
+        })
+        .catch(e => {
+          console.log('Error bulk updating state: ', e);
+          reject(e);
+        });
+    });
+  }
+
+  /**
+   * 
+   * @param listId 
+   * @param aliment 
+   */
   deleteAlimentFromShoppingList(listId: string, aliment: AlimentItem) {
     return new Promise((resolve, reject) => {
       this.afs
