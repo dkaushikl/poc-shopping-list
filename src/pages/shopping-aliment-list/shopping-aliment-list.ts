@@ -16,6 +16,7 @@ export class ShoppingAlimentListPage {
   shoppingList: ShoppingList;
   takenAliments: Array<AlimentItem>;
   listId: string;
+  filterCriteria: { sorting: string, visibility: string };
 
   constructor(
     private alimentSrv: AlimentsProvider,
@@ -53,8 +54,9 @@ export class ShoppingAlimentListPage {
 
   applyFilter(popoverEvent) {
     let popover = this.popCtrl.create(FilteringOptionsPage);
-    popover.onDidDismiss(option => {
-      console.log('filter: ', option);
+    popover.onDidDismiss(filterOptions => {
+      console.log('filter: ', filterOptions);
+      this.filterCriteria = filterOptions;
     });
     popover.present({ ev: popoverEvent });
   }
