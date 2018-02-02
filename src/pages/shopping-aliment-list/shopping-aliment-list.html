@@ -33,7 +33,7 @@
       <ion-col>
         <ion-list>
           <ion-item-sliding #slidingItem
-              *ngFor="let aliment of shoppingList?.aliments | sortAliments"
+              *ngFor="let aliment of (shoppingList?.aliments | sortAliments:filterCriteria)"
               (ionSwipe)="deleteAlimentItem(slidingItem, aliment)">
             <ion-item class="aliment-border-item" [style.border-left-color]="getMarketColor(aliment?.market)">
               <ion-label>
