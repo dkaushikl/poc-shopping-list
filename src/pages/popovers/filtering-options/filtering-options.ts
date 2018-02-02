@@ -15,7 +15,7 @@ export class FilteringOptionsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad FilteringOptionsPage');
     this.itemsVisibility = 'show';
-    this.sortingCriteria = 'asc';
+    this.sortingCriteria = 'none';
   }
 
   close() {
