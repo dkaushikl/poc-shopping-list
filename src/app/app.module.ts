@@ -12,9 +12,6 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule, AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 
-// Modules
-import { PipesModule } from './../pipes/pipes.module';
-
 // Pages
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
@@ -29,6 +26,9 @@ import { AboutPage } from '../pages/about/about';
 // Modals & Popovers
 import { ALL_MODAL_MODULES } from './../pages/modals';
 import { ALL_POPOVER_MODULES } from './../pages/popovers';
+
+// Pipes
+import { ALL_PIPES } from './../pipes';
 
 // Providers
 import { 
@@ -45,7 +45,8 @@ import {
     ShoppingAlimentListPage,
     ConfigurationPage,
     ProfilePage,
-    AboutPage
+    AboutPage,
+    ...ALL_PIPES
   ],
   imports: [
     ...ALL_MODAL_MODULES,
@@ -56,8 +57,7 @@ import {
     AngularFireDatabaseModule,
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(MyApp),
-    PipesModule
+    IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
