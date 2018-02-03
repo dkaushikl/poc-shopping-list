@@ -1,9 +1,9 @@
 export const firebaseConfig = {
-    apiKey: "AIzaSyAyyr9WHK_IWtthrlM8TZ7ybT6lsqZMv50",
-    authDomain: "travel-audio-playground.firebaseapp.com",
-    databaseURL: "https://travel-audio-playground.firebaseio.com",
-    projectId: "travel-audio-playground",
-    storageBucket: "travel-audio-playground.appspot.com",
-    messagingSenderId: "612361177786"
-  };
+  apiKey: "AIzaSyBJyO34pMi38yxdwzB9S2yMJ_731eOy0dE",
+  authDomain: "shopping-list-db.firebaseapp.com",
+  databaseURL: "https://shopping-list-db.firebaseio.com",
+  projectId: "shopping-list-db",
+  storageBucket: "",
+  messagingSenderId: "1064254593127"
+};
   
