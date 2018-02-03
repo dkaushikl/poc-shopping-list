@@ -32,7 +32,7 @@ import { ALL_PIPES } from './../pipes';
 
 // Providers
 import { 
-  AlimentsProvider, AuthenticationProvider, MarketsProvider, ShoppingListProvider, UtilProvider 
+  AlimentsProvider, AuthenticationProvider, MarketsProvider, ShoppingListProvider, UtilProvider, UsersProvider 
 } from '../providers';
 
 @NgModule({
@@ -80,6 +80,7 @@ import {
     ShoppingListProvider,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     UtilProvider,
+    UsersProvider,
   ]
 })
 export class AppModule {}
