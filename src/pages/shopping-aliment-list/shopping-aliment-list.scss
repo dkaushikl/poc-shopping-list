@@ -1,5 +1,13 @@
 page-shopping-aliment-list {
     .aliment-border-item {
-        border-left: 10px solid;
+        width: 100%;
+        &.ion-item {
+            width: 100%;
+        }
+    }
+    .aliment-border-item ion-label {
+        border-left: 2px solid;
+        padding-left: 10px;
+        width: 100%;
     }
 }

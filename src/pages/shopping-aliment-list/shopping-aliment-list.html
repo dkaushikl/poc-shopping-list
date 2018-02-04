@@ -35,8 +35,8 @@
           <ion-item-sliding #slidingItem
               *ngFor="let aliment of (shoppingList?.aliments | sortAliments:filterCriteria)"
               (ionSwipe)="deleteAlimentItem(slidingItem, aliment)">
-            <ion-item class="aliment-border-item" [style.border-left-color]="getMarketColor(aliment?.market)">
-              <ion-label>
+            <ion-item class="aliment-border-item">
+              <ion-label [style.border-left-color]="getMarketColor(aliment?.market)">
                 <h2>{{ aliment?.name }}</h2>
                 <p>Quantity: {{ aliment?.quantity }}</p>
               </ion-label>
@@ -61,39 +61,6 @@
           </ion-item-sliding>
         </ion-list>
       </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col>
-        <h1>Already taken</h1>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-list>
-        <ion-item-sliding *ngFor="let aliment of takenAliments">
-          <ion-item class="aliment-border-item" [style.border-left-color]="aliment?.market.color">
-            <ion-label>
-              <h2>{{ aliment?.name }}</h2>
-              <p>Quantity: {{ aliment?.quantity }}</p>
-            </ion-label>
-            <ion-checkbox color="dark" checked="true" (ionChange)="updateTakenAlimentList(aliment)">
-            </ion-checkbox>
-          </ion-item>
-    
-          <!-- Right buttons -->
-          <!--<ion-item-options side="right">
-            <button ion-button color="primary" (click)="editAlimentItem(aliment)">
-              <ion-icon name="create"></ion-icon>
-                Edit
-              </button>
-              <button ion-button color="secondary" (click)="deleteAlimentItem(aliment)">
-                <ion-icon name="trash"></ion-icon>
-                Delete
-              </button>
-          </ion-item-options>-->
-        </ion-item-sliding>
-      </ion-list>
     </ion-row>
   </ion-grid>
 
