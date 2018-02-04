@@ -21,7 +21,7 @@ export class AlimentsProvider {
   addAliment(listId: string, newAliment: AlimentItem) {
     return new Promise((resolve, reject) => {
       this.afs
-        .doc<any>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists/${listId}`)
+        .doc<any>(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists/${listId}`)
         .ref
         .get()
         .then(list => {
@@ -56,7 +56,7 @@ export class AlimentsProvider {
   updateAliment(listId: string, oldAlimentName: string, alimentToUpdate: AlimentItem) {
     return new Promise((resolve, reject) => {
       this.afs
-        .doc<any>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists/${listId}`)
+        .doc<any>(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists/${listId}`)
         .ref
         .get()
         .then(list => {
@@ -88,7 +88,7 @@ export class AlimentsProvider {
   setAlimentState(listId: string, aliment: AlimentItem) {
     return new Promise((resolve, reject) => {
       this.afs
-        .doc<any>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists/${listId}`)
+        .doc<any>(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists/${listId}`)
         .ref
         .get()
         .then(list => {
@@ -120,7 +120,7 @@ export class AlimentsProvider {
   setBulkAlimentState(listId: string, state: boolean) {
     return new Promise((resolve, reject) => {
       this.afs
-        .doc<any>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists/${listId}`)
+        .doc<any>(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists/${listId}`)
         .ref
         .get()
         .then(list => {
@@ -151,7 +151,7 @@ export class AlimentsProvider {
   deleteAlimentFromShoppingList(listId: string, aliment: AlimentItem) {
     return new Promise((resolve, reject) => {
       this.afs
-        .doc<AlimentItem>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists/${listId}`)
+        .doc<AlimentItem>(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists/${listId}`)
         .ref
         .get()
         .then(list => {
