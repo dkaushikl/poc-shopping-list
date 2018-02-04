@@ -4,39 +4,67 @@ import { AngularFirestore } from 'angularfire2/firestore';
 
 import { Market } from './../../models';
 import { AuthenticationProvider } from './../authentication/authentication';
+import { UtilProvider } from './../utils/util';
 
 @Injectable()
 export class MarketsProvider {
 
-  constructor(private authSrv: AuthenticationProvider, private afs: AngularFirestore) {
-    console.log('Hello MarketsProvider Provider -> ', this.authSrv.getCurrentUser().displayName);
-  }
+  constructor(
+    private afs: AngularFirestore,
+    private authSrv: AuthenticationProvider,
+    private utilSrv: UtilProvider) { }
 
   getMarkets() {
     return this.afs
-      .collection<Market>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/markets`)
-      .snapshotChanges()
-      .map(actions => {
-        return actions.map(action => {
-          const id = action.payload.doc.id;
-          const data = action.payload.doc.data() as Market;
-          return { id, ...data };
-        });
-      });
+      .doc<Market>(`/markets/${this.authSrv.getCurrentUserId()}`)
+      .snapshotChanges();
   }
 
   addMarket(name: string, color: string = null, location: string = null) {
+    let newMarket = {};
+    newMarket[name] = { name, color, location };
     return this.afs
-      .collection(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/markets`)
-      .add({ name, color, location });
+      .doc(`/markets/${this.authSrv.getCurrentUserId()}`)
+      .update(newMarket);
   }
 
-  editMarket() {
-
+  editMarket(market: Market) {
+    return new Promise((resolve, reject) => {
+      let docRef = this.afs.doc(`/markets/${this.authSrv.getCurrentUserId()}`).ref;
+      docRef
+        .get()
+        .then(markets => {
+          // Although "delete" is slow and not recommended, we use it for clarity
+          let marketsUpdated = markets.data();
+          delete marketsUpdated[market.id];
+          marketsUpdated[market.name] = { 
+            name: market.name, 
+            color: market.color, 
+            location: market.location 
+          };
+          docRef.set(marketsUpdated)
+            .then(() => resolve())
+            .catch(error => reject(error));
+        })
+        .catch(error => reject(error));
+    });
   }
 
-  deleteMarket() {
-    
+  deleteMarket(name: string) {
+    return new Promise((resolve, reject) => {
+      let docRef = this.afs.doc(`/markets/${this.authSrv.getCurrentUserId()}`).ref;
+      docRef
+        .get()
+        .then(markets => {
+          // Although "delete" is slow and not recommended, we use it for clarity
+          let marketsFiltered = markets.data();
+          delete marketsFiltered[name];
+          docRef.set(marketsFiltered)
+            .then(() => resolve())
+            .catch(error => reject(error));
+        })
+        .catch(error => reject(error));
+    });
   }
 
 }
