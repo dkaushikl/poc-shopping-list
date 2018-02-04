@@ -15,7 +15,7 @@ export class ShoppingListProvider {
 
   getAllLists() {
     return this.afs
-      .collection<ShoppingList>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists`)
+      .collection<ShoppingList>(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists`)
       .snapshotChanges()
       .map(actions => {
         return actions.map(action => {
@@ -32,14 +32,14 @@ export class ShoppingListProvider {
 
   getShoppingListById(listId: string) {
     return this.afs
-      .doc<ShoppingList>(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists/${listId}`)
+      .doc<ShoppingList>(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists/${listId}`)
       .snapshotChanges();
   }
 
   createNewList(listName: string, shared: boolean) {
-    return this.afs
-      .collection(`/shopping-list-db/${this.authSrv.getCurrentUserId()}/lists`)
-      .add({ name: listName, aliments: [], shared, sharedWith: [] });
+    return this.afs.collection(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists`)
+      .add({ name: listName, aliments: [], shared, sharedWith: [] })
+      .then(s => console.log('Adding: ', s.get().then(ss => console.log('ss: ', ss.data()))));
   }
 
   editList() {
