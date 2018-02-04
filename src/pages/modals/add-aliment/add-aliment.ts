@@ -11,12 +11,13 @@ import { MarketsProvider, ShoppingListProvider } from './../../../providers';
   templateUrl: 'add-aliment.html',
 })
 export class AddAlimentPage {
-  markets$: Subscription;
+  //markets$: Subscription;
   alimentName: string;
   markets: Array<Market>;
   quantity: string;
   selectedMarketId: string;
   alimentChecked: boolean;
+  editMode: boolean;
 
   constructor(
     private marketSrv: MarketsProvider,
@@ -26,11 +27,13 @@ export class AddAlimentPage {
     private viewCtrl: ViewController) { 
       let params = this.navParams.get('alimentToEdit') as AlimentItem;
       if(params) {
+        this.editMode = true;
         this.alimentName = params.name;
         this.quantity = params.quantity;
         this.alimentChecked = params.checked;
         this.selectedMarketId = params.market;
       } else {
+        this.editMode = false;
         this.quantity = '';
         this.selectedMarketId = '';
         this.alimentChecked = false;
@@ -38,8 +41,9 @@ export class AddAlimentPage {
     }
 
   ionViewDidLoad() {
-    this.markets$ = this.marketSrv.getMarkets().subscribe(
-      markets => this.markets = markets
+    //this.markets$ = this.marketSrv.getMarkets().subscribe(
+    this.marketSrv.getMarkets().subscribe(
+      markets => this.markets = Object['values'](markets.payload.data())
     );
   }
 
@@ -57,7 +61,7 @@ export class AddAlimentPage {
   }
 
   ionViewWillUnload() {
-    this.markets$.unsubscribe();
+    //this.markets$.unsubscribe();
   }
 
 }
