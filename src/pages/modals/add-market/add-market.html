@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Add new market</ion-title>
+    <ion-title>{{ editMode ? 'Edit market' : 'Add new market' }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -83,7 +83,8 @@
 
 <ion-footer class="stick-footer">
   <ion-toolbar>
-    <button ion-button full color="primary" (click)="addNewMarket()">Create</button>
+    <button ion-button full color="primary" *ngIf="!editMode" (click)="addNewMarket()">Create</button>
+    <button ion-button full color="primary" *ngIf="editMode" (click)="editMarket()">Modify</button>
     <button ion-button full color="danger" (click)="cancel()">Cancel</button>
   </ion-toolbar>
 </ion-footer>
