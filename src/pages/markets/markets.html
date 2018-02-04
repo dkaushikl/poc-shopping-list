@@ -7,11 +7,11 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
   <ion-grid>
     <ion-row>
       <ion-col>
-        <h1>List of current markets ({{ markets?.length }})</h1>
+        <h1>List of current markets ({{ markets?.length || 0 }})</h1>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -19,11 +19,23 @@
   <ion-row>
     <ion-col>
       <ion-list>
-        <div style="width:10px; background: red"></div>
-        <button ion-item class="market-color"
-          *ngFor="let market of marketsObs | async" [style.border-left-color]="market.color">
-            {{ market.name }}
-        </button> 
+        <ion-item-sliding #slidingItem *ngFor="let market of markets" (ionSwipe)="deleteMarket(slidingItem, market)">
+          <ion-item tappable class="market-color-identifier">
+            <ion-label [style.border-left-color]="market?.color">{{ market?.name }}</ion-label>
+          </ion-item>
+    
+          <!-- Right buttons -->
+          <ion-item-options side="right">
+            <button ion-button color="primary" (click)="editMarket(market)">
+              <ion-icon name="create"></ion-icon>
+                Edit
+              </button>
+              <button ion-button expandable color="secondary" (click)="deleteMarket(slidingItem, market)">
+                <ion-icon name="trash"></ion-icon>
+                Delete
+              </button>
+          </ion-item-options>
+        </ion-item-sliding>
       </ion-list>
     </ion-col>
   </ion-row>
