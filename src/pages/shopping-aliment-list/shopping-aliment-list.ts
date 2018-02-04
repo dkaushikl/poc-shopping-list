@@ -31,11 +31,16 @@ export class ShoppingAlimentListPage {
     this.listId = this.navParams.get('listId');
     this.filterCriteria = { sorting: 'none', visibility: 'show' };
     this.takenAliments = new Array<AlimentItem>();
+    
     this.marketSrv.getMarkets().subscribe(
-      markets => this.marketsList = markets
+      markets => this.marketsList = Object['values'](markets.payload.data())
     );
+
     this.shoppingListSrv.getShoppingListById(this.listId).subscribe(
-      shoppingLists => this.shoppingList = shoppingLists.payload.data() as ShoppingList
+      shoppingLists => {
+        console.log('list: ', shoppingLists.payload.data());
+        this.shoppingList = shoppingLists.payload.data() as ShoppingList;
+      }
     );
   }
 
@@ -46,6 +51,7 @@ export class ShoppingAlimentListPage {
   getMarketColor(marketName: string) {
     if(!this.marketsList) return '';
     let market = this.marketsList.find(market => market.name === marketName);
+    console.log('market color: ', ((market) ? market.color : ''));
     return (market) ? market.color : '';
   }
 
@@ -54,7 +60,11 @@ export class ShoppingAlimentListPage {
   }
 
   applyFilter(popoverEvent) {
-    let popover = this.popCtrl.create(FilteringOptionsPage);
+    let popover = this.popCtrl.create(FilteringOptionsPage, { 
+      currentValues: this.filterCriteria 
+    }, {
+      enableBackdropDismiss:false
+    });
     popover.onDidDismiss(filterOptions => this.filterCriteria = filterOptions);
     popover.present({ ev: popoverEvent });
   }
