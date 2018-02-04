@@ -6,11 +6,9 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class AuthenticationProvider {
-  //user: Observable<firebase.User>;
   authState: firebase.User;
 
   constructor(private afAuth: AngularFireAuth) {
-    //this.user = afAuth.authState;
     this.afAuth.authState.subscribe(
       (auth) => { this.authState = auth; }
     );
@@ -33,7 +31,6 @@ export class AuthenticationProvider {
       .auth
       .signInWithEmailAndPassword(email, password)
       .then(user => {
-        //this.user = user;
         console.log('Nice, it worked! ', user);
       })
       .catch(err => {
@@ -46,7 +43,6 @@ export class AuthenticationProvider {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credentials) => {
         console.log('Credentials: ', credentials);
-        //this.user = credentials.user;
       })
       .catch((error) => console.log('Error: ', error))
   }
