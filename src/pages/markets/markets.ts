@@ -33,9 +33,11 @@ export class MarketsPage {
   addMarket() {
     let modal = this.modalCtrl.create(AddMarketPage);
     modal.onDidDismiss((data: Market) => {
-      this.marketSrv.addMarket(data.name, data.color, data.location)
-        .then(() => this.utilSrv.showToast('Market added successfully!'))
-        .catch(e => this.utilSrv.showToast('Error: ' + e));
+      if(data) {
+        this.marketSrv.addMarket(data.name, data.color, data.location)
+          .then(() => this.utilSrv.showToast('Market added successfully!'))
+          .catch(e => this.utilSrv.showToast('Error: ' + e));
+      }
     });
     modal.present();
   }
@@ -43,9 +45,11 @@ export class MarketsPage {
   editMarket(market: Market) {
     let modal = this.modalCtrl.create(AddMarketPage, { market });
     modal.onDidDismiss((data: Market) => {
-      this.marketSrv.editMarket(data)
-        .then(() => this.utilSrv.showToast(`Market ${market.name} edited successfully!`))
-        .catch(e => this.utilSrv.showToast('Error: ' + e));
+      if(data) {
+        this.marketSrv.editMarket(data)
+          .then(() => this.utilSrv.showToast(`Market ${market.name} edited successfully!`))
+          .catch(e => this.utilSrv.showToast('Error: ' + e));
+      }
     });
     modal.present();
   }
