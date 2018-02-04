@@ -1,12 +1,14 @@
 export enum AUTH_PROVIDER {
     EMAIL,
-    GOOGLE
+    GOOGLE,
+    TWITTER
 };
 
 export class User {
-    userId: string;
+    uid: string;
     email: string;
     name: string;
     authProvider: AUTH_PROVIDER;
-    picture: string;
+    displayName?: string;
+    photoURL?: string;
 }
