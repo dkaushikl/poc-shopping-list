@@ -1,5 +1,5 @@
 {
   "projects": {
-    "default": "poc-shopping-list"
+    "default": "shopping-list-db"
   }
 }
