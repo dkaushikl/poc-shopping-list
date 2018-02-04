@@ -9,7 +9,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { ShoppingAlimentListPage } from './../shopping-aliment-list/shopping-aliment-list';
 import { AddNewListPage } from './../modals';
 import { ShoppingList } from './../../models';
-import { ShoppingListProvider } from './../../providers';
+import { ShoppingListProvider, UsersProvider } from './../../providers';
 
 @IonicPage()
 @Component({
@@ -24,7 +24,9 @@ export class HomePage {
   constructor(
       private shoppingListSrv: ShoppingListProvider,
       private modalCtrl: ModalController,
-      public navCtrl: NavController) { 
+      public navCtrl: NavController,
+      private usersSrv: UsersProvider) { 
+    this.usersSrv.checkIfUserDataExists().catch(e => console.log('Error: ', e));
     this.shoppingLists$ = this.shoppingListSrv.getAllLists();
   }
 

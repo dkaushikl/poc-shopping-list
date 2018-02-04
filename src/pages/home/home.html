@@ -9,15 +9,19 @@
 
 <ion-content padding>
   <ion-grid>
-    <ion-row>
+    <ion-row *ngIf="shoppingLists?.length > 0">
       <ion-col>
         <h1>These are your lists...</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="shoppingLists?.length === 0">
+      <ion-col>
+        <h1>There is no lists yet!</h1>
       </ion-col>
     </ion-row>
   </ion-grid>
 
   <ion-card *ngFor="let list of shoppingLists">
-  <!--<ion-card *ngFor="let list of shoppingLists$ | async">-->
     <ion-card-header>
       <h2><strong>{{ list.name }}</strong></h2>
     </ion-card-header>
