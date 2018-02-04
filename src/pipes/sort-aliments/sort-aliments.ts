@@ -7,7 +7,10 @@ import { AlimentItem, FilterCriteria } from './../../models';
 })
 export class SortAlimentsPipe implements PipeTransform {
 
-  transform(aliments: Array<AlimentItem>, filteringCriteria: FilterCriteria) {    
+  transform(aliments: Array<AlimentItem>, filteringCriteria: FilterCriteria) {
+    if(!filteringCriteria) 
+      return aliments;
+
     switch(filteringCriteria.sorting) {
       case 'asc':
         return aliments.sort(this.stringFunctionComparison);
