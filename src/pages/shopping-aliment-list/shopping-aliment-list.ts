@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ItemSliding, ModalController, NavController, NavParams, PopoverController } from 'ionic-angular';
+import { IonicPage, ItemSliding, Modal, ModalController, NavController, NavParams, PopoverController } from 'ionic-angular';
 
 import { AlimentItem, FilterCriteria, Market, ShoppingList } from './../../models';
 import { AddAlimentPage } from './../modals';
@@ -12,6 +12,7 @@ import { AlimentsProvider, MarketsProvider, ShoppingListProvider, UtilProvider }
   templateUrl: 'shopping-aliment-list.html',
 })
 export class ShoppingAlimentListPage {
+  modal: Modal;
   marketsList: Array<Market>;
   shoppingList: ShoppingList;
   takenAliments: Array<AlimentItem>;
@@ -41,6 +42,19 @@ export class ShoppingAlimentListPage {
         this.shoppingList = shoppingLists.payload.data() as ShoppingList;
       }
     );
+
+    this.modal = this.modalCtrl.create(AddAlimentPage);
+    this.modal.onDidDismiss((data: AlimentItem) => {
+      if(data) {
+        this.alimentSrv.addAliment(this.listId, data)
+          .then(alimentAdded => {
+            this.utilSrv.showToast(alimentAdded + ' has been added successfully!');
+            if(data && data['addAndReopen'])
+              setTimeout(this.openModalToAddAliment(), 250);
+          })
+          .catch(e => this.utilSrv.showToast('Error: ' + e));
+      }
+    });
   }
 
   ionViewDidLoad() {
@@ -87,15 +101,7 @@ export class ShoppingAlimentListPage {
   }
 
   openModalToAddAliment() {
-    let modal = this.modalCtrl.create(AddAlimentPage);
-    modal.onDidDismiss((data: AlimentItem) => {
-      if(data) {
-        this.alimentSrv.addAliment(this.listId, data)
-          .then(alimentAdded => this.utilSrv.showToast(alimentAdded + ' has been added successfully!'))
-          .catch(e => this.utilSrv.showToast('Error: ' + e));
-      }
-    });
-    modal.present();
+    this.modal.present();
   }
 
   updateCheckedAlimentList(aliment: AlimentItem) {
