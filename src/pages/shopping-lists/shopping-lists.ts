@@ -6,6 +6,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 
 import { AddNewListPage } from './../modals/';
 import { ShoppingList } from './../../models';
+import { ShoppingAlimentListPage } from './../shopping-aliment-list/shopping-aliment-list';
 import { ShoppingListProvider } from './../../providers';
 
 @IonicPage()
@@ -35,8 +36,8 @@ export class ShoppingListsPage {
     this.modalCtrl.create(AddNewListPage).present();
   }
 
-  itemTapped(item: ItemSliding) {
-    console.log('tap: ', item);
+  openList(shoppingListId: string) {
+    this.navCtrl.push(ShoppingAlimentListPage, { listId: shoppingListId });
   }
 
   itemPressed(item: ItemSliding) {

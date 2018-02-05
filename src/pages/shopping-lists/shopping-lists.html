@@ -20,7 +20,7 @@
         <ion-list>
           <ion-item-sliding #item *ngFor="let list of shoppingListsObs | async">
             <!-- -->
-            <ion-item tappable (tap)="itemTapped(item)" (press)="itemPressed(item)">
+            <ion-item tappable (tap)="openList(list?.id)" (press)="itemPressed(list)">
               <h2>{{ list.name }}</h2>
             </ion-item>
 
