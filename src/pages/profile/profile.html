@@ -8,5 +8,11 @@
 </ion-header>
 
 <ion-content padding>
-  <button>Take selfie!</button>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <img [src]="userProfilePhoto" />
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
