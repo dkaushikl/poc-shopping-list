@@ -56,6 +56,16 @@ export class AddAlimentPage {
     });
   }
 
+  addAndReopen() {
+    this.viewCtrl.dismiss({ 
+      name: this.alimentName, 
+      quantity: this.quantity,
+      market: this.selectedMarketId,
+      checked: this.alimentChecked,
+      addAndReopen: true
+    });
+  }
+
   cancel() {
     this.navCtrl.pop();
   }

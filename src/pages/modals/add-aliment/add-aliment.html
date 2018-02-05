@@ -48,6 +48,7 @@
     <button ion-button full color="primary" (click)="addAliment()">
       {{ editMode ? 'Modify' : 'Create' }}
     </button>
+    <button ion-button full color="primary" *ngIf="!editMode" (click)="addAndReopen()">Adds one more</button>
     <button ion-button full color="danger" (click)="cancel()">Cancel</button>
   </ion-toolbar>
 </ion-footer>
