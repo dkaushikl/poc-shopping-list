@@ -91,9 +91,11 @@ export class ShoppingAlimentListPage {
   openModalToAddAliment() {
     let modal = this.modalCtrl.create(AddAlimentPage);
     modal.onDidDismiss((data: AlimentItem) => {
-      this.alimentSrv.addAliment(this.listId, data)
-        .then(alimentAdded => this.utilSrv.showToast(alimentAdded + ' has been added successfully!'))
-        .catch(e => this.utilSrv.showToast('Error: ' + e));
+      if(data) {
+        this.alimentSrv.addAliment(this.listId, data)
+          .then(alimentAdded => this.utilSrv.showToast(alimentAdded + ' has been added successfully!'))
+          .catch(e => this.utilSrv.showToast('Error: ' + e));
+      }
     });
     modal.present();
   }
@@ -111,9 +113,11 @@ export class ShoppingAlimentListPage {
   editAlimentItem(alimentToEdit: AlimentItem) {
     let modal = this.modalCtrl.create(AddAlimentPage, { alimentToEdit });
     modal.onDidDismiss((modifiedAliment: AlimentItem) => {
-      this.alimentSrv.updateAliment(this.listId, alimentToEdit.name, modifiedAliment)
-        .then(alimentUpdated => this.utilSrv.showToast(alimentUpdated + ' has been updated successfully!'))
-        .catch(e => this.utilSrv.showToast('Error: ' + e));
+      if(modifiedAliment) {
+        this.alimentSrv.updateAliment(this.listId, alimentToEdit.name, modifiedAliment)
+          .then(alimentUpdated => this.utilSrv.showToast(alimentUpdated + ' has been updated successfully!'))
+          .catch(e => this.utilSrv.showToast('Error: ' + e));
+      }
     });
     modal.present();
   }
