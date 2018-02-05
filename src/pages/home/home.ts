@@ -46,7 +46,6 @@ export class HomePage {
   }
 
   openShoppingList(listId: string) {
-    console.log('Opening id: ', listId);
     this.navCtrl.push(ShoppingAlimentListPage, { listId });
   }
 
