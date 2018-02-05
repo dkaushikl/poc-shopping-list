@@ -38,7 +38,6 @@ export class ShoppingAlimentListPage {
 
     this.shoppingListSrv.getShoppingListById(this.listId).subscribe(
       shoppingLists => {
-        console.log('list: ', shoppingLists.payload.data());
         this.shoppingList = shoppingLists.payload.data() as ShoppingList;
       }
     );
@@ -51,7 +50,6 @@ export class ShoppingAlimentListPage {
   getMarketColor(marketName: string) {
     if(!this.marketsList) return '';
     let market = this.marketsList.find(market => market.name === marketName);
-    console.log('market color: ', ((market) ? market.color : ''));
     return (market) ? market.color : '';
   }
 
