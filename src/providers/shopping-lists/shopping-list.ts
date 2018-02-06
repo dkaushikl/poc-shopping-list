@@ -27,14 +27,7 @@ export class ShoppingListProvider {
   }
 
   getShoppingListById(listId: string) {
-    console.log('shoppingList by Id: ', listId);
-    return this.afs
-      .collection('/shopping-lists', (ref) => {
-        let query = ref;
-        query.where(`ownerId`, '==', true);
-        return query;
-      })
-      .snapshotChanges();
+    return this.afs.doc(`shopping-lists/${listId}`).snapshotChanges();
   }
 
   createNewList(listName: string, shared: boolean) {
