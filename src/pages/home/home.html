@@ -21,7 +21,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-card *ngFor="let list of shoppingLists">
+  <ion-card *ngFor="let list of (shoppingLists$ | async)">
     <ion-card-header>
       <h2><strong>{{ list.name }}</strong></h2>
     </ion-card-header>
