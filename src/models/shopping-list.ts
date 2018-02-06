@@ -1,8 +1,10 @@
 export class ShoppingList {
+    id?: string;
     name: string;
+    ownerId: string;
     description: string;
     aliments: Array<AlimentItem>;
-    sharedWith: Array<string>;
+    sharedWith: Object;
 }
 
 export class AlimentItem {
