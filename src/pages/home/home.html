@@ -44,6 +44,9 @@
 
       <!-- Card footer -->
       <ion-row>
+        <ion-col text-start *ngIf="isSharedList(list)">
+          <i class="fa fa-share-alt-square fa-3x" aria-hidden="true"></i>
+        </ion-col>
         <ion-col text-end>
           <button ion-button icon-left clear (click)="openShoppingList(list.id)">
             <ion-icon name="open"></ion-icon>
