@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, ItemSliding, ModalController, NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { merge, mergeAll, combineAll, combineLatest } from 'rxjs/operators';
 
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -17,9 +18,7 @@ import { ShoppingListProvider, UsersProvider } from './../../providers';
   templateUrl: 'home.html'
 })
 export class HomePage {
-
   shoppingLists$: Observable<ShoppingList[]>;
-  shoppingLists: ShoppingList[];
 
   constructor(
       private shoppingListSrv: ShoppingListProvider,
@@ -27,22 +26,11 @@ export class HomePage {
       public navCtrl: NavController,
       private usersSrv: UsersProvider) { 
     this.usersSrv.checkIfUserDataExists().catch(e => console.log('Error: ', e));
-    this.shoppingLists$ = this.shoppingListSrv.getAllLists();
+    this.shoppingLists$ = this.shoppingListSrv.getUserShoppingLists();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
-    this.shoppingLists$
-      .subscribe(lists => {
-        this.shoppingLists = lists.map((shoppingList: ShoppingList) => {
-          return { 
-            ...shoppingList, 
-            alimentsChecked: (function() { 
-              return shoppingList.aliments.filter(aliment => aliment.checked).length || 0 
-            })()
-          }
-        });
-      });
   }
 
   openShoppingList(listId: string) {
