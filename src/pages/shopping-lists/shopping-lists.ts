@@ -25,7 +25,7 @@ export class ShoppingListsPage {
     public navCtrl: NavController,
     private shoppingListSrv: ShoppingListProvider
   ) { 
-    this.shoppingListsObs = this.shoppingListSrv.getAllLists();
+    this.shoppingListsObs = this.shoppingListSrv.getUserShoppingLists()
   }
 
   ionViewDidLoad() {
