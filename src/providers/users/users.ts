@@ -25,7 +25,7 @@ export class UsersProvider {
     });
   }
 
-  saveUserData(userRef: string) {
+  private saveUserData(userRef: string) {
     let user = this.authSrv.getCurrentUser();
     return this.afs.doc(userRef).set({
       uid: user.uid,
