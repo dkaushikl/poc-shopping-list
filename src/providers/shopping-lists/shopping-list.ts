@@ -9,37 +9,46 @@ import { AuthenticationProvider } from './../authentication/authentication';
 export class ShoppingListProvider {
   userId: string;
 
-  constructor(private authSrv: AuthenticationProvider, private afs: AngularFirestore) {
-    console.log('Hello ShoppingListProvider Provider; id: ', this.authSrv.getCurrentUserId());
-  }
+  constructor(private authSrv: AuthenticationProvider, private afs: AngularFirestore) { }
 
-  getAllLists() {
+  getUserShoppingLists() {
     return this.afs
-      .collection<ShoppingList>(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists`)
+      .collection('shopping-lists', (ref) => {
+        return ref.where(`sharedWith.${this.authSrv.getCurrentUserId()}`, '==', true)
+      })
       .snapshotChanges()
       .map(actions => {
-        return actions.map(action => {
-          const id = action.payload.doc.id;
-          const data = action.payload.doc.data() as ShoppingList;
+        return actions.map(a => {
+          const id = a.payload.doc.id;
+          const data = a.payload.doc.data() as ShoppingList;
           return { id, ...data };
         });
       });
   }
 
-  getSharedLists() {
-
-  }
-
   getShoppingListById(listId: string) {
+    console.log('shoppingList by Id: ', listId);
     return this.afs
-      .doc<ShoppingList>(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists/${listId}`)
+      .collection('/shopping-lists', (ref) => {
+        let query = ref;
+        query.where(`ownerId`, '==', true);
+        return query;
+      })
       .snapshotChanges();
   }
 
   createNewList(listName: string, shared: boolean) {
-    return this.afs.collection(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists`)
-      .add({ name: listName, aliments: [], shared, sharedWith: [] })
-      .then(s => console.log('Adding: ', s.get().then(ss => console.log('ss: ', ss.data()))));
+    return this.afs
+      .collection('/shopping-lists')
+      .add({ 
+        ownerId: this.authSrv.getCurrentUserId(), 
+        name: listName, 
+        aliments: [], 
+        sharedWith: {
+          [this.authSrv.getCurrentUserId()]: true
+        },
+        timestamp: new Date()
+      });
   }
 
   editList() {
