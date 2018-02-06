@@ -33,6 +33,10 @@ export class HomePage {
     console.log('ionViewDidLoad HomePage');
   }
 
+  isSharedList(shoppingList: ShoppingList) {
+    return Object.keys(shoppingList.sharedWith).length > 1;
+  }
+
   openShoppingList(listId: string) {
     this.navCtrl.push(ShoppingAlimentListPage, { listId });
   }
