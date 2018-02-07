@@ -35,4 +35,13 @@ export class UtilProvider {
     }).present();
   }
 
+  public showPromptAlert(title: string, message: string, inputs?: Array<Object>, buttons?: Array<Object>) {
+    this.alertCtrl.create({
+      title: title,
+      message: message,
+      inputs: inputs || [],
+      buttons: buttons || ['OK']
+    }).present();
+  }
+
 }
