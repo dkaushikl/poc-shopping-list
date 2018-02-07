@@ -24,7 +24,7 @@ export class MarketsPage {
   ionViewDidLoad() {
     this.marketSrv.getMarkets().subscribe(
       docSnapshot => {
-        let marketsObj = docSnapshot.payload.data();
+        let marketsObj = docSnapshot.payload.data() || {};
         this.markets = Object.keys(marketsObj).map(market => marketsObj[market]);
       }
     );
