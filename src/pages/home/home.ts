@@ -26,15 +26,27 @@ export class HomePage {
       public navCtrl: NavController,
       private usersSrv: UsersProvider) { 
     this.usersSrv.checkIfUserDataExists().catch(e => console.log('Error: ', e));
-    this.shoppingLists$ = this.shoppingListSrv.getUserShoppingLists();
+    this.shoppingLists$ = this.shoppingListSrv
+      .getUserShoppingLists()
+      .map((shoppingLists: ShoppingList[]) => {
+        shoppingLists.map(list => {
+          let checkedAliments = 0;
+          list.aliments.forEach(aliment => {
+            if(aliment.checked) 
+              checkedAliments++;
+          });
+          list['checked'] = checkedAliments;
+        });
+        return shoppingLists;
+      });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
   }
 
-  isSharedList(shoppingList: ShoppingList) {
-    return Object.keys(shoppingList.sharedWith).length > 1;
+  getNumberOfUserShared(shoppingList: ShoppingList) {
+    return Object.keys(shoppingList.sharedWith || {}).length;
   }
 
   openShoppingList(listId: string) {
