@@ -9,9 +9,7 @@ import { AuthenticationProvider } from './../authentication/authentication';
 export class AlimentsProvider {
   userId: string;
 
-  constructor(private authSrv: AuthenticationProvider, private afs: AngularFirestore) {
-    console.log('Hello AlimentsProvider; id: ', this.authSrv.getCurrentUserId());
-  }
+  constructor(private authSrv: AuthenticationProvider, private afs: AngularFirestore) { }
 
   /**
    * 
@@ -21,9 +19,8 @@ export class AlimentsProvider {
   addAliment(listId: string, newAliment: AlimentItem) {
     return new Promise((resolve, reject) => {
       this.afs
-        .doc<any>(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists/${listId}`)
-        .ref
-        .get()
+        .doc<any>(`/shopping-lists/${listId}`)
+        .ref.get()
         .then(list => {
           let aliments: Array<AlimentItem> = list.get('aliments') || [];
 
@@ -35,15 +32,9 @@ export class AlimentsProvider {
           // No exists, add the aliment
           return list.ref.update({ 'aliments': [...aliments, newAliment] })
             .then(() => resolve(newAliment.name))
-            .catch(e => {
-              console.log('Error updating the list with new aliment: ', e);
-              reject(e);
-            });
+            .catch(error => reject(error));
         })
-        .catch(e => {
-          console.log('Error getting the list: ', e);
-          reject(e);
-        });
+        .catch(error => reject(error));
     });
   }
 
@@ -56,7 +47,7 @@ export class AlimentsProvider {
   updateAliment(listId: string, oldAlimentName: string, alimentToUpdate: AlimentItem) {
     return new Promise((resolve, reject) => {
       this.afs
-        .doc<any>(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists/${listId}`)
+        .doc<any>(`/shopping-lists/${listId}`)
         .ref
         .get()
         .then(list => {
@@ -88,7 +79,7 @@ export class AlimentsProvider {
   setAlimentState(listId: string, aliment: AlimentItem) {
     return new Promise((resolve, reject) => {
       this.afs
-        .doc<any>(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists/${listId}`)
+        .doc<any>(`/shopping-lists/${listId}`)
         .ref
         .get()
         .then(list => {
@@ -120,7 +111,7 @@ export class AlimentsProvider {
   setBulkAlimentState(listId: string, state: boolean) {
     return new Promise((resolve, reject) => {
       this.afs
-        .doc<any>(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists/${listId}`)
+        .doc<any>(`/shopping-lists/${listId}`)
         .ref
         .get()
         .then(list => {
@@ -151,7 +142,7 @@ export class AlimentsProvider {
   deleteAlimentFromShoppingList(listId: string, aliment: AlimentItem) {
     return new Promise((resolve, reject) => {
       this.afs
-        .doc<AlimentItem>(`/lists/${this.authSrv.getCurrentUserId()}/shopping-lists/${listId}`)
+        .doc<AlimentItem>(`/shopping-lists/${listId}`)
         .ref
         .get()
         .then(list => {
