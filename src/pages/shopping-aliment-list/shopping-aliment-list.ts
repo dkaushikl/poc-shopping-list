@@ -4,7 +4,9 @@ import { IonicPage, ItemSliding, Modal, ModalController, NavController, NavParam
 import { AlimentItem, FilterCriteria, Market, ShoppingList } from './../../models';
 import { AddAlimentPage } from './../modals';
 import { AlimentOptionsPage, FilteringOptionsPage } from './../popovers';
-import { AlimentsProvider, MarketsProvider, ShoppingListProvider, UtilProvider } from './../../providers';
+import { 
+  AlimentsProvider, AuthenticationProvider, MarketsProvider, ShoppingListProvider, UsersProvider, UtilProvider 
+} from './../../providers';
 
 @IonicPage()
 @Component({
@@ -21,12 +23,14 @@ export class ShoppingAlimentListPage {
 
   constructor(
     private alimentSrv: AlimentsProvider,
+    private authSrv: AuthenticationProvider,
     private marketSrv: MarketsProvider,
     private modalCtrl: ModalController,
     public navCtrl: NavController, 
     public navParams: NavParams, 
     private popCtrl: PopoverController,
     private shoppingListSrv: ShoppingListProvider,
+    private userSrv: UsersProvider,
     private utilSrv: UtilProvider
   ) {
     this.listId = this.navParams.get('listId');
@@ -34,7 +38,7 @@ export class ShoppingAlimentListPage {
     this.takenAliments = new Array<AlimentItem>();
     
     this.marketSrv.getMarkets().subscribe(
-      markets => this.marketsList = Object['values'](markets.payload.data())
+      markets => this.marketsList = Object['values'](markets.payload.data() || {})
     );
 
     this.shoppingListSrv.getShoppingListById(this.listId).subscribe(
@@ -68,7 +72,41 @@ export class ShoppingAlimentListPage {
   }
 
   shareList() {
-    
+    this.utilSrv.showPromptAlert(
+      'Share with...', 
+      'Write the user\'s email to send an invitation',
+      [
+        { name: 'email', placeholder: 'Email address' }
+      ],
+      [
+        { text: 'Cancel', handler: null },
+        { text: 'Send!', handler: data => { 
+            if(this.userSrv.isValidEmail(data.email)) {
+              this.userSrv.getUserUidFromEmail(data.email).subscribe(
+                userUid => {
+                  // Obtain the UID associated to the email address
+                  let uid: string = (userUid && userUid.length >= 1) 
+                    ? userUid[0].payload.doc.data().uid
+                    : null;
+
+                  // Check if the UID is valid and is different from mine
+                  if(uid !== null && uid !== this.authSrv.getCurrentUserId()) {
+                    this.shoppingListSrv.shareShoppingList(this.listId, uid)
+                      .then(() => this.utilSrv.showToast('Invitation successfully sent!'))
+                      .catch(error => this.utilSrv.showToast('Error: ', error));
+                  } else {
+                    this.utilSrv.showToast('Invalid email address! Please, try again...');
+                  }
+                },
+                error => this.utilSrv.showToast('Error: ', error)
+              );
+            } else {  // Email not valid
+              this.utilSrv.showToast(`Error: the address email is not valid`);
+            }
+          } 
+        }
+      ]
+    );
   }
 
   applyFilter(popoverEvent) {
