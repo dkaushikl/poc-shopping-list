@@ -44,6 +44,18 @@ export class ShoppingListProvider {
       });
   }
 
+  shareShoppingList(listId: string, userIdToShare: string) {
+    return this.afs
+      .doc(`/shopping-lists/${listId}`)
+      .ref.get()
+      .then(doc => {
+        let list = doc.data() as ShoppingList;
+        list.sharedWith[userIdToShare] = true;
+        return doc.ref.update(list);
+      })
+      .catch(e => console.log('errorrrr: ', e));
+  }
+
   editList() {
 
   }
