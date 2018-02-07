@@ -38,7 +38,7 @@
             <ion-item class="aliment-border-item">
               <ion-label [style.border-left-color]="getMarketColor(aliment?.market)">
                 <h2>{{ aliment?.name }}</h2>
-                <p>Quantity: {{ aliment?.quantity }}</p>
+                <p *ngIf="aliment?.quantity">Quantity: {{ aliment?.quantity }}</p>
               </ion-label>
               <ion-checkbox color="dark" 
                 [checked]="aliment?.checked" 
