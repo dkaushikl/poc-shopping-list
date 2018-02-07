@@ -23,16 +23,23 @@
 
   <ion-card *ngFor="let list of (shoppingLists$ | async)">
     <ion-card-header>
-      <h2><strong>{{ list.name }}</strong></h2>
+      <ion-row>
+        <ion-col text-start>
+          <h2><strong>{{ list.name }}</strong></h2>
+        </ion-col>
+        <ion-col text-end *ngIf="getNumberOfUserShared(list) > 1">
+          <i class="fa fa-users" aria-hidden="true"></i> {{ getNumberOfUserShared(list) }}
+        </ion-col>
+      </ion-row>
     </ion-card-header>
     <ion-card-content>
       <!-- Aliments counter -->
       <ion-row>
         <ng-container *ngIf="list.aliments.length; then showCounter; else showEmptyList"></ng-container>
         <ng-template #showCounter>
-          <p>Current state: {{ list.alimentsChecked }}/{{ list.aliments.length }}</p>
+          <p>Current state: {{ list.checked }}/{{ list.aliments.length }}</p>
           <!-- Mejor una barra de progreso??? -->
-          <ion-range [(ngModel)]="list.alimentsChecked" min="0" [max]="list.aliments.length" disabled style="width: 100%">
+          <ion-range [(ngModel)]="list.checked" min="0" [max]="list.aliments.length" disabled style="width: 100%">
             <ion-label range-left>0</ion-label>
             <ion-label range-right>{{ list.aliments.length }}</ion-label>
           </ion-range>
@@ -44,9 +51,6 @@
 
       <!-- Card footer -->
       <ion-row>
-        <ion-col text-start *ngIf="isSharedList(list)">
-          <i class="fa fa-share-alt-square fa-3x" aria-hidden="true"></i>
-        </ion-col>
         <ion-col text-end>
           <button ion-button icon-left clear (click)="openShoppingList(list.id)">
             <ion-icon name="open"></ion-icon>
