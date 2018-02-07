@@ -25,6 +25,19 @@ export class UsersProvider {
     });
   }
 
+  getUserUidFromEmail(emailAddress: string) {
+    console.log('Searching email: ', emailAddress);
+    return this.afs
+      .collection('users', (ref) => { return ref.where('email', '==', emailAddress); })
+      .snapshotChanges();
+  }
+
+  isValidEmail(emailAddress: string) {
+    if(!emailAddress) return false;
+    let regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    return regexp.test(emailAddress);
+  }
+
   private saveUserData(userRef: string) {
     let user = this.authSrv.getCurrentUser();
     return this.afs.doc(userRef).set({
