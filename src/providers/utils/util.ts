@@ -35,6 +35,13 @@ export class UtilProvider {
     }).present();
   }
 
+  /**
+   * 
+   * @param title 
+   * @param message 
+   * @param inputs 
+   * @param buttons 
+   */
   public showPromptAlert(title: string, message: string, inputs?: Array<Object>, buttons?: Array<Object>) {
     this.alertCtrl.create({
       title: title,
