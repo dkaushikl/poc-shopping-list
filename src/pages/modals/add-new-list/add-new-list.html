@@ -32,20 +32,31 @@
 
     <ion-row *ngIf="sharedList" style="margin-top: 12px">
       <ion-col>
-        <button ion-button full icon-left color="primary">
+        <button ion-button full icon-left color="primary" (click)="prepareNewInvitation()">
           <ion-icon name="add"></ion-icon>
           Add new user to share with...
         </button>
-        <!--Add new targets to share with...
-        <ion-item>
-          <button ion-button item-end icon-only>
-            <ion-icon name="add" style="padding: 9px"></ion-icon>
-          </button>
-        </ion-item>-->
       </ion-col>
     </ion-row>
 
     <ion-row *ngIf="sharedList">
+      <ion-col>
+        <ion-list>
+          <ion-item *ngFor="let invitation of userInvitations; let i = index" [attr.data-index]="i">
+            <ion-input type="text" 
+              placeholder="Share with... (write email address)" 
+              [(ngModel)]="userInvitations[i]">
+            </ion-input>
+            <button ion-button item-end icon-only (click)="removeInvitation(i)">
+              <ion-icon name="trash" style="padding: 9px"></ion-icon>
+            </button>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+
+    <!--<ion-row *ngIf="sharedList">
       <ion-col>
         <ion-list>
           <ion-item>
@@ -58,7 +69,10 @@
             </button>
           </ion-item>
         </ion-list>
-      </ion-col>
+      </ion-col>-->
+
+
+
       <!--<ion-col>
         <ion-list>
           <ion-item>
@@ -89,14 +103,21 @@
                     </button>
                 </ion-item>
         </ion-list>
-      </ion-col>-->
-    </ion-row>
+      </ion-col>
+    </ion-row>-->
   </ion-grid>
 </ion-content>
 
 <ion-footer class="stick-footer">
   <ion-toolbar>
-    <button ion-button full color="primary" (click)="createNewShoppingList()">Create</button>
-    <button ion-button full color="danger" (click)="cancel()">Cancel</button>
+    <button ion-button full color="primary" *ngIf="!editMode" (click)="createNewShoppingList()">
+      Create
+    </button>
+    <button ion-button full color="primary" *ngIf="editMode" (click)="editShoppingList()">
+      Modify
+    </button>
+    <button ion-button full color="danger" (click)="cancel()">
+      Cancel
+    </button>
   </ion-toolbar>
 </ion-footer>
