@@ -60,8 +60,10 @@ export class ShoppingListProvider {
 
   }
 
-  deleteList() {
-    
+  deleteList(listId: string) {
+    return this.afs
+      .doc(`/shopping-lists/${listId}`)
+      .ref.delete()
   }
 
 }
