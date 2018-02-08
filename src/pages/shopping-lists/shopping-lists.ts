@@ -7,7 +7,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { AddNewListPage } from './../modals/';
 import { ShoppingList } from './../../models';
 import { ShoppingAlimentListPage } from './../shopping-aliment-list/shopping-aliment-list';
-import { ShoppingListProvider } from './../../providers';
+import { ShoppingListProvider, UtilProvider } from './../../providers';
 
 @IonicPage()
 @Component({
@@ -23,7 +23,8 @@ export class ShoppingListsPage {
     private afs: AngularFirestore,
     private modalCtrl: ModalController,
     public navCtrl: NavController,
-    private shoppingListSrv: ShoppingListProvider
+    private shoppingListSrv: ShoppingListProvider,
+    private utilSrv: UtilProvider
   ) { 
     this.shoppingListsObs = this.shoppingListSrv.getUserShoppingLists()
   }
@@ -44,12 +45,33 @@ export class ShoppingListsPage {
     console.log('pressed: ', item);
   }
 
-  editItem(item: ItemSliding) {
-    console.log('edit: ', item);
+  editItem(list: ShoppingList) {
+    console.log('edit: ', list);
+    let modal = this.modalCtrl.create(AddNewListPage, { listToEdit: list });
+    modal.onDidDismiss(data => {
+      console.log('Data modified: ');
+    });
+    modal.present();
   }
 
-  deleteItem(item: ItemSliding) {
-    console.log('deleting: ', item);
+  deleteItem(list: ShoppingList, slidingItem: ItemSliding) {
+    slidingItem.close();
+    this.utilSrv.showAlert(
+      'Remove list', 
+      `Are you sure to delete "${list.name}"?`,
+      [
+        { text: 'Cancel', handler: () => slidingItem.close() },
+        { text: 'Remove', handler: () => {
+          this.shoppingListSrv.deleteList(list.id)
+            .then(() => {
+              slidingItem.close();
+              this.utilSrv.showToast(`"${list.name}" was removed successfully!`);
+            })
+            .catch(e => this.utilSrv.showToast('Error: ', e));
+          } 
+        }
+      ]
+    );
   }
 
 }
