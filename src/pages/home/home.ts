@@ -7,9 +7,9 @@ import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 
-import { ShoppingAlimentListPage } from './../shopping-aliment-list/shopping-aliment-list';
 import { AddNewListPage } from './../modals';
 import { ShoppingList } from './../../models';
+import { ShoppingAlimentListPage } from './../shopping-aliment-list/shopping-aliment-list';
 import { ShoppingListProvider, UsersProvider } from './../../providers';
 
 @IonicPage()
@@ -51,6 +51,10 @@ export class HomePage {
 
   openShoppingList(listId: string) {
     this.navCtrl.push(ShoppingAlimentListPage, { listId });
+  }
+
+  editShoppingList(list: ShoppingList) {
+    this.modalCtrl.create(AddNewListPage, { listToEdit: list }).present();
   }
 
   tap(itemTapped: ItemSliding) {

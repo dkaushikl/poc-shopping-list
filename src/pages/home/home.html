@@ -51,6 +51,12 @@
 
       <!-- Card footer -->
       <ion-row>
+        <ion-col text-start>
+          <button ion-button icon-left clear (click)="editShoppingList(list)">
+            <ion-icon name="brush"></ion-icon>
+            <div>Edit list</div>
+          </button>
+        </ion-col>
         <ion-col text-end>
           <button ion-button icon-left clear (click)="openShoppingList(list.id)">
             <ion-icon name="open"></ion-icon>
