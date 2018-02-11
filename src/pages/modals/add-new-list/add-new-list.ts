@@ -15,6 +15,7 @@ export class AddNewListPage {
   shoppingListName: string;
   editMode: boolean;
   sharedList: boolean;
+  sharedWith: Array<any>;
 
   constructor(
     private navCtrl: NavController, 
@@ -29,7 +30,9 @@ export class AddNewListPage {
     if(params) {
       this.editMode = true;
       this.shoppingListName = params.name;
-      this.sharedList = Object.keys(params.sharedWith || {}).length > 1;
+      this.sharedWith = Object.keys(params.sharedWith || {});
+      console.log('shared: ', this.sharedWith);
+      this.sharedList = this.sharedWith.length > 1;
     } else {
       this.editMode = false;
       this.shoppingListName = '';
@@ -38,6 +41,10 @@ export class AddNewListPage {
   }
 
   ionViewDidLoad() { }
+
+  trackByIndex(index: number, value: number) {
+    return index;
+  }
 
   prepareNewInvitation() {
     this.userInvitations.push('');
@@ -49,16 +56,20 @@ export class AddNewListPage {
 
   createNewShoppingList() {
     let invitations = this.userInvitations.filter((inv) => this.userSrv.isValidEmail(inv));
-    console.log('inv: ', invitations);
-    this.shoppingListSrv.createNewList(this.shoppingListName, this.sharedList)
-      .then(docRef => {
-        this.utilSrv.showToast('List created successfully');
-        this.navCtrl.pop();
-      })
-      .catch(error => console.log('error: ', error));
+    if(invitations.length === 0 && this.sharedList) {
+      this.utilSrv.showToast('No valid targets found!');
+    } else {
+      this.shoppingListSrv.createNewList(this.shoppingListName, this.sharedList)
+        .then(docRef => {
+          this.utilSrv.showToast('List created successfully');
+          this.navCtrl.pop();
+        })
+        .catch(error => console.log('error: ', error));
+    }
   }
 
   editShoppingList() {
+    let invitations = this.userInvitations.filter((inv) => this.userSrv.isValidEmail(inv));
     this.viewCtrl.dismiss({
       name: this.shoppingListName
     });

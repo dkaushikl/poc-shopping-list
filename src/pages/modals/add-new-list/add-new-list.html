@@ -42,7 +42,7 @@
     <ion-row *ngIf="sharedList">
       <ion-col>
         <ion-list>
-          <ion-item *ngFor="let invitation of userInvitations; let i = index" [attr.data-index]="i">
+          <ion-item *ngFor="let invitation of userInvitations; let i = index; trackBy: trackByIndex">
             <ion-input type="text" 
               placeholder="Share with... (write email address)" 
               [(ngModel)]="userInvitations[i]">
@@ -55,6 +55,26 @@
       </ion-col>
     </ion-row>
 
+    <ion-row *ngIf="sharedList" style="margin-top: 12px">
+      <ion-col>
+        <h2>List shared with...</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="sharedList">
+      <ion-col>
+        <ion-list>
+          <ion-item *ngFor="let user of sharedWith">
+              <ion-avatar item-start>
+                  <img [src]="'https://robohash.org/' + user">
+                </ion-avatar>
+                {{ user }}
+                <button ion-button outline icon-only item-end>
+                    <ion-icon name="trash" style="padding: 9px"></ion-icon>
+                </button>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
 
     <!--<ion-row *ngIf="sharedList">
       <ion-col>
