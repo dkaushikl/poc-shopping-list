@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 
-import { SortAlimentsPipe } from './../../pipes/sort-aliments/sort-aliments';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+
+import { IonicImageViewerModule } from 'ionic-img-viewer';
 
 import { ShoppingAlimentListPage } from './shopping-aliment-list';
+import { SortAlimentsPipe } from './../../pipes/sort-aliments/sort-aliments';
 
 @NgModule({
   declarations: [
@@ -11,7 +14,11 @@ import { ShoppingAlimentListPage } from './shopping-aliment-list';
     SortAlimentsPipe
   ],
   imports: [
+    IonicImageViewerModule,
     IonicPageModule.forChild(ShoppingAlimentListPage)
   ],
+  providers: [
+    Camera
+  ]
 })
 export class ShoppingAlimentListPageModule {}

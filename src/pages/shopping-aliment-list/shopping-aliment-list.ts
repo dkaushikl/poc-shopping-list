@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, ItemSliding, Modal, ModalController, NavController, NavParams, PopoverController } from 'ionic-angular';
 
+import { Camera, CameraOptions } from '@ionic-native/camera';
+
 import { AlimentItem, FilterCriteria, Market, ShoppingList } from './../../models';
 import { AddAlimentPage } from './../modals';
 import { AlimentOptionsPage, FilteringOptionsPage } from './../popovers';
@@ -20,10 +22,12 @@ export class ShoppingAlimentListPage {
   takenAliments: Array<AlimentItem>;
   listId: string;
   filterCriteria: FilterCriteria;
+  attachments = [1, 2, 3, 4, 5];
 
   constructor(
     private alimentSrv: AlimentsProvider,
     private authSrv: AuthenticationProvider,
+    private cameraSrv: Camera,
     private marketSrv: MarketsProvider,
     private modalCtrl: ModalController,
     public navCtrl: NavController, 
@@ -140,6 +144,24 @@ export class ShoppingAlimentListPage {
 
   openModalToAddAliment() {
     this.modal.present();
+  }
+
+  takePicture(fabButton: any) {
+    fabButton.close();
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.cameraSrv.DestinationType.DATA_URL,
+      encodingType: this.cameraSrv.EncodingType.JPEG,
+      mediaType: this.cameraSrv.MediaType.PICTURE
+    }
+    
+    this.cameraSrv.getPicture(options).then((imageData) => {
+     // imageData is either a base64 encoded string or a file URI
+     // If it's base64:
+     let base64Image = 'data:image/jpeg;base64,' + imageData;
+    }, (err) => {
+     // Handle error
+    });
   }
 
   updateCheckedAlimentList(aliment: AlimentItem) {
