@@ -11,6 +11,7 @@ import { firebaseConfig } from './../config';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 
 // Modules
 import { ALL_PAGE_MODULES } from './../pages';
@@ -34,6 +35,7 @@ import {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    AngularFireStorageModule,
     BrowserModule,
     ...ALL_PAGE_MODULES,
     ...ALL_MODAL_MODULES,
