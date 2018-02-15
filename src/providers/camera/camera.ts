@@ -21,6 +21,7 @@ export class CameraUnifiedProvider {
       destinationType: this.cameraSrv.DestinationType.DATA_URL,
       encodingType: this.cameraSrv.EncodingType.JPEG,
       mediaType: this.cameraSrv.MediaType.PICTURE,
+      saveToPhotoAlbum: false,
       sourceType: this.cameraSrv.PictureSourceType.CAMERA,
       quality: 85
     }
