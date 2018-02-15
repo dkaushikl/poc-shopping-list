@@ -3,7 +3,7 @@ export const firebaseConfig = {
   authDomain: "shopping-list-db.firebaseapp.com",
   databaseURL: "https://shopping-list-db.firebaseio.com",
   projectId: "shopping-list-db",
-  storageBucket: "",
+  storageBucket: "shopping-list-db.appspot.com",
   messagingSenderId: "1064254593127"
 };
   
