@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
-import { HomePage } from './../home/home';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
+import { HomePage } from './../home/home';
 import { AuthenticationProvider, ShoppingListProvider } from './../../providers';
+
+import * as firebase from 'firebase/app';
+import { GooglePlus } from '@ionic-native/google-plus';
 
 @IonicPage()
 @Component({
@@ -12,17 +16,23 @@ import { AuthenticationProvider, ShoppingListProvider } from './../../providers'
 })
 export class LoginPage {
 
-  constructor(private authSrv: AuthenticationProvider, public navCtrl: NavController) {
+  constructor(private authSrv: AuthenticationProvider, 
+    private cameraSrv: Camera, 
+    private googlePlusSrv: GooglePlus,
+    public navCtrl: NavController) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
   }
 
-  loginGoogle() {
+  loginWithGoogle() {
     this.authSrv.loginWithGoogle()
-      .then(() => this.navCtrl.setRoot(HomePage))
-      .catch(error => console.log('Google OAuth error: ', error))
+      .then((r) => {
+        console.log('R: ', r);
+        this.navCtrl.setRoot(HomePage);
+      })
+      .catch(error => console.log('Google error: ', error));
   }
 
   logout() {
