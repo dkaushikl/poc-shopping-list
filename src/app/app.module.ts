@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
+import { GooglePlus } from '@ionic-native/google-plus';
+import { HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -21,7 +22,8 @@ import { MyApp } from './app.component';
 
 // Providers
 import { 
-  AlimentsProvider, AuthenticationProvider, MarketsProvider, ShoppingListProvider, UtilProvider, UsersProvider 
+  AlimentsProvider, AuthenticationProvider, CameraUnifiedProvider, MarketsProvider, 
+  ShoppingListProvider, UtilProvider, UsersProvider 
 } from '../providers';
 
 @NgModule({
@@ -46,6 +48,8 @@ import {
   providers: [
     AlimentsProvider,
     AuthenticationProvider,
+    CameraUnifiedProvider,
+    GooglePlus,
     MarketsProvider,
     ShoppingListProvider,
     SplashScreen,
