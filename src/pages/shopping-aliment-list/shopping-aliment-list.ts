@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
 import { 
   FabContainer, IonicPage, ItemSliding, Modal, ModalController, 
   NavController, NavParams, PopoverController 
@@ -27,6 +28,7 @@ export class ShoppingAlimentListPage {
   attachments = [];
 
   constructor(
+    private afStorage: AngularFireStorage,
     private alimentSrv: AlimentsProvider,
     private authSrv: AuthenticationProvider,
     private cameraSrv: CameraUnifiedProvider,
@@ -52,6 +54,9 @@ export class ShoppingAlimentListPage {
         this.shoppingList = shoppingLists.payload.data() as ShoppingList;
       }
     );
+    
+    // MOVE INTO ITS OWN SERVICE!!
+    //this.afStorage.ref(`/attachments/${this.listId}/`).getMetadata().subscribe(a => console.log('Metadata: ', a));
 
     this.modal = this.modalCtrl.create(AddAlimentPage);
     this.modal.onDidDismiss((data: AlimentItem) => {
@@ -152,8 +157,34 @@ export class ShoppingAlimentListPage {
   takePicture(fabButton: FabContainer) {
     if(fabButton) fabButton.close();
     this.cameraSrv.takePicture()
-      .then(image => this.attachments.push(image))
-      .catch(error => this.utilSrv.showToast('Error: ' + error));
+      .then((image: string) => {
+        this.attachments.push(image);
+        
+        // Option 1
+        /*this.afStorage.ref(`/attachments/${this.listId}/${new Date().getTime()}`)
+          .putString(image, 'data_url', { contentType: 'image/jpg' })
+          .percentageChanges()
+          .subscribe(
+            (percent: number) => console.log('Percent: ', percent) 
+          );*/
+        
+        // More metadata: https://firebase.google.com/docs/storage/web/file-metadata
+        
+        // Si image viene con "data:image/jpeg;base64," se puede hacer tb image.substring(23) y guardar como:
+        //   refImage.putString(image.substring(X), 'base64')
+        this.afStorage.ref(`/attachments/${this.listId}/${new Date().getTime()}.jpeg`)
+          .putString(image.substring(image.indexOf(',') + 1), 'base64', { contentType: 'image/jpg' })
+          .percentageChanges()
+          .subscribe(
+            (percent: number) => console.log('Percent: ', percent),
+            (error) => console.log('Error uploading'),
+            () => this.utilSrv.showToast('File uploaded successfully!')
+          );
+      })
+      .catch(error => {
+        console.log('Error taking picture: ', error);
+        this.utilSrv.showToast('Error: ' + error);
+      });
   }
 
   updateCheckedAlimentList(aliment: AlimentItem) {
