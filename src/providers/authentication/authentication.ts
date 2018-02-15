@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
+import { Platform } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 
+import { GooglePlus } from '@ionic-native/google-plus';
+
 @Injectable()
 export class AuthenticationProvider {
   authState: firebase.User;
 
-  constructor(private afAuth: AngularFireAuth) {
+  constructor(private afAuth: AngularFireAuth, private googlePlusSrv: GooglePlus, private platformSrv: Platform) {
     this.afAuth.authState.subscribe(
       (auth) => { this.authState = auth; }
     );
@@ -26,27 +29,40 @@ export class AuthenticationProvider {
       });    
   }
 
-  login(email: string, password: string) {
-    this.afAuth
-      .auth
-      .signInWithEmailAndPassword(email, password)
-      .then(user => {
-        console.log('Nice, it worked! ', user);
-      })
-      .catch(err => {
-        console.log('Something went wrong:', err.message);
-      });
-  }
-
   loginWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    return this.afAuth.auth.signInWithPopup(provider)
-      .then((credentials) => {
-        console.log('Credentials: ', credentials);
+    // According to the platform, select the best login approach
+    if(this.platformSrv.is('cordova') && this.platformSrv.is('mobile')) {
+      // Native login - Google account selector
+      return this.nativeLoginWithGoogleAccountSelector();
+    } else {
+      // Web Login - Firebase
+      return this.firebaseLoginWithGoogle();
+    }
+  }
+  
+  private nativeLoginWithGoogleAccountSelector() {
+    return new Promise((resolve, reject) => {
+      this.googlePlusSrv.login({
+        'webClientId': '1064254593127-9loj51qsgn0a82a16gk79lft3tkec18e.apps.googleusercontent.com',
+        'offline': true
       })
-      .catch((error) => console.log('Error: ', error))
+      .then(res => {
+        firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(res.idToken))
+          .then(success => resolve(success))
+          .catch(error => reject(error));
+      })
+      .catch(error => reject(error));
+    });
   }
 
+  private firebaseLoginWithGoogle() {
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  }
+  
+  private firebaseLoginWithCredentials(email: string, password: string) {
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password);
+  }
+  
   getUserObservable() {
     return this.afAuth.authState;
   }
