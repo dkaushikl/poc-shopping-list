@@ -68,24 +68,17 @@
         AAAA
         <ion-slides class="image-slider" loop="true" slidesPerView="2">
           <ion-slide *ngFor="let att of attachments">
-            <img src="https://robohash.org/9238{{att}}" class="attachment-img" imageViewer />
+            <img src="{{att}}" class="attachment-img" width="300" imageViewer />
           </ion-slide>
         </ion-slides>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <!--<ion-fab right bottom>
-    <button ion-fab color="primary" (click)="openModalToAddAliment()">
-      <ion-icon name="add"></ion-icon>
-    </button>
-  </ion-fab>-->
-
-  <ion-fab right bottom>
-    <!-- button mini? -->
+  <ion-fab right bottom #fabButtons>
     <button ion-fab><ion-icon name="add"></ion-icon></button>
-    <ion-fab-list #fabButtons side="top">
-      <button ion-fab (click)="openModalToAddAliment() && fabButtons.close()">
+    <ion-fab-list side="top">
+      <button ion-fab (click)="openModalToAddAliment(fabButtons)">
         <i class="fa fa-list"></i>
       </button>
       <button ion-fab (click)="takePicture(fabButtons)">

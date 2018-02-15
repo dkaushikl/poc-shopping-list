@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
-import { IonicPage, ItemSliding, Modal, ModalController, NavController, NavParams, PopoverController } from 'ionic-angular';
-
-import { Camera, CameraOptions } from '@ionic-native/camera';
+import { 
+  FabContainer, IonicPage, ItemSliding, Modal, ModalController, 
+  NavController, NavParams, PopoverController 
+} from 'ionic-angular';
 
 import { AlimentItem, FilterCriteria, Market, ShoppingList } from './../../models';
 import { AddAlimentPage } from './../modals';
 import { AlimentOptionsPage, FilteringOptionsPage } from './../popovers';
 import { 
-  AlimentsProvider, AuthenticationProvider, MarketsProvider, ShoppingListProvider, UsersProvider, UtilProvider 
+  AlimentsProvider, AuthenticationProvider, CameraUnifiedProvider, MarketsProvider, 
+  ShoppingListProvider, UsersProvider, UtilProvider 
 } from './../../providers';
 
 @IonicPage()
@@ -22,12 +24,12 @@ export class ShoppingAlimentListPage {
   takenAliments: Array<AlimentItem>;
   listId: string;
   filterCriteria: FilterCriteria;
-  attachments = [1, 2, 3, 4, 5];
+  attachments = [];
 
   constructor(
     private alimentSrv: AlimentsProvider,
     private authSrv: AuthenticationProvider,
-    private cameraSrv: Camera,
+    private cameraSrv: CameraUnifiedProvider,
     private marketSrv: MarketsProvider,
     private modalCtrl: ModalController,
     public navCtrl: NavController, 
@@ -58,7 +60,7 @@ export class ShoppingAlimentListPage {
           .then(alimentAdded => {
             this.utilSrv.showToast(alimentAdded + ' has been added successfully!');
             if(data && data['addAndReopen'])
-              setTimeout(this.openModalToAddAliment(), 250);
+              setTimeout(this.openModalToAddAliment(null), 250);
           })
           .catch(e => this.utilSrv.showToast('Error: ' + e));
       }
@@ -142,26 +144,16 @@ export class ShoppingAlimentListPage {
     popover.present({ ev: popoverEvent });
   }
 
-  openModalToAddAliment() {
+  openModalToAddAliment(fabButton: FabContainer) {
+    if(fabButton) fabButton.close();
     this.modal.present();
   }
 
-  takePicture(fabButton: any) {
-    fabButton.close();
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.cameraSrv.DestinationType.DATA_URL,
-      encodingType: this.cameraSrv.EncodingType.JPEG,
-      mediaType: this.cameraSrv.MediaType.PICTURE
-    }
-    
-    this.cameraSrv.getPicture(options).then((imageData) => {
-     // imageData is either a base64 encoded string or a file URI
-     // If it's base64:
-     let base64Image = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-     // Handle error
-    });
+  takePicture(fabButton: FabContainer) {
+    if(fabButton) fabButton.close();
+    this.cameraSrv.takePicture()
+      .then(image => this.attachments.push(image))
+      .catch(error => this.utilSrv.showToast('Error: ' + error));
   }
 
   updateCheckedAlimentList(aliment: AlimentItem) {
