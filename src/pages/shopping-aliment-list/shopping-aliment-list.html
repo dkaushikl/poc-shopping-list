@@ -68,7 +68,7 @@
         AAAA
         <ion-slides class="image-slider" loop="true" slidesPerView="2">
           <ion-slide *ngFor="let att of attachments">
-            <img src="{{att}}" class="attachment-img" width="300" imageViewer />
+            <img [src]="att" class="attachment-img" width="300" imageViewer />
           </ion-slide>
         </ion-slides>
       </ion-col>
