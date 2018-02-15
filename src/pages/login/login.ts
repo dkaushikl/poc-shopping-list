@@ -1,13 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
-import { Camera, CameraOptions } from '@ionic-native/camera';
-
 import { HomePage } from './../home/home';
 import { AuthenticationProvider, ShoppingListProvider } from './../../providers';
-
-import * as firebase from 'firebase/app';
-import { GooglePlus } from '@ionic-native/google-plus';
 
 @IonicPage()
 @Component({
@@ -16,11 +11,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
 })
 export class LoginPage {
 
-  constructor(private authSrv: AuthenticationProvider, 
-    private cameraSrv: Camera, 
-    private googlePlusSrv: GooglePlus,
-    public navCtrl: NavController) {
-  }
+  constructor(private authSrv: AuthenticationProvider, public navCtrl: NavController) { }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
