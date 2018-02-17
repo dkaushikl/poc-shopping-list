@@ -24,7 +24,7 @@ import { MyApp } from './app.component';
 // Providers
 import { 
   AlimentsProvider, AuthenticationProvider, CameraUnifiedProvider, MarketsProvider, 
-  ShoppingListProvider, UtilProvider, UsersProvider 
+  MessagingProvider, ShoppingListProvider, UtilProvider, UsersProvider 
 } from '../providers';
 
 @NgModule({
@@ -53,6 +53,7 @@ import {
     CameraUnifiedProvider,
     GooglePlus,
     MarketsProvider,
+    MessagingProvider,
     ShoppingListProvider,
     SplashScreen,
     StatusBar,
