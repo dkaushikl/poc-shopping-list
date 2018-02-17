@@ -9,6 +9,10 @@ module.exports = Object.assign(existingConfig, {
     copyFontawesomeCss: {
       src: ['./node_modules/font-awesome/css/font-awesome.min.css'],
       dest: './www/assets/css'
+    },
+    copyServiceWorker: {
+      src: ['./src/firebase-messaging-sw.js'],
+      dest: './www/'
     }
   }
 );
