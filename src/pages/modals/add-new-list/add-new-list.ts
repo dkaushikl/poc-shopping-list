@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 
 import { ShoppingList } from './../../../models';
@@ -11,13 +12,17 @@ import { ShoppingListProvider, UsersProvider, UtilProvider } from './../../../pr
 })
 export class AddNewListPage {
 
+  form: FormGroup;
   userInvitations: Array<string>;
   shoppingListName: string;
   editMode: boolean;
   sharedList: boolean;
   sharedWith: Array<any>;
 
+  fShoppingListName: string;
+
   constructor(
+    private formBuilder: FormBuilder,
     private navCtrl: NavController, 
     private navParams: NavParams,
     private shoppingListSrv: ShoppingListProvider,
@@ -25,6 +30,11 @@ export class AddNewListPage {
     private utilSrv: UtilProvider,
     private viewCtrl: ViewController
   ) { 
+
+    this.form = this.formBuilder.group({
+      'listName': ['', Validators.required]
+    });
+
     let params: ShoppingList = this.navParams.get('listToEdit');
     this.userInvitations = new Array<string>();
     if(params) {
@@ -59,7 +69,7 @@ export class AddNewListPage {
     if(invitations.length === 0 && this.sharedList) {
       this.utilSrv.showToast('No valid targets found!');
     } else {
-      this.shoppingListSrv.createNewList(this.shoppingListName, this.sharedList)
+      this.shoppingListSrv.createNewList(this.form.controls['listName'].value, this.sharedList)
         .then(docRef => {
           this.utilSrv.showToast('List created successfully');
           this.navCtrl.pop();
