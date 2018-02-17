@@ -20,16 +20,11 @@
 
   <!-- ServiceWorker imports -->
   <script>
-    /*if ('serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('service worker installed'))
+        .then(() => {})
         .catch(err => console.error('Error', err));
-    }*/
-    /*if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('firebase-messaging-sw.js')
-        .then(() => console.log('service worker installed'))
-        .catch(err => console.error('Error', err));
-    }*/
+    }
   </script>
 
   <link href="build/main.css" rel="stylesheet">
