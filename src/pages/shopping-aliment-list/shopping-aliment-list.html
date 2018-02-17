@@ -65,12 +65,20 @@
 
     <ion-row>
       <ion-col>
-        AAAA
-        <ion-slides class="image-slider" loop="true" slidesPerView="2">
+        Attached files ({{ attachments?.length }})
+        <!--<ion-slides class="image-slider" loop="true" slidesPerView="2">
           <ion-slide *ngFor="let att of attachments">
             <img [src]="att" class="attachment-img" width="300" imageViewer />
           </ion-slide>
-        </ion-slides>
+        </ion-slides>-->
+        <ion-list>
+          <ion-item class="listItem" *ngFor="let att of attachments" >
+            <ion-thumbnail item-left>
+              <img [src]="att" imageViewer>
+            </ion-thumbnail>
+            <p>item {{ item }}</p>
+          </ion-item>
+        </ion-list>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -84,6 +92,14 @@
       <button ion-fab (click)="takePicture(fabButtons)">
         <ion-icon name="camera"></ion-icon>
       </button>
+      <button ion-fab (click)="uploadFile(fabButtons, fileBrowserUploader)">
+        <ion-icon name="cloud-upload"></ion-icon>
+      </button>
     </ion-fab-list>
   </ion-fab>
 </ion-content>
+
+<input id="xxx" #fileBrowserUploader 
+  type="file" 
+  style="display:none" 
+  (change)="onChange($event, fileBrowserUploader)" hidden />

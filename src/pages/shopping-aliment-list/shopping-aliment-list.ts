@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
 import { 
   FabContainer, IonicPage, ItemSliding, Modal, ModalController, 
@@ -26,6 +26,7 @@ export class ShoppingAlimentListPage {
   listId: string;
   filterCriteria: FilterCriteria;
   attachments = [];
+  @ViewChild('fileBrowserUploader') inputUploader: ElementRef;
 
   constructor(
     private afStorage: AngularFireStorage,
@@ -185,6 +186,24 @@ export class ShoppingAlimentListPage {
         console.log('Error taking picture: ', error);
         this.utilSrv.showToast('Error: ' + error);
       });
+  }
+
+  uploadFile(fabButton: FabContainer, fileBrowserUploader: any) {
+    if(fabButton) fabButton.close();
+    this.inputUploader.nativeElement.dispatchEvent(new MouseEvent('click'));
+  }
+
+  onChange(changeEvent: Event, fileBrowserUploader: any) {
+    console.log('Files', fileBrowserUploader.files);
+    if(fileBrowserUploader.files && fileBrowserUploader.files.length > 0) {
+      var reader = new FileReader();
+      reader.onload = (evt) => {
+        console.log('e! ', evt);
+        console.log('input: ', evt.target['result']);
+        console.log('Reader handler! ', reader);
+      };
+      reader.readAsDataURL(fileBrowserUploader.files[0]);
+    }
   }
 
   updateCheckedAlimentList(aliment: AlimentItem) {
