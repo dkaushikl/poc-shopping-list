@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -11,14 +11,14 @@ import { ConfigurationPage } from '../pages/configuration/configuration';
 import { ProfilePage } from '../pages/profile/profile';
 import { AboutPage } from '../pages/about/about';
 
-import { AuthenticationProvider } from './../providers/authentication/authentication';
+import { AuthenticationProvider, MessagingProvider } from './../providers';
 
 import { Page } from './../models';
 
 @Component({
   templateUrl: 'app.component.html'
 })
-export class MyApp {
+export class MyApp implements OnInit {
   @ViewChild(Nav) nav: Nav;
   userLogged: boolean = false;
   rootPage: any = LoginPage;
@@ -26,6 +26,7 @@ export class MyApp {
 
   constructor(
       private authSrv: AuthenticationProvider, 
+      private messagingSrv: MessagingProvider,
       public platform: Platform, 
       public statusBar: StatusBar, 
       public splashScreen: SplashScreen
@@ -47,6 +48,12 @@ export class MyApp {
       { title: 'Configuration', component: ConfigurationPage, icon: 'build' },
       { title: 'Profile', component: ProfilePage, icon: 'contact' }
     ];
+  }
+
+  ngOnInit() {
+    this.messagingSrv.getPermission();
+    this.messagingSrv.receiveMessage();
+    console.log('MsgReceived >>>> ', this.messagingSrv.messages$);
   }
 
   initializeApp() {
