@@ -25,7 +25,6 @@ export class ShoppingAlimentListPage {
   takenAliments: Array<AlimentItem>;
   listId: string;
   filterCriteria: FilterCriteria;
-  attachments = [];
   @ViewChild('fileBrowserUploader') inputUploader: ElementRef;
 
   constructor(
@@ -51,13 +50,8 @@ export class ShoppingAlimentListPage {
     );
 
     this.shoppingListSrv.getShoppingListById(this.listId).subscribe(
-      shoppingLists => {
-        this.shoppingList = shoppingLists.payload.data() as ShoppingList;
-      }
+      shoppingList => this.shoppingList = shoppingList.payload.data() as ShoppingList
     );
-    
-    // MOVE INTO ITS OWN SERVICE!!
-    //this.afStorage.ref(`/attachments/${this.listId}/`).getMetadata().subscribe(a => console.log('Metadata: ', a));
 
     this.modal = this.modalCtrl.create(AddAlimentPage);
     this.modal.onDidDismiss((data: AlimentItem) => {
@@ -159,7 +153,6 @@ export class ShoppingAlimentListPage {
     if(fabButton) fabButton.close();
     this.cameraSrv.takePicture()
       .then((image: string) => {
-        this.attachments.push(image);
         
         // Option 1
         /*this.afStorage.ref(`/attachments/${this.listId}/${new Date().getTime()}`)
@@ -171,6 +164,8 @@ export class ShoppingAlimentListPage {
         
         // More metadata: https://firebase.google.com/docs/storage/web/file-metadata
         
+        this.utilSrv.showToast('Upload started...');
+
         // Si image viene con "data:image/jpeg;base64," se puede hacer tb image.substring(23) y guardar como:
         //   refImage.putString(image.substring(X), 'base64')
         this.afStorage.ref(`/attachments/${this.listId}/${new Date().getTime()}.jpeg`)
