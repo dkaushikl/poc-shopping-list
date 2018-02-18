@@ -9,12 +9,4 @@ exports.someOperationInFirestore = functions.firestore
         // event.params.userId
     });
 
-exports.onImageUploaded = functions.storage.object()
-    .onChange((event) => {
-        const object = event.data; // The Storage object.
-        const fileBucket = object.bucket; // The Storage bucket that contains the file.
-        const filePath = object.name; // File path in the bucket.
-        const contentType = object.contentType; // File content type.
-        const resourceState = object.resourceState; // 'exists' or 'not_exists' (for file/folder deletions).
-        const metageneration = object.metageneration; // Number of times metadata has been generated. 
-    }); 
+exports.onImageUploaded = require('./imageUploader');
