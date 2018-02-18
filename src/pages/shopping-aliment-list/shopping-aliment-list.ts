@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
+import { AngularFireStorage } from 'angularfire2/storage';
 import { 
   FabContainer, IonicPage, ItemSliding, Modal, ModalController, 
   NavController, NavParams, PopoverController 
