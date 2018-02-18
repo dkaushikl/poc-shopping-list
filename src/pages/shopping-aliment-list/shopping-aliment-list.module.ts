@@ -4,18 +4,17 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { IonicImageViewerModule } from 'ionic-img-viewer';
 
+import { PipesModules } from './../../pipes/pipes.module';
 import { ShoppingAlimentListPage } from './shopping-aliment-list';
-
-import { ALL_PIPES } from './../../pipes';
 
 @NgModule({
   declarations: [
-    ShoppingAlimentListPage,
-    ...ALL_PIPES
+    ShoppingAlimentListPage
   ],
   imports: [
     IonicImageViewerModule,
-    IonicPageModule.forChild(ShoppingAlimentListPage)
+    IonicPageModule.forChild(ShoppingAlimentListPage),
+    PipesModules
   ],
   providers: [
     Camera
