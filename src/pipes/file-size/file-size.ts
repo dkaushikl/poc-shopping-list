@@ -2,9 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 import { AlimentItem, FilterCriteria } from './../../models';
 
-@Pipe({
-  name: 'fileSize'
-})
+@Pipe({ name: 'fileSize' })
 export class FileSizePipe implements PipeTransform {
 
     transform(fileSize: number, outputSize: string) {
