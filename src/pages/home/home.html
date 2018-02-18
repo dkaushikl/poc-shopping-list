@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar transparent>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -8,19 +8,6 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-grid>
-    <ion-row *ngIf="shoppingLists?.length > 0">
-      <ion-col>
-        <h1>These are your lists...</h1>
-      </ion-col>
-    </ion-row>
-    <ion-row *ngIf="shoppingLists?.length === 0">
-      <ion-col>
-        <h1>There is no lists yet!</h1>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
   <ion-card *ngFor="let list of (shoppingLists$ | async)">
     <ion-card-header>
       <ion-row>
