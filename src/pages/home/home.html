@@ -37,7 +37,7 @@
       <ion-row>
         <ng-container *ngIf="list.aliments.length; then showCounter; else showEmptyList"></ng-container>
         <ng-template #showCounter>
-          <p>Current state: {{ list.checked }}/{{ list.aliments.length }}</p>
+          <p>Articles: {{ list.checked }}/{{ list.aliments.length }}</p>
           <!-- Mejor una barra de progreso??? -->
           <ion-range [(ngModel)]="list.checked" min="0" [max]="list.aliments.length" disabled style="width: 100%">
             <ion-label range-left>0</ion-label>
