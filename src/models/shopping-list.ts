@@ -5,6 +5,7 @@ export class ShoppingList {
     description: string;
     aliments: Array<AlimentItem>;
     sharedWith: Object;
+    attachments: Array<string>;
 }
 
 export class AlimentItem {
