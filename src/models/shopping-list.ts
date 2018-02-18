@@ -15,6 +15,13 @@ export class AlimentItem {
     checked: boolean;
 }
 
+export class Attachment {
+    name: string;
+    size: number;
+    ts: Date;
+    url: string;
+}
+
 export class Market {
     id?: string;
     name: string;
