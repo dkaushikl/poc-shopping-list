@@ -25,7 +25,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <h1>Pending</h1>
+        <h1>Grocery List</h1>
       </ion-col>
     </ion-row>
 
@@ -63,20 +63,22 @@
       </ion-col>
     </ion-row>
 
-    <ion-row>
+    <ion-row *ngIf="shoppingList?.attachments?.length > 0">
       <ion-col>
-        Attached files ({{ attachments?.length }})
+        <h3>Attached invoices ({{ shoppingList?.attachments?.length }})</h3>
         <!--<ion-slides class="image-slider" loop="true" slidesPerView="2">
-          <ion-slide *ngFor="let att of attachments">
-            <img [src]="att" class="attachment-img" width="300" imageViewer />
+          <ion-slide *ngFor="let attachment of shoppingList?.attachments">
+            <img [src]="attachment" class="attachment-img" width="300" imageViewer />
           </ion-slide>
         </ion-slides>-->
         <ion-list>
-          <ion-item class="listItem" *ngFor="let att of attachments" >
+          <ion-item class="listItem" *ngFor="let attachment of shoppingList?.attachments" >
             <ion-thumbnail item-left>
-              <img [src]="att" imageViewer>
+              <img [src]="attachment.url" imageViewer>
             </ion-thumbnail>
-            <p>item {{ item }}</p>
+            <h3>{{ attachment.name }}</h3>
+            <p>Size: {{ attachment.size | fileSize:'kb' }} Kb</p>
+            <p>Uploaded: {{ attachment.ts | date:'medium' }}</p>
           </ion-item>
         </ion-list>
       </ion-col>
