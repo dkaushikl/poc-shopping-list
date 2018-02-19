@@ -23,7 +23,7 @@
         </ion-item>
 
         <!-- Set home view -->
-        <ion-item class="link-pointer" menuClose tappable (click)="setHomePage()">
+        <ion-item class="link-pointer" menuClose tappable *ngIf="userLogged" (click)="setHomePage()">
           <ion-icon name="home" item-start></ion-icon> Home
         </ion-item>
 
