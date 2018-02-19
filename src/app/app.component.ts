@@ -42,11 +42,11 @@ export class MyApp implements OnInit {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage, icon: 'home' },
       { title: 'Markets', component: MarketsPage, icon: 'map' },
       { title: 'Shopping lists', component: ShoppingListsPage, icon: 'basket' },
       { title: 'Configuration', component: ConfigurationPage, icon: 'build' },
-      { title: 'Profile', component: ProfilePage, icon: 'contact' }
+      { title: 'Profile', component: ProfilePage, icon: 'contact' },
+      { title: 'About', component: AboutPage, icon: 'information-circle' }
     ];
   }
 
@@ -65,14 +65,14 @@ export class MyApp implements OnInit {
     });
   }
 
+  setHomePage() {
+    this.nav.setRoot(HomePage);
+  }
+
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
-  }
-
-  openAboutPage() {
-    this.nav.setRoot(AboutPage);
+    this.nav.push(page.component);
   }
 
   login() {

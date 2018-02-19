@@ -22,17 +22,17 @@
           <ion-icon name="log-in" item-start></ion-icon> Login
         </ion-item>
 
+        <!-- Set home view -->
+        <ion-item class="link-pointer" menuClose tappable (click)="setHomePage()">
+          <ion-icon name="home" item-start></ion-icon> Home
+        </ion-item>
+
         <!-- Menu entries -->
         <div *ngFor="let p of pages">
           <ion-item class="link-pointer" menuClose tappable *ngIf="userLogged" (click)="openPage(p)">
             <ion-icon name="{{ p.icon }}" item-start></ion-icon> {{ p.title }}
           </ion-item>
         </div>
-
-        <!-- About section -->
-        <ion-item class="link-pointer" menuClose tappable (click)="openAboutPage()">
-          <ion-icon name="information-circle" item-start></ion-icon> About
-        </ion-item>
 
         <!-- Logout -->
         <ion-item class="link-pointer" menuClose tappable *ngIf="userLogged" (click)="logout()">
