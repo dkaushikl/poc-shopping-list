@@ -41,7 +41,6 @@ export class AddNewListPage {
       this.editMode = true;
       this.shoppingListName = params.name;
       this.sharedWith = Object.keys(params.sharedWith || {});
-      console.log('shared: ', this.sharedWith);
       this.sharedList = this.sharedWith.length > 1;
     } else {
       this.editMode = false;
