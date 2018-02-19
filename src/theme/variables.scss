@@ -45,22 +45,26 @@ $colors: (
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
-
-
+$item-ios-sliding-content-background: white;
+$item-ios-sliding-content-background: transparent;
+$toolbar-ios-title-text-color: white;
 
 
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
-
+$item-md-sliding-content-background: white;
+$item-md-sliding-content-background: transparent;
+$toolbar-md-title-text-color: white;
 
 
 
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-
-
+$item-wp-sliding-content-background: white;
+$item-wp-sliding-content-background: transparent;
+$toolbar-wp-title-text-color: white;
 
 
 // App Theme
