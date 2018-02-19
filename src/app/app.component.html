@@ -9,7 +9,7 @@
     <ion-content>
       <ion-list>
         <!-- Avatar -->
-        <ion-item text-center>
+        <ion-item text-center *ngIf="userLogged">
           <ion-avatar text-center>
             <img class="avatar-menu" src="https://robohash.org/avatar.jpg" />
           </ion-avatar>
