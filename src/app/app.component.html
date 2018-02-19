@@ -1,13 +1,22 @@
 <ion-split-pane>
   <ion-menu [content]="content">
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar transparent>
         <ion-title>Menu</ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-content>
       <ion-list>
+        <!-- Avatar -->
+        <ion-item text-center>
+          <ion-avatar text-center>
+            <img class="avatar-menu" src="https://robohash.org/avatar.jpg" />
+          </ion-avatar>
+          <h2>Name SurName LastName</h2>
+          <p>my-registered-account@email.com</p>
+        </ion-item>
+
         <!-- Login -->
         <ion-item class="link-pointer" menuClose tappable *ngIf="!userLogged" (click)="login()">
           <ion-icon name="log-in" item-start></ion-icon> Login
