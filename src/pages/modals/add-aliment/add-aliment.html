@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar transparent>
     <ion-title>{{ editMode ? 'Edit aliment' : 'Add new aliment' }}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -41,14 +41,14 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-</ion-content>
 
-<ion-footer class="stick-footer">
-  <ion-toolbar>
-    <button ion-button full color="primary" (click)="addAliment()">
-      {{ editMode ? 'Modify' : 'Create' }}
-    </button>
-    <button ion-button full color="primary" *ngIf="!editMode" (click)="addAndReopen()">Adds one more</button>
-    <button ion-button full color="danger" (click)="cancel()">Cancel</button>
-  </ion-toolbar>
-</ion-footer>
+  <ion-footer class="stick-footer">
+    <ion-toolbar>
+      <button ion-button full color="primary" (click)="addAliment()">
+        {{ editMode ? 'Modify' : 'Create' }}
+      </button>
+      <button ion-button full color="primary" *ngIf="!editMode" (click)="addAndReopen()">Adds one more</button>
+      <button ion-button full color="danger" (click)="cancel()">Cancel</button>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>
