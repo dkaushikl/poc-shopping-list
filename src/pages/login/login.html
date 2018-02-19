@@ -1,27 +1,52 @@
-<ion-header>
+<!--<ion-header>
   <ion-navbar transparent>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Login</ion-title>
   </ion-navbar>
-</ion-header>
+</ion-header>-->
 
-<ion-content padding class="page-login">
-  <ion-grid fixed>
-    <ion-row justify-content-center align-items-center class="img-title-sep">
-      <button ion-button (click)="loginWithGoogle()">Login Google</button>
-      <button ion-button (click)="logout()">Logout</button>
+<ion-content padding>
+  <div class="login-background-image"></div>
+
+  <ion-grid fixed class="flex-grid">
+    <ion-row justify-content-center align-items-center class="login-title flex-logo">
+      <div text-center>
+        <img width="196px" src="/assets/imgs/login-logo.png" />
+      </div>
     </ion-row>
 
-    <ion-row justify-content-center align-items-center class="img-title-sep">
-      <div text-center class="app-title">Grocery list!</div>
+    <ion-row class="flex-buttons">
+      <ion-col col-12>
+        <button ion-button full icon-start (click)="loginWithGoogle()">
+          <ion-icon class="fa fa-google"></ion-icon> Google
+        </button>
+      </ion-col>
+      <ion-col col-12>
+        <button ion-button full icon-start>
+          <ion-icon class="fa fa-facebook"></ion-icon> Facebook
+        </button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="flex-buttons">
+      <ion-col col-6>
+        <button ion-button full outline class="login-label">
+          <ion-icon name="googleplus"></ion-icon> Sign Up
+        </button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button full outline class="login-label">
+          <ion-icon name="googleplus"></ion-icon> Login
+        </button>  
+      </ion-col>
+    </ion-row>
+
+    <ion-row justify-content-center align-items-center class="flex-footer">
+      <div text-center class="terms-and-conditions">
+        By signing up you agree to the Terms of Service and Privacy Policy
+      </div>
     </ion-row>
   </ion-grid>
 </ion-content>
-
-<!--<ion-footer class="stick-footer">
-  <ion-toolbar>
-    <button ion-button full (click)="login()">LOGIN</button>
-  </ion-toolbar>
-</ion-footer>-->

@@ -1,3 +1,39 @@
 page-login {
+    .login-background-image {
+        background-image: url('/assets/imgs/login-lemon.jpg'); 
+        margin: -16px;
+        height: 100%;
+        opacity: 0.4; 
+        padding: 0;
+        position:absolute; 
+        width: 100%;
+        z-index: -99;
+    }
 
+    .login-label {
+        color: white;
+    }
+
+    .terms-and-conditions {
+        color: white;
+        font-weight: bold;
+    }
+
+    .flex-grid {
+        display: flex;
+        flex-direction: column; 
+        height: 100%;
+    }
+
+    .flex-logo {
+        flex: 2.5;
+    }
+
+    .flex-buttons {
+        flex: 1;
+    }
+
+    .flex-footer {
+        flex: 0.5;
+    }
 }
