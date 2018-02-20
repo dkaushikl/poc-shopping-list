@@ -9,12 +9,12 @@
     <ion-content>
       <ion-list>
         <!-- Avatar -->
-        <ion-item text-center *ngIf="userLogged">
+        <ion-item text-center class="md-background" *ngIf="userLogged">
           <ion-avatar text-center>
-            <img class="avatar-menu" src="https://robohash.org/avatar.jpg" />
+            <img class="avatar-menu" [src]="userData?.photoURL" />
           </ion-avatar>
-          <h2>Name SurName LastName</h2>
-          <p>my-registered-account@email.com</p>
+          <h2>{{ userData?.displayName }}</h2>
+          <p style="color: white">{{ userData?.email }}</p>
         </ion-item>
 
         <!-- Login -->
