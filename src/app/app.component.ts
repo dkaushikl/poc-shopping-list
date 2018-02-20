@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Firebase } from '@ionic-native/firebase';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -11,7 +12,7 @@ import { ConfigurationPage } from '../pages/configuration/configuration';
 import { ProfilePage } from '../pages/profile/profile';
 import { AboutPage } from '../pages/about/about';
 
-import { AuthenticationProvider, MessagingProvider } from './../providers';
+import { AuthenticationProvider, MessagingProvider, UtilProvider } from './../providers';
 
 import { Page } from './../models';
 
@@ -21,23 +22,46 @@ import { Page } from './../models';
 export class MyApp implements OnInit {
   @ViewChild(Nav) nav: Nav;
   userLogged: boolean = false;
+  userData: any = null;
   rootPage: any = LoginPage;
   pages: Array<Page>;
 
   constructor(
-      private authSrv: AuthenticationProvider, 
+      private authSrv: AuthenticationProvider,
+      private firebaseSrv: Firebase,
       private messagingSrv: MessagingProvider,
       public platform: Platform, 
       public statusBar: StatusBar, 
-      public splashScreen: SplashScreen
+      public splashScreen: SplashScreen,
+      private utilSrv: UtilProvider
   ) {
     this.authSrv.getUserObservable().subscribe(
-      (userLogged) => {
-        this.userLogged = (userLogged) ? true : false;
-        this.nav.setRoot((userLogged) ? HomePage : LoginPage);
+      (userLoggedState) => {
+        // Update local variables according to the new authState
+        this.userLogged = (userLoggedState) ? true : false;
+        this.userData = (userLoggedState) ? userLoggedState : null;
+
+        // Navigate to the proper page after authState change
+        this.nav.setRoot((this.userLogged) ? HomePage : LoginPage);
       },
       (e) => console.log('constructor error: ', e) 
     );
+
+    // Firebase notification subscription
+    // ToDo: Check if the subscription have to be unsubscribed
+    this.firebaseSrv.onNotificationOpen().subscribe(
+      (notification) => {
+        console.log('Notification! ', notification);
+        if(notification.tap) {
+          console.log('background');
+        } else {
+          console.log('foreground');
+        }
+      }, 
+      (error) => console.log('Error in notification: ', error)
+    );
+
+    // Initialize app
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -51,15 +75,44 @@ export class MyApp implements OnInit {
   }
 
   ngOnInit() {
-    this.messagingSrv.getPermission();
-    this.messagingSrv.receiveMessage();
+    if(!this.platform.is('cordova') && !this.platform.is('mobile')) {
+      console.log('Entrando por ngOninit() + if()');
+      this.messagingSrv.getPermission();
+      this.messagingSrv.receiveMessage();
+    }
     console.log('MsgReceived >>>> ', this.messagingSrv.messages$);
+  }
+
+  ionViewDidLoad() {
+    console.log('Sending analytics...');
+    //
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
+      if(this.platform.is('cordova') && this.platform.is('mobile')) {
+        this.firebaseSrv.getToken()
+          .then(t => this.utilSrv.showToast('FCM token: ' + JSON.stringify(t)))
+          .catch(e => this.utilSrv.showToast('Error getToken: ' + JSON.stringify(e)));
+
+        this.firebaseSrv.hasPermission()
+          .then(isEnabled => console.log('Has Permission? ', isEnabled))
+          .catch(error => this.utilSrv.showToast('Error has perm? ' + JSON.stringify(error)));
+
+        if(this.platform.is('ios')) {
+          console.log('Granting permissions for iOS...');
+          this.firebaseSrv.grantPermission()
+            .then(t => console.log('Granted', t))
+            .catch(e => this.utilSrv.showToast('ErrorP: ' + JSON.stringify(e)));
+        }
+
+        this.firebaseSrv.logEvent('App Opened', { foo: 1, bar: Math.random() })
+          .then()
+          .catch(error => this.utilSrv.showToast('Error event: ' + JSON.stringify(error)))
+      }
+
       // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
+      // Here you can do any ihigher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
@@ -81,5 +134,8 @@ export class MyApp implements OnInit {
 
   logout() {
     this.authSrv.logout();
+    this.platform.ready().then(() => {
+      this.firebaseSrv.unregister().catch(error => this.utilSrv.showToast('Error unregistering: ' + error));
+    });
   }
 }
