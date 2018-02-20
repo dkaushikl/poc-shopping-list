@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
+import { Firebase } from '@ionic-native/firebase';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -51,6 +52,7 @@ import {
     AlimentsProvider,
     AuthenticationProvider,
     CameraUnifiedProvider,
+    Firebase,
     GooglePlus,
     MarketsProvider,
     MessagingProvider,
