@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ItemSliding, ModalController, NavController } from 'ionic-angular';
+import { IonicPage, ItemSliding, Loading, LoadingController, ModalController, NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { merge, mergeAll, combineAll, combineLatest } from 'rxjs/operators';
 
@@ -18,13 +18,17 @@ import { ShoppingListProvider, UsersProvider } from './../../providers';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  loadingSpinner: Loading;
   shoppingLists$: Observable<ShoppingList[]>;
 
   constructor(
       private shoppingListSrv: ShoppingListProvider,
+      private loadingCtrl: LoadingController,
       private modalCtrl: ModalController,
       public navCtrl: NavController,
       private usersSrv: UsersProvider) { 
+    this.loadingSpinner = this.loadingCtrl.create({ content: 'Retrieving lists...' });
+    this.loadingSpinner.present();
     this.usersSrv.checkIfUserDataExists().catch(e => console.log('Error: ', e));
     this.shoppingLists$ = this.shoppingListSrv
       .getUserShoppingLists()
@@ -37,6 +41,7 @@ export class HomePage {
           });
           list['checked'] = checkedAliments;
         });
+        this.loadingSpinner.dismiss();
         return shoppingLists;
       });
   }
