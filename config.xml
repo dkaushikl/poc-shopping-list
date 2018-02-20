@@ -89,5 +89,6 @@
     </plugin>
     <allow-navigation href="http://192.168.12.75:8100" />
     <plugin name="cordova-plugin-firebase" spec="^0.1.25" />
-    <engine name="android" spec="~7.0.0" />
+    <allow-navigation href="http://172.21.15.40:8101" />
+    <engine name="android" spec="7.0.0" />
 </widget>
