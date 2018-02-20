@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
 import { HomePage } from './../home/home';
-import { AuthenticationProvider, ShoppingListProvider } from './../../providers';
+import { AuthenticationProvider } from './../../providers';
 
 @IonicPage()
 @Component({
