@@ -4,7 +4,6 @@ import 'rxjs/add/operator/take';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
 import * as firebase from 'firebase';
-//import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore } from 'angularfire2/firestore';
 
 import { AuthenticationProvider } from './../authentication/authentication';
