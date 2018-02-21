@@ -53,7 +53,7 @@ export class GetMediaPreviewPage {
   uploadPicture() {
     let message = `Uploading at XXX%. Please, wait...`;
     let uploadProgressIndicator = this.loadingCtrl.create({
-      content: message.replace('XXX', "0"),  // 'Uploading at 0%. Please, wait...'
+      content: message.replace('XXX', '0'),  // 'Uploading at 0%. Please, wait...'
       spinner: 'dots'
     });
     uploadProgressIndicator.present()

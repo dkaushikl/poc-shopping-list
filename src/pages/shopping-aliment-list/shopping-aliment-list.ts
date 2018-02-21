@@ -182,7 +182,7 @@ export class ShoppingAlimentListPage {
   uploadFileToFirebaseAttachments(imageBase64: string) {
     let message = `Uploading at XXX%. Please, wait...`;
     let uploadProgressIndicator = this.loadingCtrl.create({
-      content: message.replace('XXX', "0"),  // 'Uploading at 0%. Please, wait...'
+      content: message.replace('XXX', '0'),  // 'Uploading at 0%. Please, wait...'
       spinner: 'dots'
     });
 
