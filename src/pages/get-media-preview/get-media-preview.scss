@@ -1,0 +1,42 @@
+page-get-media-preview {
+    .polaroid div:after {
+        content: attr(title);
+    }
+
+    .polaroid div {
+        background: white;
+        color: #333;
+        display: inline;
+        float: left;
+        font-family: "Marker Felt", sans-serif;
+        font-size: 18px;
+        padding: 10px 10px 15px;
+        text-align: center;
+        animation: flash linear .35s 2;
+        box-shadow: 0 3px 6px rgba(0,0,0,.25);
+        transform: rotate(-2deg);
+        -moz-animation: flash linear .5s 1;
+        -moz-box-shadow: 0 3px 6px rgba(0,0,0,.25);
+        -moz-transform: rotate(-2deg);
+        -webkit-animation: flash linear .5s 1;
+        -webkit-box-shadow: 0 3px 6px rgba(0,0,0,.25);
+        -webkit-transform: rotate(-2deg);
+    }
+
+    .polaroid img {
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    @-webkit-keyframes flash {
+        0% { opacity: 1; } 
+        50% { opacity: .1; } 
+        100% { opacity: 1; }
+    }
+
+    @keyframes flash {
+        0% { opacity: 1; } 
+        50% { opacity: .1; } 
+        100% { opacity: 1; }
+    }
+}

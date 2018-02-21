@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-navbar transparent>
+    <ion-title>Camera preview...</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid style="display: flex; flex-direction: column; height: 100%;">
+    <ion-row style="flex: 4" *ngIf="!preview">
+      <ion-col col-12>
+        Focus and take your picture when you are ready!
+      </ion-col>
+      <ion-col>
+        <ack-webcam
+          [(ref)]   = "webcam"
+          [useParentWidthHeight] = "true"
+          [mime] = "image/jpeg"
+          [options] = "options"
+          (success) = "onCamSuccess($event)"
+          (catch)   = "onCamError($event)">
+        </ack-webcam>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="flex: 4" *ngIf="preview">
+      <ion-col col-12>
+        Your capture...
+      </ion-col>
+      <ion-col col-12 class="polaroid">
+        <div title="Your picture!">
+            <img [src]="preview" width="100%" />
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-12>
+        <button ion-button full (click)="genBase64()">Take screenshot!</button>
+      </ion-col>
+      <ion-col col-12>
+        <button ion-button full (click)="preview = null">Dismiss capture</button>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row>
+      <ion-col col-6>
+        <button ion-button full [disabled]="!preview" (click)="uploadPicture()">Upload this photo!</button>
+      </ion-col>
+      <ion-col col-6>
+        <button ion-button full (click)="cancel()">Cancel</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
