@@ -28,7 +28,6 @@ export class HomePage {
       public navCtrl: NavController,
       private usersSrv: UsersProvider) { 
     this.loadingSpinner = this.loadingCtrl.create({ content: 'Retrieving lists...' });
-    this.loadingSpinner.present();
     this.usersSrv.checkIfUserDataExists().catch(e => console.log('Error: ', e));
     this.shoppingLists$ = this.shoppingListSrv
       .getUserShoppingLists()
@@ -46,8 +45,8 @@ export class HomePage {
       });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad HomePage');
+  ionViewLoaded() {
+    this.loadingSpinner.present();
   }
 
   getNumberOfUserShared(shoppingList: ShoppingList) {
