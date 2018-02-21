@@ -24,7 +24,7 @@ import { MyApp } from './app.component';
 
 // Providers
 import { 
-  AlimentsProvider, AuthenticationProvider, CameraUnifiedProvider, MarketsProvider, 
+  AlimentsProvider, AttachmentsProvider, AuthenticationProvider, CameraUnifiedProvider, MarketsProvider, 
   MessagingProvider, ShoppingListProvider, UtilProvider, UsersProvider 
 } from '../providers';
 
@@ -50,6 +50,7 @@ import {
   ],
   providers: [
     AlimentsProvider,
+    AttachmentsProvider,
     AuthenticationProvider,
     CameraUnifiedProvider,
     Firebase,
