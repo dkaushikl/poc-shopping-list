@@ -157,44 +157,8 @@ export class ShoppingAlimentListPage {
     
     if(this.utilSrv.isNativePlatform()) {
       this.cameraSrv.takeNativePicture()
-        .then((imageBase64: string) => {
-          let message = `Uploading at XXX%. Please, wait...`;
-          let uploadProgressIndicator = this.loadingCtrl.create({
-            content: message.replace('XXX', "0"),  // 'Uploading at 0%. Please, wait...'
-            spinner: 'dots'
-          });
-
-          uploadProgressIndicator.present()
-            .then(() => { 
-              this.attachmentsSrv.uploadAttachmentPictureToStorage(this.listId, imageBase64).subscribe(
-                (percent) => uploadProgressIndicator.data.content = message.replace('XXX', percent.toFixed(0)),
-                (error) => {
-                  this.utilSrv.showToast('Error uploading picture: ' + JSON.stringify(error));
-                  uploadProgressIndicator.dismiss();
-                },
-                () => {
-                  this.utilSrv.showToast('File upload successfully!');
-                  uploadProgressIndicator.dismiss();
-                }
-              );
-            })
-            .catch((error) => {});
-
-          
-          this.attachmentsSrv.uploadAttachmentPictureToStorage(this.listId, imageBase64).subscribe(
-            () => {},
-            (error) => {
-              this.utilSrv.showToast('Error uploading picture: ' + JSON.stringify(error));
-            },
-            () => {
-              this.utilSrv.showToast('File upload successfully!');
-            }
-          );
-        })
-        .catch(error => {
-          console.log('Error taking picture: ', error);
-          this.utilSrv.showToast('Error: ' + error);
-        });
+        .then((imageBase64: string) => this.uploadFileToFirebaseAttachments(imageBase64))
+        .catch(error => this.utilSrv.showToast('Error taking picture: ' + error));
     } else {
       this.navCtrl.push(GetMediaPreviewPage, { listId: this.listId });
     }
@@ -205,17 +169,38 @@ export class ShoppingAlimentListPage {
     this.inputUploader.nativeElement.dispatchEvent(new MouseEvent('click'));
   }
 
-  onInputFileChange(changeEvent: Event, fileBrowserUploader: any) {
-    console.log('Files', fileBrowserUploader.files);
-    if(fileBrowserUploader.files && fileBrowserUploader.files.length > 0) {
+  onInputFileChange(changeEvent: Event, fileList: FileList) {
+    if(fileList.length > 0) {
       var reader = new FileReader();
-      reader.onload = (evt) => {
-        console.log('e! ', evt);
-        console.log('input: ', evt.target['result']);
-        console.log('Reader handler! ', reader);
+      reader.onload = (evt: ProgressEvent) => {
+        this.uploadFileToFirebaseAttachments(evt.target['result']);
       };
-      reader.readAsDataURL(fileBrowserUploader.files[0]);
+      reader.readAsDataURL(fileList.item(0));
     }
+  }
+
+  uploadFileToFirebaseAttachments(imageBase64: string) {
+    let message = `Uploading at XXX%. Please, wait...`;
+    let uploadProgressIndicator = this.loadingCtrl.create({
+      content: message.replace('XXX', "0"),  // 'Uploading at 0%. Please, wait...'
+      spinner: 'dots'
+    });
+
+    uploadProgressIndicator.present()
+      .then(() => { 
+        this.attachmentsSrv.uploadAttachmentPictureToStorage(this.listId, imageBase64).subscribe(
+          (percent) => uploadProgressIndicator.data.content = message.replace('XXX', percent.toFixed(0)),
+          (error) => {
+            this.utilSrv.showToast('Error uploading picture: ' + JSON.stringify(error));
+            uploadProgressIndicator.dismiss();
+          },
+          () => {
+            this.utilSrv.showToast('File upload successfully!');
+            uploadProgressIndicator.dismiss();
+          }
+        );
+      })
+      .catch((error) => this.utilSrv.showToast('Error uploading: ' + error));
   }
 
   updateCheckedAlimentList(aliment: AlimentItem) {
