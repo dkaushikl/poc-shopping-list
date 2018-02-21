@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
-import { AlertController, ToastController } from 'ionic-angular';
+import { AlertController, Platform, ToastController } from 'ionic-angular';
 
 @Injectable()
 export class UtilProvider {
 
-  constructor(private alertCtrl: AlertController, private toastCtrl: ToastController) {
+  constructor(private alertCtrl: AlertController, private platformSrv: Platform, private toastCtrl: ToastController) {
     console.log('Hello UtilProvider Provider');
+  }
+
+  /**
+   * 
+   */
+  public isNativePlatform() {
+    return (this.platformSrv.is('cordova') && this.platformSrv.is('mobile'));
   }
 
   /**
