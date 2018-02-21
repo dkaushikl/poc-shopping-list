@@ -4,5 +4,6 @@ export * from './camera/camera';
 export * from './markets/markets';
 export * from './messaging/messaging';
 export * from './shopping-lists/shopping-list';
+export * from './storage/attachments';
 export * from './users/users';
 export * from './utils/util';
