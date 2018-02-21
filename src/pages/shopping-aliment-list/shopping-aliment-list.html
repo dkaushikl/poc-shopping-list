@@ -94,7 +94,7 @@
       <button ion-fab (click)="takePicture(fabButtons)">
         <ion-icon name="camera"></ion-icon>
       </button>
-      <button ion-fab (click)="uploadFile(fabButtons, fileBrowserUploader)">
+      <button ion-fab (click)="dispatchEventToUploadFile(fabButtons, fileBrowserUploader)">
         <ion-icon name="cloud-upload"></ion-icon>
       </button>
     </ion-fab-list>
@@ -104,4 +104,4 @@
 <input id="xxx" #fileBrowserUploader 
   type="file" 
   style="display:none" 
-  (change)="onChange($event, fileBrowserUploader)" hidden />
+  (change)="onInputFileChange($event, fileBrowserUploader)" hidden />

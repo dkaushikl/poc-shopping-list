@@ -1,15 +1,17 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { AngularFireStorage } from 'angularfire2/storage';
+
 import { 
-  FabContainer, IonicPage, ItemSliding, Modal, ModalController, 
+  FabContainer, IonicPage, ItemSliding, LoadingController, Modal, ModalController, 
   NavController, NavParams, PopoverController 
 } from 'ionic-angular';
+
+import { GetMediaPreviewPage } from './../get-media-preview/get-media-preview';
 
 import { AlimentItem, FilterCriteria, Market, ShoppingList } from './../../models';
 import { AddAlimentPage } from './../modals';
 import { AlimentOptionsPage, FilteringOptionsPage } from './../popovers';
 import { 
-  AlimentsProvider, AuthenticationProvider, CameraUnifiedProvider, MarketsProvider, 
+  AlimentsProvider, AttachmentsProvider, AuthenticationProvider, CameraUnifiedProvider, MarketsProvider, 
   ShoppingListProvider, UsersProvider, UtilProvider 
 } from './../../providers';
 
@@ -28,10 +30,11 @@ export class ShoppingAlimentListPage {
   @ViewChild('fileBrowserUploader') inputUploader: ElementRef;
 
   constructor(
-    private afStorage: AngularFireStorage,
     private alimentSrv: AlimentsProvider,
+    private attachmentsSrv: AttachmentsProvider,
     private authSrv: AuthenticationProvider,
     private cameraSrv: CameraUnifiedProvider,
+    private loadingCtrl: LoadingController,
     private marketSrv: MarketsProvider,
     private modalCtrl: ModalController,
     public navCtrl: NavController, 
@@ -151,44 +154,58 @@ export class ShoppingAlimentListPage {
 
   takePicture(fabButton: FabContainer) {
     if(fabButton) fabButton.close();
-    this.cameraSrv.takePicture()
-      .then((image: string) => {
-        
-        // Option 1
-        /*this.afStorage.ref(`/attachments/${this.listId}/${new Date().getTime()}`)
-          .putString(image, 'data_url', { contentType: 'image/jpg' })
-          .percentageChanges()
-          .subscribe(
-            (percent: number) => console.log('Percent: ', percent) 
-          );*/
-        
-        // More metadata: https://firebase.google.com/docs/storage/web/file-metadata
-        
-        this.utilSrv.showToast('Upload started...');
+    
+    if(this.utilSrv.isNativePlatform()) {
+      this.cameraSrv.takeNativePicture()
+        .then((imageBase64: string) => {
+          let message = `Uploading at XXX%. Please, wait...`;
+          let uploadProgressIndicator = this.loadingCtrl.create({
+            content: message.replace('XXX', "0"),  // 'Uploading at 0%. Please, wait...'
+            spinner: 'dots'
+          });
 
-        // Si image viene con "data:image/jpeg;base64," se puede hacer tb image.substring(23) y guardar como:
-        //   refImage.putString(image.substring(X), 'base64')
-        this.afStorage.ref(`/attachments/${this.listId}/${new Date().getTime()}.jpeg`)
-          .putString(image.substring(image.indexOf(',') + 1), 'base64', { contentType: 'image/jpg' })
-          .percentageChanges()
-          .subscribe(
-            (percent: number) => console.log('Percent: ', percent),
-            (error) => console.log('Error uploading'),
-            () => this.utilSrv.showToast('File uploaded successfully!')
+          uploadProgressIndicator.present()
+            .then(() => { 
+              this.attachmentsSrv.uploadAttachmentPictureToStorage(this.listId, imageBase64).subscribe(
+                (percent) => uploadProgressIndicator.data.content = message.replace('XXX', percent.toFixed(0)),
+                (error) => {
+                  this.utilSrv.showToast('Error uploading picture: ' + JSON.stringify(error));
+                  uploadProgressIndicator.dismiss();
+                },
+                () => {
+                  this.utilSrv.showToast('File upload successfully!');
+                  uploadProgressIndicator.dismiss();
+                }
+              );
+            })
+            .catch((error) => {});
+
+          
+          this.attachmentsSrv.uploadAttachmentPictureToStorage(this.listId, imageBase64).subscribe(
+            () => {},
+            (error) => {
+              this.utilSrv.showToast('Error uploading picture: ' + JSON.stringify(error));
+            },
+            () => {
+              this.utilSrv.showToast('File upload successfully!');
+            }
           );
-      })
-      .catch(error => {
-        console.log('Error taking picture: ', error);
-        this.utilSrv.showToast('Error: ' + error);
-      });
+        })
+        .catch(error => {
+          console.log('Error taking picture: ', error);
+          this.utilSrv.showToast('Error: ' + error);
+        });
+    } else {
+      this.navCtrl.push(GetMediaPreviewPage, { listId: this.listId });
+    }
   }
 
-  uploadFile(fabButton: FabContainer, fileBrowserUploader: any) {
+  dispatchEventToUploadFile(fabButton: FabContainer, fileBrowserUploader: any) {
     if(fabButton) fabButton.close();
     this.inputUploader.nativeElement.dispatchEvent(new MouseEvent('click'));
   }
 
-  onChange(changeEvent: Event, fileBrowserUploader: any) {
+  onInputFileChange(changeEvent: Event, fileBrowserUploader: any) {
     console.log('Files', fileBrowserUploader.files);
     if(fileBrowserUploader.files && fileBrowserUploader.files.length > 0) {
       var reader = new FileReader();
