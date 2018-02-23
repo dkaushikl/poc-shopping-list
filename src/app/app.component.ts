@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Firebase } from '@ionic-native/firebase';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Subscription } from 'rxjs/Subscription';
 
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
@@ -19,12 +20,13 @@ import { Page } from './../models';
 @Component({
   templateUrl: 'app.component.html'
 })
-export class MyApp implements OnInit {
+export class MyApp {
   @ViewChild(Nav) nav: Nav;
   userLogged: boolean = false;
   userData: any = null;
   rootPage: any = LoginPage;
   pages: Array<Page>;
+  firebaseSubscription: Subscription;;
 
   constructor(
       private authSrv: AuthenticationProvider,
@@ -43,22 +45,31 @@ export class MyApp implements OnInit {
 
         // Navigate to the proper page after authState change
         this.nav.setRoot((this.userLogged) ? HomePage : LoginPage);
+
+        if(userLoggedState && userLoggedState.uid) {
+          // Firebase notification subscription
+          // ToDo: Check if the subscription have to be unsubscribed
+          this.firebaseSubscription = this.firebaseSrv.onNotificationOpen().subscribe(
+            (notification) => {
+              console.log('Notification! ', notification);
+              if(notification.tap) {
+                console.log('background');
+              } else {
+                console.log('foreground');
+              }
+            }, 
+            (error) => console.log('Error in notification: ', error)
+          );
+
+          if(!this.platform.is('cordova') && !this.platform.is('mobile')) {
+            this.messagingSrv.getPermission();
+            this.messagingSrv.receiveMessage();
+          }
+        } else {
+          this.firebaseSubscription.unsubscribe();
+        }
       },
       (e) => console.log('constructor error: ', e) 
-    );
-
-    // Firebase notification subscription
-    // ToDo: Check if the subscription have to be unsubscribed
-    this.firebaseSrv.onNotificationOpen().subscribe(
-      (notification) => {
-        console.log('Notification! ', notification);
-        if(notification.tap) {
-          console.log('background');
-        } else {
-          console.log('foreground');
-        }
-      }, 
-      (error) => console.log('Error in notification: ', error)
     );
 
     // Initialize app
@@ -74,41 +85,15 @@ export class MyApp implements OnInit {
     ];
   }
 
-  ngOnInit() {
-    if(!this.platform.is('cordova') && !this.platform.is('mobile')) {
-      console.log('Entrando por ngOninit() + if()');
-      this.messagingSrv.getPermission();
-      this.messagingSrv.receiveMessage();
-    }
-    console.log('MsgReceived >>>> ', this.messagingSrv.messages$);
-  }
-
   ionViewDidLoad() {
     console.log('Sending analytics...');
-    //
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      if(this.platform.is('cordova') && this.platform.is('mobile')) {
-        this.firebaseSrv.getToken()
-          .then(t => this.utilSrv.showToast('FCM token: ' + JSON.stringify(t)))
-          .catch(e => this.utilSrv.showToast('Error getToken: ' + JSON.stringify(e)));
-
-        this.firebaseSrv.hasPermission()
-          .then(isEnabled => console.log('Has Permission? ', isEnabled))
-          .catch(error => this.utilSrv.showToast('Error has perm? ' + JSON.stringify(error)));
-
-        if(this.platform.is('ios')) {
-          console.log('Granting permissions for iOS...');
-          this.firebaseSrv.grantPermission()
-            .then(t => console.log('Granted', t))
-            .catch(e => this.utilSrv.showToast('ErrorP: ' + JSON.stringify(e)));
-        }
-
-        this.firebaseSrv.logEvent('App Opened', { foo: 1, bar: Math.random() })
-          .then()
-          .catch(error => this.utilSrv.showToast('Error event: ' + JSON.stringify(error)))
+      //if(this.platform.is('cordova') && this.platform.is('mobile')) {
+      if(this.utilSrv.isNativePlatform()) {
+        
       }
 
       // Okay, so the platform is ready and our plugins are available.
