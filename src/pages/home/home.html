@@ -8,6 +8,12 @@
 </ion-header>
 
 <ion-content padding>
+    <div *ngFor="let e of errors" style="color:white">
+      ERROR: {{ e }}
+      <hr />
+    </div>
+
+
   <ion-card *ngFor="let list of (shoppingLists$ | async)">
     <ion-card-header>
       <ion-row>
