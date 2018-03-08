@@ -46,10 +46,13 @@ export class MyApp {
         // Navigate to the proper page after authState change
         this.nav.setRoot((this.userLogged) ? HomePage : LoginPage);
 
-        if(userLoggedState && userLoggedState.uid) {
+        if(this.utilSrv.isNativePlatform() && userLoggedState && userLoggedState.uid) {
+          this.messagingSrv.getPermission();
+          this.messagingSrv.receiveMessage();
+
           // Firebase notification subscription
           // ToDo: Check if the subscription have to be unsubscribed
-          this.firebaseSubscription = this.firebaseSrv.onNotificationOpen().subscribe(
+          /*this.firebaseSubscription = this.firebaseSrv.onNotificationOpen().subscribe(
             (notification) => {
               console.log('Notification! ', notification);
               if(notification.tap) {
@@ -59,14 +62,11 @@ export class MyApp {
               }
             }, 
             (error) => console.log('Error in notification: ', error)
-          );
-
-          if(!this.platform.is('cordova') && !this.platform.is('mobile')) {
-            this.messagingSrv.getPermission();
-            this.messagingSrv.receiveMessage();
-          }
-        } else {
-          this.firebaseSubscription.unsubscribe();
+          );*/
+        } else if(this.utilSrv.isNativePlatform() && (!userLoggedState || !userLoggedState.uid)) {
+          /*if(this.firebaseSubscription)
+            this.firebaseSubscription.unsubscribe();
+          this.firebaseSubscription = null;*/
         }
       },
       (e) => console.log('constructor error: ', e) 
@@ -85,17 +85,8 @@ export class MyApp {
     ];
   }
 
-  ionViewDidLoad() {
-    console.log('Sending analytics...');
-  }
-
   initializeApp() {
     this.platform.ready().then(() => {
-      //if(this.platform.is('cordova') && this.platform.is('mobile')) {
-      if(this.utilSrv.isNativePlatform()) {
-        
-      }
-
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any ihigher level native things you might need.
       this.statusBar.styleDefault();

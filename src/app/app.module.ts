@@ -24,9 +24,10 @@ import { MyApp } from './app.component';
 
 // Providers
 import { 
-  AlimentsProvider, AttachmentsProvider, AuthenticationProvider, CameraUnifiedProvider, MarketsProvider, 
-  MessagingProvider, ShoppingListProvider, UtilProvider, UsersProvider 
+  AlimentsProvider, AnalyticsProvider, AttachmentsProvider, AuthenticationProvider, CameraUnifiedProvider, 
+  MarketsProvider, MessagingProvider, ShoppingListProvider, UtilProvider, UsersProvider 
 } from '../providers';
+import {  } from '../providers/analytics/analytics';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {
   ],
   providers: [
     AlimentsProvider,
+    AnalyticsProvider,
     AttachmentsProvider,
     AuthenticationProvider,
     CameraUnifiedProvider,
