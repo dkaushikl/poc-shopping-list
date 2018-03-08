@@ -1,4 +1,5 @@
 export * from './aliments/aliments';
+export * from './analytics/analytics';
 export * from './authentication/authentication';
 export * from './camera/camera';
 export * from './markets/markets';
