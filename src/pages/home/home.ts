@@ -15,7 +15,9 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { AddNewListPage } from './../modals';
 import { ShoppingList } from './../../models';
 import { ShoppingAlimentListPage } from './../shopping-aliment-list/shopping-aliment-list';
-import { MessagingProvider, ShoppingListProvider, UsersProvider, UtilProvider } from './../../providers';
+import { 
+  AnalyticsProvider, MessagingProvider, ShoppingListProvider, UsersProvider, UtilProvider 
+} from './../../providers';
 
 @IonicPage()
 @Component({
@@ -28,14 +30,15 @@ export class HomePage {
   errors = ['AAA', 'BBB'];
 
   constructor(
-      private loadingCtrl: LoadingController,
-      private messagingSrv: MessagingProvider,
-      private modalCtrl: ModalController,
-      private navCtrl: NavController,
-      private platformSrv: Platform,
-      private shoppingListSrv: ShoppingListProvider,
-      private usersSrv: UsersProvider,
-      private utilSrv: UtilProvider
+    private analyticSrv: AnalyticsProvider,
+    private loadingCtrl: LoadingController,
+    private messagingSrv: MessagingProvider,
+    private modalCtrl: ModalController,
+    private navCtrl: NavController,
+    private platformSrv: Platform,
+    private shoppingListSrv: ShoppingListProvider,
+    private usersSrv: UsersProvider,
+    private utilSrv: UtilProvider
   ) { 
     console.log('0 > Constructor');
     this.usersSrv.checkIfUserDataExists().catch(e => console.log('Error: ', e));
@@ -43,8 +46,9 @@ export class HomePage {
     this.messagingSrv.getFirebaseToken()
       .then(() => {})
       .catch((err) => this.utilSrv.showToast('Error registering: ' + err));
-      
     
+    this.analyticSrv.setScreenName('Home');
+    this.analyticSrv.logEvent('Home');
     
     /*this.platformSrv.ready().then(() => {
       if(this.utilSrv.isNativePlatform()) {
@@ -54,22 +58,11 @@ export class HomePage {
             this.errors.push('Error has perm? ' + JSON.stringify(error));
             this.utilSrv.showToast('E.HP: ' + error);
           });
-
-        
-
         if(this.platformSrv.is('ios')) {
           this.firebaseSrv.grantPermission()
             .then(token => console.log('Granted: ', token))
             .catch(error => this.errors.push('ErrorP: ' + JSON.stringify(error)));
         }
-
-        this.firebaseSrv.logEvent('page_view', {page: 'home'})
-          .then()
-          .catch(error => this.errors.push('Error logEvent: ' + JSON.stringify(error)));
-
-        this.firebaseSrv.setScreenName('Home!')
-          .then()
-          .catch(error => this.errors.push('Error ScreenName: ' + JSON.stringify(error)));
       }
     });*/
   }
