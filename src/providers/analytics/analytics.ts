@@ -1,17 +1,17 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Firebase } from '@ionic-native/firebase';
 
-/*
-  Generated class for the AnalyticsProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class AnalyticsProvider {
 
-  constructor(public http: HttpClient) {
-    console.log('Hello AnalyticsProvider Provider');
+  constructor(private firebaseSrv: Firebase) { }
+
+  logEvent(page: string, event: string = 'page_view') {
+    return this.firebaseSrv.logEvent(event, { page });
+  }
+
+  setScreenName(screenName: string) {
+    return this.firebaseSrv.setScreenName('Home!');
   }
 
 }
