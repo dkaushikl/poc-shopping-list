@@ -25,11 +25,20 @@ export class MessagingProvider {
   }
 
   getFirebaseToken() {
-    this.firebaseSrv.getToken()
-      .then(token => {
-        return this.registerToken(token);
-      })
-      .catch(error => this.utilSrv.showToast('Error registering device: ' + JSON.stringify(error)));
+    return new Promise((resolve, reject) => {
+      this.firebaseSrv.getToken()
+        .then(token => {
+          // Subscription for future refreshed tokens
+          this.firebaseSrv.onTokenRefresh().subscribe(
+            (tokenRefreshed: string) => this.registerToken(tokenRefreshed),
+            (error) => this.utilSrv.showToast('Error refreshing token: ' + error)
+          );
+
+          // Register token
+          return this.registerToken(token);
+        })
+        .catch(error => reject(error))
+    });
   }
 
   registerToken(token: string) {
