@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Platform } from 'ionic-angular';
 
 import 'rxjs/add/operator/take';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
@@ -19,6 +20,7 @@ export class MessagingProvider {
     private afs: AngularFirestore, 
     private authSrv: AuthenticationProvider, 
     private firebaseSrv: Firebase,
+    private platformSrv: Platform,
     private utilSrv: UtilProvider
   ) {
     console.log('Hello MessagingProvider Provider');
@@ -26,40 +28,40 @@ export class MessagingProvider {
 
   getFirebaseToken() {
     return new Promise((resolve, reject) => {
-      this.firebaseSrv.getToken()
-        .then(token => {
-          // Subscription for future refreshed tokens
-          this.firebaseSrv.onTokenRefresh().subscribe(
-            (tokenRefreshed: string) => this.registerToken(tokenRefreshed),
-            (error) => this.utilSrv.showToast('Error refreshing token: ' + error)
-          );
+      if(this.utilSrv.isNativePlatform()) {  // Native platform
+        this.platformSrv.ready()
+          .then(() => {
+            // Register an observable for getting notified when a token is refreshed
+            this.firebaseSrv.onTokenRefresh().subscribe(
+              refreshedToken => {
+                console.log('Token Refreshed: ', refreshedToken);
+                this.registerNativeToken(refreshedToken);
+              }
+            );
 
-          // Register token
-          return this.registerToken(token);
-        })
-        .catch(error => reject(error))
+            // Get firebase token (native)
+            return this.firebaseSrv.getToken();
+          })
+          .then(token => { 
+            console.log('Firebas native token: ' + token);
+            return this.registerNativeToken(token);
+          })
+          .catch(error => reject('Platform error registering native device: ' + error));
+      } else {  // Web platform
+        console.log('Request permissions...');
+        return this.messaging.requestPermission()
+          .then(() => {
+            console.log('requested permissions');
+            return this.messaging.getToken();
+          })
+          .then((token) => {
+            console.log('TokeN web is: ', token);
+            if(!this.authSrv.logged) return;
+            return this.registerWebToken(token);
+          })
+          .catch(error => reject(`Error: Unable to get permission to notify (${error})`));
+      }
     });
-  }
-
-  registerToken(token: string) {
-    return new Promise((resolve, reject) => {
-      console.log('Registering token...');
-      return (this.utilSrv.isNativePlatform())
-        ? this.registerNativeToken(token)
-        : this.registerWebToken(token)
-    });
-  }
-
-  getPermission() {
-    this.messaging.requestPermission()
-      .then(() => {
-        return this.messaging.getToken();
-      })
-      .then((token) => {
-        console.log('TokeN web: ', token);
-        return this.registerToken(token);
-      })
-      .catch(error => this.utilSrv.showToast(`Error: Unable to get permission to notify (${error})`));
   }
 
   receiveMessage() {
