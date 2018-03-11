@@ -27,7 +27,7 @@ import {
 export class HomePage {
   loadingSpinner: Loading;
   shoppingLists$: Observable<ShoppingList[]>;
-  errors = ['AAA', 'BBB'];
+  errors = [''];
 
   constructor(
     private analyticSrv: AnalyticsProvider,
@@ -42,29 +42,13 @@ export class HomePage {
   ) { 
     console.log('0 > Constructor');
     this.usersSrv.checkIfUserDataExists().catch(e => console.log('Error: ', e));
+
+    /*this.messagingSrv.getFirebaseToken()
+      .then((token) => console.log('Token registered: ', token))
+      .catch((err) => this.utilSrv.showToast('Error registering: ' + err));*/
     
-    this.messagingSrv.getFirebaseToken()
-      .then(() => {})
-      .catch((err) => this.utilSrv.showToast('Error registering: ' + err));
-    
-    this.analyticSrv.setScreenName('Home');
-    this.analyticSrv.logEvent('Home');
-    
-    /*this.platformSrv.ready().then(() => {
-      if(this.utilSrv.isNativePlatform()) {
-        this.firebaseSrv.hasPermission()
-          .then(isEnabled => this.errors.push('Has Permission? ' + isEnabled))
-          .catch(error => {
-            this.errors.push('Error has perm? ' + JSON.stringify(error));
-            this.utilSrv.showToast('E.HP: ' + error);
-          });
-        if(this.platformSrv.is('ios')) {
-          this.firebaseSrv.grantPermission()
-            .then(token => console.log('Granted: ', token))
-            .catch(error => this.errors.push('ErrorP: ' + JSON.stringify(error)));
-        }
-      }
-    });*/
+    //this.analyticSrv.setScreenName('Home');
+    //this.analyticSrv.logEvent('Home');
   }
 
   ionViewDidLoad() {
@@ -85,6 +69,7 @@ export class HomePage {
 
   subscribeToShoppingLists() {
     this.loadingSpinner = this.loadingCtrl.create({ content: 'Retrieving lists...' });
+    console.log('Presenting...');
     this.loadingSpinner.present();
     this.shoppingLists$ = this.shoppingListSrv
       .getUserShoppingLists()
@@ -97,6 +82,7 @@ export class HomePage {
           });
           list['checked'] = checkedAliments;
         });
+        console.log('Dismissing...');
         this.loadingSpinner.dismiss();
         return shoppingLists;
       });
