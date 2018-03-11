@@ -11,6 +11,7 @@
     "deploy:firebase": "npm run build:release && firebase deploy",
     "deploy:android": "./devtools/create-sign-install-apk.sh",
     "lint": "ionic-app-scripts lint",
+    "notifier": "node ./devtools/send-push-message.js",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve"
   },
