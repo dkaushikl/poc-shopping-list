@@ -10,10 +10,15 @@ import { GooglePlus } from '@ionic-native/google-plus';
 @Injectable()
 export class AuthenticationProvider {
   authState: firebase.User;
+  logged: boolean;
 
   constructor(private afAuth: AngularFireAuth, private googlePlusSrv: GooglePlus, private platformSrv: Platform) {
     this.afAuth.authState.subscribe(
-      (auth) => { this.authState = auth; }
+      (auth) => { 
+        this.authState = auth; 
+        this.logged = (auth) ? true : false;
+        console.log('logged: ', this.logged);
+      }
     );
   }
 
