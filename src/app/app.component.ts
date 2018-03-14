@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Firebase } from '@ionic-native/firebase';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -20,7 +20,7 @@ import { Page } from './../models';
 @Component({
   templateUrl: 'app.component.html'
 })
-export class MyApp {
+export class MyApp implements OnInit {
   @ViewChild(Nav) nav: Nav;
   userLogged: boolean = false;
   userData: any = null;
@@ -30,7 +30,7 @@ export class MyApp {
 
   constructor(
       private authSrv: AuthenticationProvider,
-      private firebaseSrv: Firebase,
+      //private firebaseSrv: Firebase,
       private messagingSrv: MessagingProvider,
       public platform: Platform, 
       public statusBar: StatusBar, 
@@ -46,28 +46,11 @@ export class MyApp {
         // Navigate to the proper page after authState change
         this.nav.setRoot((this.userLogged) ? HomePage : LoginPage);
 
-        if(this.utilSrv.isNativePlatform() && userLoggedState && userLoggedState.uid) {
-          this.messagingSrv.getPermission();
-          this.messagingSrv.receiveMessage();
-
-          // Firebase notification subscription
-          // ToDo: Check if the subscription have to be unsubscribed
-          /*this.firebaseSubscription = this.firebaseSrv.onNotificationOpen().subscribe(
-            (notification) => {
-              console.log('Notification! ', notification);
-              if(notification.tap) {
-                console.log('background');
-              } else {
-                console.log('foreground');
-              }
-            }, 
-            (error) => console.log('Error in notification: ', error)
-          );*/
-        } else if(this.utilSrv.isNativePlatform() && (!userLoggedState || !userLoggedState.uid)) {
-          /*if(this.firebaseSubscription)
-            this.firebaseSubscription.unsubscribe();
-          this.firebaseSubscription = null;*/
-        }
+        /*if(userLoggedState) {
+          this.messagingSrv.getFirebaseToken()
+            .then((token) => console.log('Token registered: ', token))
+            .catch((err) => this.utilSrv.showToast('Error registering: ' + err));
+        }*/
       },
       (e) => console.log('constructor error: ', e) 
     );
@@ -83,6 +66,19 @@ export class MyApp {
       { title: 'Profile', component: ProfilePage, icon: 'contact' },
       { title: 'About', component: AboutPage, icon: 'information-circle' }
     ];
+  }
+
+  ngOnInit() {
+    this.messagingSrv.messaging.requestPermission();
+    this.messagingSrv.getFirebaseToken()
+      .then((token) => console.log('Token registered: ', token))
+      .catch((err) => this.utilSrv.showToast('Error registering: ' + err));
+
+    this.messagingSrv.receiveMessage();
+    
+    /*this.messagingSrv.messages$.subscribe(
+      m => console.log('Notif Push: ', m)
+    );*/
   }
 
   initializeApp() {
@@ -110,8 +106,8 @@ export class MyApp {
 
   logout() {
     this.authSrv.logout();
-    this.platform.ready().then(() => {
+    /*this.platform.ready().then(() => {
       this.firebaseSrv.unregister().catch(error => this.utilSrv.showToast('Error unregistering: ' + error));
-    });
+    });*/
   }
 }
