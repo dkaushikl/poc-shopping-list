@@ -13,6 +13,7 @@ import { ShoppingListProvider, UsersProvider, UtilProvider } from './../../../pr
 export class AddNewListPage {
 
   form: FormGroup;
+  listId: string;
   userInvitations: Array<string>;
   shoppingListName: string;
   editMode: boolean;
@@ -38,6 +39,7 @@ export class AddNewListPage {
     let params: ShoppingList = this.navParams.get('listToEdit');
     this.userInvitations = new Array<string>();
     if(params) {
+      this.listId = params.id;
       this.editMode = true;
       this.shoppingListName = params.name;
       this.sharedWith = Object.keys(params.sharedWith || {});
@@ -61,6 +63,12 @@ export class AddNewListPage {
 
   removeInvitation(index: number) {
     this.userInvitations.splice(index, 1);
+  }
+
+  sendInvitations() {
+    //this.sharedWith.push(...this.userInvitations);
+    // Clean duplicated or non email registers
+    this.shoppingListSrv.sendUserInvitationsToNewUsers(this.listId, this.userInvitations);
   }
 
   createNewShoppingList() {
