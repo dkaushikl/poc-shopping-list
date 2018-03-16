@@ -8,7 +8,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        Fill the following fields:
+        <h2>Fill the following fields:</h2>
       </ion-col>
     </ion-row>
     
@@ -40,7 +40,7 @@
     </ion-row>
 
     <ion-row *ngIf="sharedList">
-      <ion-col>
+      <ion-col col-12>
         <ion-list>
           <ion-item *ngFor="let invitation of userInvitations; let i = index; trackBy: trackByIndex">
             <ion-input type="text" 
@@ -53,24 +53,32 @@
           </ion-item>
         </ion-list>
       </ion-col>
+
+      <ion-col col-12 *ngIf="userInvitations && userInvitations.length > 0">
+        <button ion-button full icon-left color="primary" (click)="sendInvitations()">
+          <ion-icon name="send"></ion-icon>
+          Send invitations to this list
+        </button>
+      </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="sharedList" style="margin-top: 12px">
+    <ion-row *ngIf="sharedList" style="margin-top: 28px">
       <ion-col>
         <h2>List shared with...</h2>
       </ion-col>
     </ion-row>
+
     <ion-row *ngIf="sharedList">
       <ion-col>
         <ion-list>
           <ion-item *ngFor="let user of sharedWith">
               <ion-avatar item-start>
-                  <img [src]="'https://robohash.org/' + user">
-                </ion-avatar>
-                {{ user }}
-                <button ion-button outline icon-only item-end>
-                    <ion-icon name="trash" style="padding: 9px"></ion-icon>
-                </button>
+                <img [src]="'https://robohash.org/' + user">
+              </ion-avatar>
+              {{ user }}
+              <button ion-button outline icon-only item-end>
+                <ion-icon name="trash" style="padding: 9px"></ion-icon>
+              </button>
           </ion-item>
         </ion-list>
       </ion-col>
