@@ -46,11 +46,13 @@ export class MyApp implements OnInit {
         // Navigate to the proper page after authState change
         this.nav.setRoot((this.userLogged) ? HomePage : LoginPage);
 
-        /*if(userLoggedState) {
+        if(userLoggedState) {
+          console.log('Subscribe is logged? ', userLoggedState);
+          this.messagingSrv.messaging.requestPermission();
           this.messagingSrv.getFirebaseToken()
             .then((token) => console.log('Token registered: ', token))
             .catch((err) => this.utilSrv.showToast('Error registering: ' + err));
-        }*/
+        }
       },
       (e) => console.log('constructor error: ', e) 
     );
@@ -69,16 +71,7 @@ export class MyApp implements OnInit {
   }
 
   ngOnInit() {
-    this.messagingSrv.messaging.requestPermission();
-    this.messagingSrv.getFirebaseToken()
-      .then((token) => console.log('Token registered: ', token))
-      .catch((err) => this.utilSrv.showToast('Error registering: ' + err));
-
     this.messagingSrv.receiveMessage();
-    
-    /*this.messagingSrv.messages$.subscribe(
-      m => console.log('Notif Push: ', m)
-    );*/
   }
 
   initializeApp() {
