@@ -16,7 +16,7 @@ module.exports = functions.https.onRequest((req, res) => {
                 let processedResponses = {};
                 responses.forEach((query, index) => {
                     query.docs.forEach(doc => {
-                        processedResponses[req.body.emails[index]] = doc.data();
+                        processedResponses[req.body.emails[index]] = doc.data().uid;
                     });
                 });
                 return res.status(200).send(processedResponses);
