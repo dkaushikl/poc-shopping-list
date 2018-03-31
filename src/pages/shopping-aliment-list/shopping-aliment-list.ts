@@ -100,7 +100,7 @@ export class ShoppingAlimentListPage {
 
                   // Check if the UID is valid and is different from mine
                   if(uid !== null && uid !== this.authSrv.getCurrentUserId()) {
-                    this.shoppingListSrv.shareShoppingList(this.listId, uid)
+                    this.shoppingListSrv.shareShoppingList(this.listId, [uid])
                       .then(() => this.utilSrv.showToast('Invitation successfully sent!'))
                       .catch(error => this.utilSrv.showToast('Error: ', error));
                   } else {
