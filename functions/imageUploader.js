@@ -1,5 +1,5 @@
-const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const functions = require('firebase-functions');
 
 const host = 'https://firebasestorage.googleapis.com/v0/b';
 const bucket = 'shopping-list-db.appspot.com/o';
