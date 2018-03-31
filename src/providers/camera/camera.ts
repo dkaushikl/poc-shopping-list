@@ -18,17 +18,18 @@ export class CameraUnifiedProvider {
   
   takeNativePicture() {
     const opts : CameraOptions = {
+      correctOrientation: true,
       destinationType: this.cameraSrv.DestinationType.DATA_URL,
-      encodingType: this.cameraSrv.EncodingType.JPEG,
+      encodingType: this.cameraSrv.EncodingType.PNG,
       mediaType: this.cameraSrv.MediaType.PICTURE,
       saveToPhotoAlbum: false,
       sourceType: this.cameraSrv.PictureSourceType.CAMERA,
-      quality: 85
+      quality: 50
     }
     
     return new Promise((resolve, reject) => {
       this.cameraSrv.getPicture(opts) 
-        .then((imageData) => resolve(`data:image/jpeg;base64,${imageData}`))
+        .then((imageData) => resolve(`data:image/png;base64,${imageData}`))
         .catch((error) => reject(error));
     });
   }
