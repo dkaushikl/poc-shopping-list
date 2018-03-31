@@ -52,7 +52,6 @@ export class ShoppingListProvider {
       .then(doc => {
         let list = doc.data() as ShoppingList;
         userIdToShare.forEach(id => list.sharedWith[id] = true);
-        //list.sharedWith[userIdToShare] = true;
         return doc.ref.update(list);
       })
       .catch(e => console.log('errorrrr: ', e));
