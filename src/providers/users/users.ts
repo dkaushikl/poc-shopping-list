@@ -26,7 +26,6 @@ export class UsersProvider {
   }
 
   getUserUidFromEmail(emailAddress: string) {
-    console.log('Searching email: ', emailAddress);
     return this.afs
       .collection('users', (ref) => { return ref.where('email', '==', emailAddress); })
       .snapshotChanges();
