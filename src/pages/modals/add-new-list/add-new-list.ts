@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams, ViewController } from 'ionic-angular';
 
 import { ShoppingList } from './../../../models';
 import { ShoppingListProvider, UsersProvider, UtilProvider } from './../../../providers';
@@ -24,6 +24,7 @@ export class AddNewListPage {
 
   constructor(
     private formBuilder: FormBuilder,
+    private loadingCtrl: LoadingController,
     private navCtrl: NavController, 
     private navParams: NavParams,
     private shoppingListSrv: ShoppingListProvider,
@@ -58,7 +59,11 @@ export class AddNewListPage {
   }
 
   prepareNewInvitation() {
-    this.userInvitations.push('');
+    const validLastEmail = this.userSrv.isValidEmail(this.userInvitations[this.userInvitations.length-1]);
+    if(this.userInvitations.length >= 1 && !validLastEmail)
+      this.utilSrv.showAlert('Data check', 'There is wrong address format; please, check it');
+    else
+      this.userInvitations.push('');
   }
 
   removeInvitation(index: number) {
@@ -66,9 +71,25 @@ export class AddNewListPage {
   }
 
   sendInvitations() {
-    //this.sharedWith.push(...this.userInvitations);
-    // Clean duplicated or non email registers
-    this.shoppingListSrv.sendUserInvitationsToNewUsers(this.listId, this.userInvitations);
+    let loading = this.loadingCtrl.create({ content: 'Checking addresses...' });
+    loading.present();
+    this.shoppingListSrv.sendUserInvitationsToNewUsers(this.listId, this.userInvitations).subscribe(
+      (userIds) => {
+        console.log('UserIds: ', userIds);
+        const checkedUserIds = Object.keys(userIds);
+        loading.dismiss();
+        if(this.userInvitations.length !== checkedUserIds.length) {
+          this.utilSrv.showAlert('Wrong address', 'Wrong email address detected; removing automatically...');
+          this.userInvitations = this.userInvitations.filter(email => userIds[email]);
+        }
+        console.log('>> ', this.getArrayFromInvitationIds(userIds));
+        this.shoppingListSrv.shareShoppingList(this.listId, this.getArrayFromInvitationIds(userIds));
+      },
+      (error) => {
+        console.log('Error sending invitations: ', error);
+        loading.dismiss();
+      }
+    );
   }
 
   createNewShoppingList() {
@@ -94,6 +115,12 @@ export class AddNewListPage {
 
   cancel() {
     this.navCtrl.pop();
+  }
+
+  private getArrayFromInvitationIds(ids: Object) {
+    let array: Array<string> = [];
+    Object.keys(ids).forEach(id => array.push(ids[id]));
+    return array;
   }
 
 }
