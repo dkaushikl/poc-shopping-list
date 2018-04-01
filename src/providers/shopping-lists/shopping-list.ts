@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { AngularFirestore } from 'angularfire2/firestore';
 
@@ -10,7 +10,11 @@ import { AuthenticationProvider } from './../authentication/authentication';
 export class ShoppingListProvider {
   userId: string;
 
-  constructor(private authSrv: AuthenticationProvider, private afs: AngularFirestore, private http: HttpClient) { }
+  constructor(
+    private authSrv: AuthenticationProvider, 
+    private afs: AngularFirestore, 
+    private http: HttpClient
+  ) { }
 
   getUserShoppingLists() {
     return this.afs
@@ -54,7 +58,7 @@ export class ShoppingListProvider {
         userIdToShare.forEach(id => list.sharedWith[id] = true);
         return doc.ref.update(list);
       })
-      .catch(e => console.log('errorrrr: ', e));
+      .catch(e => Promise.reject(e));
   }
 
   sendUserInvitationsToNewUsers(listId: string, userEmailsToShare: Array<string>) {
