@@ -14,12 +14,12 @@ export class AddNewListPage {
 
   form: FormGroup;
   listId: string;
+  loadingUsers: boolean;
   userInvitations: Array<string>;
   shoppingListName: string;
   editMode: boolean;
   sharedList: boolean;
   sharedWith: Array<any>;
-
   fShoppingListName: string;
 
   constructor(
@@ -38,13 +38,26 @@ export class AddNewListPage {
     });
 
     let params: ShoppingList = this.navParams.get('listToEdit');
+    this.loadingUsers = true;
     this.userInvitations = new Array<string>();
     if(params) {
       this.listId = params.id;
       this.editMode = true;
       this.shoppingListName = params.name;
-      this.sharedWith = Object.keys(params.sharedWith || {});
-      this.sharedList = this.sharedWith.length > 1;
+      this.userSrv.getUserNameFromUid(Object.keys(params.sharedWith)).subscribe(
+        (usernames) => {
+          this.sharedWith = [];
+          Object.keys(usernames).forEach(username => this.sharedWith.push({
+            uid: username,
+            name: usernames[username]
+          }));
+          this.sharedList = this.sharedWith.length > 1;
+          this.loadingUsers = false;
+        },
+        (error) => {
+          console.log('Error: ', error);
+        }
+      );
     } else {
       this.editMode = false;
       this.shoppingListName = '';
@@ -75,21 +88,28 @@ export class AddNewListPage {
     loading.present();
     this.shoppingListSrv.sendUserInvitationsToNewUsers(this.listId, this.userInvitations).subscribe(
       (userIds) => {
-        console.log('UserIds: ', userIds);
         const checkedUserIds = Object.keys(userIds);
         loading.dismiss();
         if(this.userInvitations.length !== checkedUserIds.length) {
-          this.utilSrv.showAlert('Wrong address', 'Wrong email address detected; removing automatically...');
+          this.utilSrv.showAlert(
+            'Wrong address', 
+            'Not valid email address detected; removing it automatically...'
+          );
           this.userInvitations = this.userInvitations.filter(email => userIds[email]);
         }
-        console.log('>> ', this.getArrayFromInvitationIds(userIds));
-        this.shoppingListSrv.shareShoppingList(this.listId, this.getArrayFromInvitationIds(userIds));
+        this.shoppingListSrv.shareShoppingList(this.listId, this.getArrayFromInvitationIds(userIds))
+          .then(() => this.utilSrv.showToast('Invitations sent!'))
+          .catch(error => this.utilSrv.showToast(`Error registering invitations (${error})`))
       },
       (error) => {
         console.log('Error sending invitations: ', error);
         loading.dismiss();
       }
     );
+  }
+
+  removeMembership(userId: string) {
+    console.log('Removing membership: ', userId);
   }
 
   createNewShoppingList() {
