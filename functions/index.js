@@ -21,3 +21,8 @@ exports.onImageUploaded = require('./imageUploader');
  * 
  */
 exports.getUserIdentifier = require('./getUserIdentifier');
+
+/**
+ * 
+ */
+exports.getUserName = require('./getUserName');
