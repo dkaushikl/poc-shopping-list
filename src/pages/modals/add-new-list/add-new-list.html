@@ -57,14 +57,21 @@
       <ion-col col-12 *ngIf="userInvitations && userInvitations.length > 0">
         <button ion-button full icon-left color="primary" (click)="sendInvitations()">
           <ion-icon name="send"></ion-icon>
-          Send invitations to this list
+          Check invitations
         </button>
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="sharedList" style="margin-top: 28px">
+    <ion-row class="top-spacer">
       <ion-col>
-        <h2>List shared with...</h2>
+        <h2>List shared with... {{ (sharedWith?.length > 1) ? sharedWith.length : '' }}</h2>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="top-spacer" *ngIf="loadingUsers">
+      <ion-col col-12 text-center>
+        <ion-spinner name="bubbles"></ion-spinner>
+        <h4><em>Checking users...</em></h4>
       </ion-col>
     </ion-row>
 
@@ -75,8 +82,8 @@
               <ion-avatar item-start>
                 <img [src]="'https://robohash.org/' + user">
               </ion-avatar>
-              {{ user }}
-              <button ion-button outline icon-only item-end>
+              {{ user.name }}
+              <button ion-button outline icon-only item-end (click)="removeMembership(user.uid)">
                 <ion-icon name="trash" style="padding: 9px"></ion-icon>
               </button>
           </ion-item>
@@ -84,52 +91,35 @@
       </ion-col>
     </ion-row>
 
-    <!--<ion-row *ngIf="sharedList">
-      <ion-col>
-        <ion-list>
-          <ion-item>
-            <ion-avatar item-start>
-              <img src="img/avatar-cher.png">
-            </ion-avatar>
-            <ion-input type="text" placeholder="Share with..." [(ngModel)]="shareWithUser"></ion-input>
-            <button ion-button item-end icon-only (click)="shareShoppingListWithUser()">
-                <ion-icon name="trash" style="padding: 9px"></ion-icon>
-            </button>
-          </ion-item>
-        </ion-list>
-      </ion-col>-->
-
-
-
-      <!--<ion-col>
-        <ion-list>
-          <ion-item>
-            Fulanito
-            <button ion-button item-end icon-only color="danger">
-              <ion-icon name="trash" style="padding: 9px"></ion-icon>
-            </button>
-          </ion-item>
-          <ion-item>
-              Menganito
-              <button ion-button item-end icon-only color="danger">
-                <ion-icon name="trash" style="padding: 9px"></ion-icon>
-              </button>
-            </ion-item>
-            <ion-item>
-                <ion-input type="text" placeholder="Share with..." [(ngModel)]="shoppingListName"></ion-input>
-                <button ion-button item-end icon-only color="danger">
-                  <ion-icon name="trash" style="padding: 9px"></ion-icon>
-                </button>
-              </ion-item>
-              <ion-item>
-                  <ion-thumbnail item-start>
-                    <img src="img/thumbnail-totoro.png">
-                  </ion-thumbnail>
-                  <h2>My Neighbor Totoro</h2>
-                  <button ion-button item-end icon-only color="danger">
-                      <ion-icon name="trash" style="padding: 9px"></ion-icon>
-                    </button>
-                </ion-item>
+  <!--<ion-col>
+    <ion-list>
+      <ion-item>
+        Fulanito
+        <button ion-button item-end icon-only color="danger">
+          <ion-icon name="trash" style="padding: 9px"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>
+        Menganito
+        <button ion-button item-end icon-only color="danger">
+          <ion-icon name="trash" style="padding: 9px"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>
+        <ion-input type="text" placeholder="Share with..." [(ngModel)]="shoppingListName"></ion-input>
+        <button ion-button item-end icon-only color="danger">
+          <ion-icon name="trash" style="padding: 9px"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img src="img/thumbnail-totoro.png">
+        </ion-thumbnail>
+        <h2>My Neighbor Totoro</h2>
+        <button ion-button item-end icon-only color="danger">
+            <ion-icon name="trash" style="padding: 9px"></ion-icon>
+          </button>
+        </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>-->
