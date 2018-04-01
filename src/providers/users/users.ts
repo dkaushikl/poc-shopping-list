@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { AngularFirestore } from 'angularfire2/firestore';
 
@@ -8,7 +9,11 @@ import { AuthenticationProvider } from './..';
 @Injectable()
 export class UsersProvider {
 
-  constructor(private afs: AngularFirestore, private authSrv: AuthenticationProvider) { }
+  constructor(
+    private afs: AngularFirestore, 
+    private authSrv: AuthenticationProvider,
+    private httpSrv: HttpClient
+  ) { }
 
   checkIfUserDataExists() {
     const userRef = `/users/${this.authSrv.getCurrentUserId()}`;
@@ -29,6 +34,11 @@ export class UsersProvider {
     return this.afs
       .collection('users', (ref) => { return ref.where('email', '==', emailAddress); })
       .snapshotChanges();
+  }
+
+  getUserNameFromUid(usernames: Array<string>) {
+    let url = 'https://us-central1-shopping-list-db.cloudfunctions.net/getUserName';
+    return this.httpSrv.post<Array<Object>>(url, { userIds: usernames });
   }
 
   isValidEmail(emailAddress: string) {
