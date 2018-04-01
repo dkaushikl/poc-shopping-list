@@ -69,7 +69,6 @@ export class HomePage {
 
   subscribeToShoppingLists() {
     this.loadingSpinner = this.loadingCtrl.create({ content: 'Retrieving lists...' });
-    console.log('Presenting...');
     this.loadingSpinner.present();
     this.shoppingLists$ = this.shoppingListSrv
       .getUserShoppingLists()
