@@ -53,11 +53,10 @@ export class HomePage {
 
   ionViewDidLoad() {
     // Fired only when a view is stored in memory
-    console.log('1 > ionViewDidLoad');
     this.subscribeToShoppingLists();
   }
 
-  ionViewWillEnter() {
+  /*ionViewWillEnter() {
     // It’s fired when entering a page, before it becomes the active one
     console.log('2 > ionViewWillEnter - many');
   }
@@ -65,7 +64,7 @@ export class HomePage {
   ionViewDidEnter() {
     // Fired when entering a page, after it becomes the active page
     console.log('3 > ionViewDidEnter - many');
-  }
+  }*/
 
   subscribeToShoppingLists() {
     this.loadingSpinner = this.loadingCtrl.create({ content: 'Retrieving lists...' });
